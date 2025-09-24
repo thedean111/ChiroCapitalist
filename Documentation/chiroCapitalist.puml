@@ -1,0 +1,162 @@
+@startuml chiroCapitalist
+/'
+Helpful syntax for quick referencing:
+
+Composition => A *== B
+- A is composed of B:
+- A cannot exist without B
+
+Aggregation => A o-- B
+- A is composed of B
+- A can exist without B
+
+Dependency => A --> B
+- A uses B
+
+Parent/Child => A <|-- B
+- B is a type of A
+
+General relationships:
+A "1" *-- "1.." B
+- A is made of more than one B
+- A cannot exist without at least 1 B
+
+class Dummy {
+  String data
+  void methods()
+}
+
+Associate class => (Student, Course) .. Enrollment
+- Enrollment is the association class between student and course
+'/
+
+/'
+This factor is the generic NPC factor that will contain the logic and data necessary for
+all NPC spawning
+'/
+class NPCFactory {
+
+}
+
+/'
+Inherits from the NPCFactory, layering on doctor-specific behavior
+'/
+class DoctorFactory {
+
+}
+
+/'
+Inherits from the NPCFactory, layering on patient-specific behavior
+'/
+class PatientFactory {
+    
+}
+
+/'
+General characteristics of NPCs that can spawn in the game
+'/
+class NonplayerCharacter {
+
+}
+
+/'
+Specific details related to patients and their behaviors
+'/
+class Patient{
+
+}
+
+/'
+Specific details related to doctors and their behaviors
+'/
+class Doctor {
+
+}
+
+/'
+Object that contains stats for an NPC, and stat-related behaviors
+'/
+class Stats {
+
+}
+
+/'
+An object that is meant to handle the state of the UI
+'/
+class UIManager {
+
+}
+
+/'
+Generic class that contains information and behavior of all UI menus
+'/
+class UIMenu {
+
+}
+
+/'
+Behavior for the menu that hires doctors
+'/
+class DoctorHiringMenu {
+
+}
+
+/'
+Generic class that contains the behavior and details for all minigames
+'/
+class Minigame {
+
+}
+
+/'
+Class that contains the behavior for a mashing game (strength)
+'/
+class MashingMinigame {
+
+}
+
+/'
+Class that contains information for the player's practice
+'/
+class Practice {
+
+}
+
+/'
+Generic class for an object that has patients spawn
+'/
+class Office {
+
+}
+
+/'
+Object where hired doctors may work. Handles patient spawning specific
+'/
+class EmployeeOffice {
+
+}
+
+/'
+Front office where patients may spawn, slightly different than the employee offices
+'/
+class MainOffice {
+
+}
+
+/'
+RELATIONSHIPS
+'/
+NonplayerCharacter <|-- Patient
+NonplayerCharacter <|-- Doctor
+
+UIMenu <|-- DoctorHiringMenu
+
+Minigame <|-- MashingMinigame
+
+Office <|-- MainOffice
+Office <|-- EmployeeOffice
+
+NPCFactory <|-- DoctorFactory
+NPCFactory <|-- PatientFactory
+
+@enduml
