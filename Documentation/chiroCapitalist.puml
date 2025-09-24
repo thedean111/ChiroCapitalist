@@ -81,6 +81,14 @@ class Stats {
 }
 
 /'
+Monobehavior class that will setup all of the UI components...
+has access to unity api
+'/
+class UIBootstrap {
+
+}
+
+/'
 An object that is meant to handle the state of the UI
 '/
 class UIManager {
@@ -90,7 +98,7 @@ class UIManager {
 /'
 Generic class that contains information and behavior of all UI menus
 '/
-class UIMenu {
+<<interface>> class IMenu {
 
 }
 
@@ -123,7 +131,16 @@ class Practice {
 }
 
 /'
-Generic class for an object that has patients spawn
+This class will help efficiently move between all of the offices...
+swaps assets and stars/stop animations as needed
+'/
+class OfficeNavigator {
+
+}
+
+/'
+Generic class for an object that has patients spawn, these should updage
+while the player is in the scene even if the office is off screen
 '/
 class Office {
 
@@ -144,12 +161,19 @@ class MainOffice {
 }
 
 /'
+Back end logic for the hiring serivce
+'/
+class DoctorHiringService {
+
+}
+
+/'
 RELATIONSHIPS
 '/
 NonplayerCharacter <|-- Patient
 NonplayerCharacter <|-- Doctor
 
-UIMenu <|-- DoctorHiringMenu
+IMenu <|-- DoctorHiringMenu
 
 Minigame <|-- MashingMinigame
 
