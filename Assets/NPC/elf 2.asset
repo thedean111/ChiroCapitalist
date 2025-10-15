@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b7061bb028dd9f489b472c691990ce9, type: 3}
+  m_Name: elf 2
+  m_EditorClassIdentifier: Assembly-CSharp::NPCRaceData
+  head: {fileID: 7852946361334303182, guid: e60ce380825be15489c79969683df1db, type: 3}
+  torso:
+  - {fileID: -2195852612816333170, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
+  - {fileID: -6883677475781101447, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
+  - {fileID: -3497587910088944166, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
+  - {fileID: -231548412507684639, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
+  - {fileID: -4049913713292093516, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
+  pants:
+  - {fileID: 4048251280407998355, guid: 83234a95e886e854dac9638bb1817b75, type: 3}
+  hair:
+  - {fileID: -8277263341493563837, guid: c13369609c76a0e44ae85955b689addb, type: 3}
+  - {fileID: -7470663090057097934, guid: c13369609c76a0e44ae85955b689addb, type: 3}
+  - {fileID: -4998668448728946383, guid: c13369609c76a0e44ae85955b689addb, type: 3}
+  - {fileID: -9129771704399641196, guid: c13369609c76a0e44ae85955b689addb, type: 3}
+  - {fileID: -6606111307903178311, guid: c13369609c76a0e44ae85955b689addb, type: 3}
+  shoes:
+  - {fileID: -2574739236619207097, guid: bcbe6844fb930094b82452993a682cef, type: 3}
+  skinColors:
+  - serializedVersion: 2
+    key0: {r: 1, g: 0.90199053, b: 0.745283, a: 1}
+    key1: {r: 0.2754717, g: 0.2754717, b: 0.2754717, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  hairColors:
+  - serializedVersion: 2
+    key0: {r: 1, g: 0.9857808, b: 0.7528302, a: 1}
+    key1: {r: 1, g: 0.6712522, b: 0.28490567, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  - serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 0.2981131, g: 0.2981131, b: 0.2981131, a: 1}
+    key2: {r: 0.22264141, g: 0.13460085, b: 0.044948354, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 28142
+    ctime2: 65150
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  primaryColors:
+  - serializedVersion: 2
+    key0: {r: 0.83396226, g: 0.8004864, b: 0.65930223, a: 1}
+    key1: {r: 0.83396226, g: 0.5884125, b: 0.3697757, a: 1}
+    key2: {r: 0.8352941, g: 0.38239765, b: 0.3686275, a: 0}
+    key3: {r: 0.32557207, g: 0.5396226, b: 0.13745098, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 13955
+    ctime2: 38936
+    ctime3: 65535
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  secondaryColors:
+  - serializedVersion: 2
+    key0: {r: 0.2528302, g: 0.23904544, b: 0.052951235, a: 1}
+    key1: {r: 0.15269065, g: 0.14897111, b: 0.23018861, a: 1}
+    key2: {r: 0.2528302, g: 0.2059852, b: 0.18461375, a: 0}
+    key3: {r: 0.19245279, g: 0.19245279, b: 0.19245279, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 21048
+    ctime2: 45566
+    ctime3: 65535
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2

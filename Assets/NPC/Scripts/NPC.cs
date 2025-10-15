@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class NPC : MonoBehaviour
@@ -26,10 +27,28 @@ public abstract class NPC : MonoBehaviour
     }
 
     /// <summary>
-    /// Functionality that needs to happen to remove this NPC from the screen.
+    /// The generic functionality for giving an NPC its data will be to assign the meshes and their colors.
     /// </summary>
-    public virtual void Dismiss() { gameObject.SetActive(false); }
-    
+    public void SetData(NPCData data)
+    {
+        SetSkinnedMeshes(data.hair, data.head, data.pants, data.shoes, data.torso);
+        SetRendererColors(hair, data.skinColor, data.hairColors);
+        SetRendererColors(head, data.skinColor, data.hairColors);
+        SetRendererColors(pants, data.skinColor, data.pantsColors);
+        SetRendererColors(shoes, data.skinColor, data.shoesColors);
+        SetRendererColors(torso, data.skinColor, data.torsoColors);
+    }
+
+    private void SetRendererColors(SkinnedMeshRenderer smr, Color skin, NPCData.ColorSet colors)
+    {
+        MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+        smr.GetPropertyBlock(mpb);
+        mpb.SetColor("_Primary", colors.primary);
+        mpb.SetColor("_Secondary", colors.secondary);
+        mpb.SetColor("_Skin", skin);
+        smr.SetPropertyBlock(mpb);
+    }
+
     /* 
     TODO:
         1. Generalized animation framework for different stat types
@@ -41,4 +60,22 @@ public abstract class NPC : MonoBehaviour
             a. Patients only need one type of animations
             b. Doctors should contain all the types of animations
     */
+}
+
+public class NPCData
+{
+    public Mesh hair, head, torso, pants, shoes;
+    public Color skinColor;
+    public ColorSet hairColors, torsoColors, pantsColors, shoesColors;
+    public string name;
+
+    // TODO: Stats
+
+
+    public struct ColorSet
+    {
+        public Color primary;
+        public Color secondary;
+    }
+
 }

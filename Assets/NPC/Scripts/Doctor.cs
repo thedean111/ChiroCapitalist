@@ -2,22 +2,21 @@ using UnityEngine;
 
 public class Doctor : NPC
 {
-    private DoctorData data;
+    private DoctorData data; // Doctor data contains various information about stats, levels, etc.
 
     /// <summary>
     /// When giving this object new data, automatically set the meshes.
     /// </summary>
     public void SetData(DoctorData data)
     {
+        base.SetData(data);
         this.data = data;
-        SetSkinnedMeshes(data.hair, data.head, data.pants, data.shoes, data.torso);
     }
 
 }
 
-public struct DoctorData
+public class DoctorData : NPCData
 {
-    public Mesh hair, head, torso, pants, shoes;
     public int level;
-
+    // TODO: exp, etc.
 }

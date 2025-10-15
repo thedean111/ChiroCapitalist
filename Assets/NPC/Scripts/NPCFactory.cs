@@ -5,10 +5,7 @@ using UnityEngine;
 public class NPCFactory : MonoBehaviour
 {
     private static NPCFactory instance = null;
-    public static NPCFactory Instance { get { return instance; } }
-
-    [Header("NPC Prefab")]
-    public NPC prefab; // Base prefab for NPCs              
+    public static NPCFactory Instance { get { return instance; } }          
 
     [Header("Race Details")]
     public NPCRaceData[] races; // Each NPCRaceData contains colors, meshes, stat distributions, etc.
@@ -17,7 +14,7 @@ public class NPCFactory : MonoBehaviour
     // PRIVATE DATA
     //
 
-    private Stack<Patient> patientObjects; // This collection of patients is designed such that created patients can be reused as needed
+    // private Stack<Patient> patientObjects; // This collection of patients is designed such that created patients can be reused as needed
     private List<DoctorData> doctorData; // Collection of all the generated doctor data
 
     //
@@ -32,27 +29,14 @@ public class NPCFactory : MonoBehaviour
     /// <summary>
     /// This function will return a randomized patient object
     /// </summary>
-    public Patient GetPatient()
+    public PatientData GeneratePatientData()
     {
-        /*
-            TODO:
-                1. Check the stack to see if there is a patient not being used
-                    a. If the stack has data, pop the top and use that as the GO to return
-                    b. If the stack doesn't have data, create a new patient object to provide (GameObject.Instantiate())
-                2. Randomize the patient by randomly selecting one of the NPCRaceData objects
-                    a. NOTE: should the NPCRaceData contain a method that just returns the randomly selected data, provided a stat total?
-                3. Return the randomized patient game object
-        */
+        // Create a patient data
+        PatientData pd = new PatientData();
 
-        return null;
-    }
-
-    /// <summary>
-    /// When a patient object is done being used, it will add itself back to the factory using this method
-    /// </summary>
-    public void ReturnPatient(Patient patient)
-    {
-        patientObjects.Push(patient);
+        // Pick a random race, and populate the patient data object with its details
+        races[UnityEngine.Random.Range(0, races.Length)].PopulateNPCData(pd);
+        return pd;
     }
 
     /// <summary>
