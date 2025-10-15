@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b7061bb028dd9f489b472c691990ce9, type: 3}
+  m_Name: elf
+  m_EditorClassIdentifier: Assembly-CSharp::NPCRaceData
+  head: {fileID: 7852946361334303182, guid: e60ce380825be15489c79969683df1db, type: 3}
+  skinColor: []
