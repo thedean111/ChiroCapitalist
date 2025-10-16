@@ -99,7 +99,7 @@ public class NPCFactory : MonoBehaviour
         DoctorData dd = new DoctorData();
 
         // Pick a random race, and populate the patient data object with its details
-        races[UnityEngine.Random.Range(0, races.Length)].PopulateNPCData(pd);
+        races[UnityEngine.Random.Range(0, races.Length)].PopulateNPCData(dd);
 
         // TODO: NEED GACHA LOGIC HERE FOR GENERATING THE STATS
         // -> NPC Rarity influences stat pool, multipliers, aesthetics, etc.
@@ -107,7 +107,7 @@ public class NPCFactory : MonoBehaviour
 
         // Add the data to the stored list and return it to the caller
         doctorData.Add(dd);
-        return new dd();
+        return dd;
     }
 
     /// <summary>
