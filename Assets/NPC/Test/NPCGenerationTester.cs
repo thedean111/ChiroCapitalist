@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -6,7 +8,9 @@ public class NPCGenerationTester : MonoBehaviour
 {
 
     public GameObject patientPrefab;
+    private List<string> anims = new List<string> { "action_strength", "action_technique", "action_magic" };
 
+    [Range(0f, 1f)] public float crossFadeTime = 0.1f;
     /// <summary>
     /// This method should spawn a patient in the XZ plane, bounded by the game object's scale.
     /// </summary>
@@ -34,6 +38,17 @@ public class NPCGenerationTester : MonoBehaviour
         else
         {
             Debug.LogWarning("Cannot obtain the 'Patient' component from the spawned object!.");
+        }
+    }
+
+    /// <summary>
+    /// For each child with a Patient component, play a random animation
+    /// </summary>
+    public void PlayRandomAnimation()
+    {
+        foreach (Patient p in transform.GetComponentsInChildren<Patient>())
+        {
+            p.PlayAnimationClip(anims[UnityEngine.Random.Range(0, anims.Count)], crossFadeTime);
         }
     }
 

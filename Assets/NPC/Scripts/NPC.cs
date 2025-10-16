@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public abstract class NPC : MonoBehaviour
 {
     private SkinnedMeshRenderer hair, head, pants, shoes, torso;
+    private Animator anim;
 
     void Awake()
     {
@@ -13,6 +14,7 @@ public abstract class NPC : MonoBehaviour
         pants = transform.Find("pants").GetComponent<SkinnedMeshRenderer>();
         shoes = transform.Find("shoes").GetComponent<SkinnedMeshRenderer>();
         torso = transform.Find("torso").GetComponent<SkinnedMeshRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -40,6 +42,25 @@ public abstract class NPC : MonoBehaviour
         SetRendererColors(torso, data.skinColor, data.torsoColors);
     }
 
+    /// <summary>
+    /// Play an animation in this NPC's animator.
+    /// </summary>
+    public void PlayAnimationClip(string stateName)
+    {
+        PlayAnimationClip(stateName, 0.2f);
+    }
+
+    /// <summary>
+    /// Play an animation in this NPC's animator.
+    /// </summary>
+    public void PlayAnimationClip(string stateName, float delta)
+    {
+        anim.CrossFade(stateName, delta);
+    }
+
+    /// <summary>
+    /// Takes in a skinned mesh renderer and sets its primary, secondary, and skin colors.
+    /// </summary>
     private void SetRendererColors(SkinnedMeshRenderer smr, Color skin, NPCData.ColorSet colors)
     {
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();

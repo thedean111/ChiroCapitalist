@@ -14,6 +14,11 @@ public class NPCGenerationTesterEditor : Editor
             test.SpawnPatient();
         }
 
+        if (GUILayout.Button("Play Random Animation"))
+        {
+            test.PlayRandomAnimation();
+        }
+
         if (GUILayout.Button("Clear"))
         {
             test.DeleteChildren();

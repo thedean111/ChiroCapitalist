@@ -95,7 +95,19 @@ public class NPCFactory : MonoBehaviour
     /// </summary>
     public DoctorData GenerateDoctorData()
     {
-        return new DoctorData();
+        // Create a patient data
+        DoctorData dd = new DoctorData();
+
+        // Pick a random race, and populate the patient data object with its details
+        races[UnityEngine.Random.Range(0, races.Length)].PopulateNPCData(pd);
+
+        // TODO: NEED GACHA LOGIC HERE FOR GENERATING THE STATS
+        // -> NPC Rarity influences stat pool, multipliers, aesthetics, etc.
+
+
+        // Add the data to the stored list and return it to the caller
+        doctorData.Add(dd);
+        return new dd();
     }
 
     /// <summary>
