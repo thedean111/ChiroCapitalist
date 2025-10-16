@@ -1,0 +1,922 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec1057cfb40ba4912a4231161e958ae2, type: 3}
+  m_Name: master_palette
+  m_EditorClassIdentifier: Assembly-CSharp::ColorStudio.CSPalette
+  order: 0
+  hueCount: 5
+  shades: 1
+  saturation: 0.29245862
+  lightness: 0.5
+  minBrightness: 0.19488189
+  maxBrightness: 1
+  kelvin: 4000
+  colorTempStrength: 0.224
+  splitAmount: 0.77260494
+  scheme: 5
+  keyColors:
+  - angle: 1.1048579
+    hue: 0.1758436
+    color: {r: 0.63012606, g: 0.6462293, b: 0.35377067, a: 1}
+    pos: {x: 0.37651178, y: 0.25443158}
+    visible: 1
+    highlighted: 0
+    type: 0
+  - angle: 1.8774629
+    hue: 0.2988075
+    color: {r: 0.41435495, g: 0.6462293, b: 0.35377067, a: 1}
+    pos: {x: 0.58297825, y: 0.23795457}
+    visible: 1
+    highlighted: 0
+    type: 1
+  - angle: 4.2464504
+    hue: 0.67584354
+    color: {r: 0.36987382, g: 0.35377067, b: 0.6462293, a: 1}
+    pos: {x: 0.62348825, y: 0.7455684}
+    visible: 1
+    highlighted: 0
+    type: 1
+  - angle: 0.33225298
+    hue: 0.052879702
+    color: {r: 0.6462293, g: 0.44656146, b: 0.35377067, a: 1}
+    pos: {x: 0.24016324, y: 0.41034484}
+    visible: 1
+    highlighted: 0
+    type: 1
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0.6760818, g: 0.3239182, b: 0.3239182, a: 1}
+    pos: {x: 0.20984611, y: 0.5}
+    visible: 0
+    highlighted: 0
+    type: 2
+  - angle: 0
+    hue: 0
+    color: {r: 0.6760818, g: 0.3239182, b: 0.3239182, a: 1}
+    pos: {x: 0.20984611, y: 0.5}
+    visible: 0
+    highlighted: 0
+    type: 2
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0
+  - angle: 0
+    hue: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
+    pos: {x: 0, y: 0}
+    visible: 0
+    highlighted: 0
+    type: 0

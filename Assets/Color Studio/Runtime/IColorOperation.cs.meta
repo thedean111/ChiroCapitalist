@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: b2734b47e377d4d399e0f4d99c2ce0c5
+timeCreated: 1565456997
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151892
+  packageName: Color Studio
+  packageVersion: 5.1
+  assetPath: Assets/Color Studio/Runtime/IColorOperation.cs
+  uploadId: 779796

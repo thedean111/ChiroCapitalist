@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 5726a363ef8ab4939b2919b04cff699b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151892
+  packageName: Color Studio
+  packageVersion: 5.1
+  assetPath: Assets/Color Studio/Editor/WelcomeScreen.cs
+  uploadId: 779796

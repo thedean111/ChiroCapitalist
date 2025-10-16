@@ -31,8 +31,8 @@ MonoBehaviour:
   - {fileID: -2574739236619207097, guid: bcbe6844fb930094b82452993a682cef, type: 3}
   skinColors:
   - serializedVersion: 2
-    key0: {r: 0.5058048, g: 0.86415094, b: 0.36359555, a: 1}
-    key1: {r: 0.15347259, g: 0.21509439, b: 0.095372036, a: 1}
+    key0: {r: 0.69741493, g: 1, b: 0.58679235, a: 1}
+    key1: {r: 0.095535055, g: 0.3132075, b: 0.015955828, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -40,7 +40,7 @@ MonoBehaviour:
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
+    ctime1: 65150
     ctime2: 0
     ctime3: 0
     ctime4: 0
@@ -60,8 +60,8 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   - serializedVersion: 2
-    key0: {r: 0.65882355, g: 0.2907562, b: 0.26221177, a: 1}
-    key1: {r: 0.528, g: 0.35552174, b: 0.22176, a: 1}
+    key0: {r: 0.636, g: 0.49653426, b: 0.44074798, a: 1}
+    key1: {r: 0.381132, g: 0.19430155, b: 0.10283371, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -69,7 +69,7 @@ MonoBehaviour:
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65458
+    ctime1: 65535
     ctime2: 0
     ctime3: 0
     ctime4: 0
@@ -90,8 +90,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   hairColors:
   - serializedVersion: 2
-    key0: {r: 1, g: 0.9857808, b: 0.7528302, a: 1}
-    key1: {r: 1, g: 0.6712522, b: 0.28490567, a: 1}
+    key0: {r: 0.26, g: 0.1342857, b: 0, a: 1}
+    key1: {r: 0.07924521, g: 0.07924521, b: 0.07924521, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -118,95 +118,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  - serializedVersion: 2
-    key0: {r: 0, g: 0, b: 0, a: 1}
-    key1: {r: 0.2981131, g: 0.2981131, b: 0.2981131, a: 1}
-    key2: {r: 0.22264141, g: 0.13460085, b: 0.044948354, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 28142
-    ctime2: 65150
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 3
-    m_NumAlphaKeys: 2
-  primaryColors:
-  - serializedVersion: 2
-    key0: {r: 0.83396226, g: 0.8004864, b: 0.65930223, a: 1}
-    key1: {r: 0.83396226, g: 0.5884125, b: 0.3697757, a: 1}
-    key2: {r: 0.8352941, g: 0.38239765, b: 0.3686275, a: 0}
-    key3: {r: 0.32557207, g: 0.5396226, b: 0.13745098, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 13955
-    ctime2: 38936
-    ctime3: 65535
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 4
-    m_NumAlphaKeys: 2
-  secondaryColors:
-  - serializedVersion: 2
-    key0: {r: 0.2528302, g: 0.23904544, b: 0.052951235, a: 1}
-    key1: {r: 0.15269065, g: 0.14897111, b: 0.23018861, a: 1}
-    key2: {r: 0.2528302, g: 0.2059852, b: 0.18461375, a: 0}
-    key3: {r: 0.19245279, g: 0.19245279, b: 0.19245279, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 21048
-    ctime2: 45566
-    ctime3: 65535
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 4
-    m_NumAlphaKeys: 2
+  primaryColors: {fileID: 11400000, guid: cf8fd26617810544c80c560f6475f72a, type: 2}
+  secondaryColors: {fileID: 11400000, guid: cf8fd26617810544c80c560f6475f72a, type: 2}
+  tertiaryColors: {fileID: 11400000, guid: 1a8a8199012e55641875164d9d62109d, type: 2}
   wStrength: 1
   wTechnique: 0.4
   wMagic: 0.4

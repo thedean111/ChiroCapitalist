@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0238d668f58224a88b0f111f927bb8af
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151892
+  packageName: Color Studio
+  packageVersion: 5.1
+  assetPath: Assets/Color Studio/Runtime/FastHashSet.cs
+  uploadId: 779796

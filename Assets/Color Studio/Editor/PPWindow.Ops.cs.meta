@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: a0eea13fd028243dcb389426d977da34
+timeCreated: 1561761605
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151892
+  packageName: Color Studio
+  packageVersion: 5.1
+  assetPath: Assets/Color Studio/Editor/PPWindow.Ops.cs
+  uploadId: 779796

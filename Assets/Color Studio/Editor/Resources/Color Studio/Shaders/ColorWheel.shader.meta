@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 1d788feefda474ff69bceb8eb72dfb45
+timeCreated: 1561647435
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151892
+  packageName: Color Studio
+  packageVersion: 5.1
+  assetPath: Assets/Color Studio/Editor/Resources/Color Studio/Shaders/ColorWheel.shader
+  uploadId: 779796

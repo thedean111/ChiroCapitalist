@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 8dca88bd7ba724a1c89283718cff8d77
+timeCreated: 1565025229
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151892
+  packageName: Color Studio
+  packageVersion: 5.1
+  assetPath: Assets/Color Studio/Editor/ASEImporter/Block.cs
+  uploadId: 779796

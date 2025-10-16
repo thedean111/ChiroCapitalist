@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 67424ad123c624f93884daffb2faa3d8
+timeCreated: 1561647377
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151892
+  packageName: Color Studio
+  packageVersion: 5.1
+  assetPath: Assets/Color Studio/Runtime/ColorEntry.cs
+  uploadId: 779796

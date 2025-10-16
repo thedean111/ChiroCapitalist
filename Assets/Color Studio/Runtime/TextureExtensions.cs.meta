@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0208854b38fe2477fa2e45b79f8b05ef
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151892
+  packageName: Color Studio
+  packageVersion: 5.1
+  assetPath: Assets/Color Studio/Runtime/TextureExtensions.cs
+  uploadId: 779796

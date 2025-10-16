@@ -1,6 +1,5 @@
-using System;
 using UnityEngine;
-using System.Collections.Generic;
+using ColorStudio;
 
 public abstract class NPC : MonoBehaviour
 {
@@ -35,11 +34,11 @@ public abstract class NPC : MonoBehaviour
     public void SetData(NPCData data)
     {
         SetSkinnedMeshes(data.hair, data.head, data.pants, data.shoes, data.torso);
-        SetRendererColors(hair, data.skinColor, data.hairColors);
-        SetRendererColors(head, data.skinColor, data.hairColors);
-        SetRendererColors(pants, data.skinColor, data.pantsColors);
-        SetRendererColors(shoes, data.skinColor, data.shoesColors);
-        SetRendererColors(torso, data.skinColor, data.torsoColors);
+        SetRendererColors(hair, data.hairColors);
+        SetRendererColors(head, data.skinColors);
+        SetRendererColors(pants, data.pantsColors);
+        SetRendererColors(shoes, data.shoesColors);
+        SetRendererColors(torso, data.torsoColors);
     }
 
     /// <summary>
@@ -61,13 +60,14 @@ public abstract class NPC : MonoBehaviour
     /// <summary>
     /// Takes in a skinned mesh renderer and sets its primary, secondary, and skin colors.
     /// </summary>
-    private void SetRendererColors(SkinnedMeshRenderer smr, Color skin, NPCData.ColorSet colors)
+    private void SetRendererColors(SkinnedMeshRenderer smr, NPCData.ColorSet colors)
     {
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         smr.GetPropertyBlock(mpb);
         mpb.SetColor("_Primary", colors.primary);
         mpb.SetColor("_Secondary", colors.secondary);
-        mpb.SetColor("_Skin", skin);
+        mpb.SetColor("_Tertiary", colors.tertiary);
+        mpb.SetColor("_Accent", colors.accent);
         smr.SetPropertyBlock(mpb);
     }
 
@@ -87,10 +87,8 @@ public abstract class NPC : MonoBehaviour
 public class NPCData
 {
     public Mesh hair, head, torso, pants, shoes;
-    public Color skinColor;
-    public ColorSet hairColors, torsoColors, pantsColors, shoesColors;
+    public ColorSet skinColors, hairColors, torsoColors, pantsColors, shoesColors;
     public string name;
-    // public Dictionary<StatType, float> stats;
     public Vector3 stats; // x - Strength, y - Technique, z - Magic
 
     // TODO: Stats
@@ -100,6 +98,9 @@ public class NPCData
     {
         public Color primary;
         public Color secondary;
+        public Color tertiary;
+        public Color accent;
+        
     }
 
 }

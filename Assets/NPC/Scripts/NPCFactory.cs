@@ -85,7 +85,7 @@ public class NPCFactory : MonoBehaviour
 
         // Currently, the stats in 'pd' just contain the randomly generated weights...
         // convert them to stat totals here by normalizing the weights
-        pd.stats = (pd.stats / (pd.stats.x + pd.stats.y + pd.stats.z)) * pool;
+        pd.stats = pd.stats / (pd.stats.x + pd.stats.y + pd.stats.z) * pool;
 
         return pd;
     }
