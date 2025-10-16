@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Patient : NPC
@@ -18,4 +19,5 @@ public class PatientData : NPCData
 {
     public AnimationClip buildup;
     public AnimationClip action;
+    
 }

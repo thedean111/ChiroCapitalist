@@ -19,6 +19,10 @@ public class NPCGenerationTester : MonoBehaviour
             PatientData pd = NPCFactory.Instance.GeneratePatientData();
             p.SetData(pd);
 
+            // LOG
+            Debug.Log("Patient Stats: " + pd.stats);
+            //
+
             // Randomly position the spawned object in the boundary
             Vector3 boundsScale = transform.Find("bounds").localScale;
             float halfXScale = boundsScale.x / 2;

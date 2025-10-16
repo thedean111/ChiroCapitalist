@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b7061bb028dd9f489b472c691990ce9, type: 3}
-  m_Name: elf 1
+  m_Name: orc
   m_EditorClassIdentifier: Assembly-CSharp::NPCRaceData
-  head: {fileID: 7852946361334303182, guid: e60ce380825be15489c79969683df1db, type: 3}
+  head: {fileID: -5957447964975604744, guid: e60ce380825be15489c79969683df1db, type: 3}
   torso:
   - {fileID: -2195852612816333170, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
   - {fileID: -6883677475781101447, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
@@ -31,8 +31,8 @@ MonoBehaviour:
   - {fileID: -2574739236619207097, guid: bcbe6844fb930094b82452993a682cef, type: 3}
   skinColors:
   - serializedVersion: 2
-    key0: {r: 1, g: 0.90199053, b: 0.745283, a: 1}
-    key1: {r: 0.2754717, g: 0.2754717, b: 0.2754717, a: 1}
+    key0: {r: 0.5058048, g: 0.86415094, b: 0.36359555, a: 1}
+    key1: {r: 0.15347259, g: 0.21509439, b: 0.095372036, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -41,6 +41,35 @@ MonoBehaviour:
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  - serializedVersion: 2
+    key0: {r: 0.65882355, g: 0.2907562, b: 0.26221177, a: 1}
+    key1: {r: 0.528, g: 0.35552174, b: 0.22176, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65458
     ctime2: 0
     ctime3: 0
     ctime4: 0
@@ -178,3 +207,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
+  wStrength: 1
+  wTechnique: 0.4
+  wMagic: 0.4

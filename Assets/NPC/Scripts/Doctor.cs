@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class Doctor : NPC
 {
     private DoctorData data; // Doctor data contains various information about stats, levels, etc.

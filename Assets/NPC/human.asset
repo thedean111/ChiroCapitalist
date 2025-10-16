@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b7061bb028dd9f489b472c691990ce9, type: 3}
-  m_Name: elf 2
+  m_Name: human
   m_EditorClassIdentifier: Assembly-CSharp::NPCRaceData
-  head: {fileID: 7852946361334303182, guid: e60ce380825be15489c79969683df1db, type: 3}
+  head: {fileID: 6092411339190408124, guid: e60ce380825be15489c79969683df1db, type: 3}
   torso:
   - {fileID: -2195852612816333170, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
   - {fileID: -6883677475781101447, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
@@ -32,7 +32,7 @@ MonoBehaviour:
   skinColors:
   - serializedVersion: 2
     key0: {r: 1, g: 0.90199053, b: 0.745283, a: 1}
-    key1: {r: 0.2754717, g: 0.2754717, b: 0.2754717, a: 1}
+    key1: {r: 0.16981131, g: 0.09121347, b: 0, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -178,3 +178,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
+  wStrength: 0.8
+  wTechnique: 1
+  wMagic: 1

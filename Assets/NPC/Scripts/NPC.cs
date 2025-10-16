@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public abstract class NPC : MonoBehaviour
 {
@@ -68,6 +69,8 @@ public class NPCData
     public Color skinColor;
     public ColorSet hairColors, torsoColors, pantsColors, shoesColors;
     public string name;
+    // public Dictionary<StatType, float> stats;
+    public Vector3 stats; // x - Strength, y - Technique, z - Magic
 
     // TODO: Stats
 

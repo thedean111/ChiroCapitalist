@@ -16,6 +16,12 @@ public class NPCRaceData : ScriptableObject
     public Gradient[] primaryColors;
     public Gradient[] secondaryColors;
 
+    [Header("Stat Distribution")]
+    [Range(0f, 1f)] public float wStrength;
+    [Range(0f, 1f)] public float wTechnique;
+    [Range(0f, 1f)] public float wMagic;
+
+
     /// <summary>
     /// Randomly select data from all the contained data in this race and populate the provided container.
     /// </summary>
