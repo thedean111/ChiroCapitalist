@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
+    private static CameraController instance = null;
+    public static CameraController Instance {get {return instance;} }
+
     [Header("References")]
     public CinemachineCamera cCam;
     public Transform camTarg;
@@ -16,13 +19,18 @@ public class CameraController : MonoBehaviour
     public float clickDragSpeed = 0.5f; // Units per second
     public float inputSpeed = 2f;
 
-    private bool holding = false;
+    public bool holding {get; private set;}
 
     // References to inputs and actions
     private InputActionMap gameActions;
     private InputAction move;
     private InputAction holdRight;
     private InputAction pan;
+
+    void Awake()
+    {
+        if (instance == null) { instance = this; }
+    }
 
     // Subscribe to input events
     void OnEnable()
