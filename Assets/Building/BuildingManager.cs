@@ -71,6 +71,7 @@ public class BuildingManager : MonoBehaviour
     {
         if (!active) { return; }
         if (CameraController.Instance.holding) { return; }
+        if (UIManager.Instance.IsPointerOverUI()) { return; }
 
         // Cast a ray and if it hits the grid then move the marker by cell position
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());

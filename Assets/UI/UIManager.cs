@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour
@@ -49,6 +51,11 @@ public class UIManager : MonoBehaviour
     public void ToggleBuildUI(bool status)
     {
         buildingContainer.SetEnabled(status);
+    }
+
+    public bool IsPointerOverUI()
+    {   
+        return EventSystem.current.IsPointerOverGameObject();
     }
 
 }

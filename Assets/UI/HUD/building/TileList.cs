@@ -19,10 +19,6 @@ public class TileList : MonoBehaviour
     void Start()
     {
         Build();
-        foreach (VisualElement ve in sv.Children())
-        {
-            Debug.Log(ve);
-        }
     }
 
     public void UpdateTileList(List<PlaceableTile> t)
