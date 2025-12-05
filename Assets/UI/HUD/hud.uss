@@ -16,25 +16,91 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/Fonts/Nunito/static/Nunito-Bold.ttf?fileID=12800000&guid=b827e42db90a5e247836969d7d8a8109&type=3#Nunito-Bold");
+    color: rgb(0, 0, 0);
 }
 
 .hud-button {
-    border-top-width: 0;
-    border-right-width: 0;
+    border-top-width: 3px;
+    border-right-width: 3px;
     border-bottom-width: 0;
-    border-left-width: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    border-left-width: 3px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
     margin-left: 0;
-    padding-top: 0;
+    padding-top: 10px;
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    width: 40px;
-    height: 40px;
+    width: 75px;
+    height: 109px;
+    background-color: rgb(255, 237, 202);
+    transition-duration: 0.2s;
+    background-size: 80% 80%;
+    align-self: auto;
+    align-items: center;
+    border-left-color: rgb(29, 18, 11);
+    border-right-color: rgb(29, 18, 11);
+    border-top-color: rgb(29, 18, 11);
+    border-bottom-color: rgb(29, 18, 11);
+    translate: 0 30px;
+}
+
+.hud-button:hover {
+    translate: 0 5px;
+}
+
+.hud-button:active {
+    background-color: rgb(209, 190, 155);
+}
+
+.hud-button-icon {
+    width: 60px;
+    height: 60px;
+    -unity-background-image-tint-color: rgb(103, 137, 97);
+}
+
+.hud-button-on {
+    background-color: rgb(169, 102, 66);
+    translate: 0 5px;
+}
+
+.root-element {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.hud-menu-header {
+    -unity-font-definition: url("project://database/Assets/Fonts/Nunito/static/Nunito-ExtraBold.ttf?fileID=12800000&guid=ba5e3656578597f46a5f876e7d06eb55&type=3#Nunito-ExtraBold");
+    -unity-font-style: bold;
+    font-size: 40px;
+    position: absolute;
+    left: 47px;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgb(29, 18, 11);
+    color: rgb(255, 237, 202);
+    letter-spacing: -1px;
+}
+
+.build-menu {
+    width: 900px;
+    height: 200px;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    transition-duration: 0.35s;
+    translate: 0 0;
+}
+
+.build-menu:disabled {
+    opacity: 0;
+    translate: -1000px 0;
 }

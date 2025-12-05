@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f57c5eedfeea49b4d8a7d6df834c83f6, type: 3}
+  m_Name: testTile3
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceableTile
+  icon: {fileID: 2800000, guid: c0741357179e547a18c4404b28cf6bfc, type: 3}
+  cost: 3000
+  size: {x: 2, y: 2}
+  prefab: {fileID: 5968335074230735502, guid: a32f172f237618e4f8cc34c67774d299, type: 3}

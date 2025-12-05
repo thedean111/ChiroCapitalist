@@ -1,9 +1,24 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/HUD/hud.uss?fileID=7433441132597879392&amp;guid=fd5a90d896f1f0d44b4f9a4179014235&amp;type=3#hud" />
-    <ui:VisualElement name="hud-buttons-container" style="flex-grow: 1; flex-direction: row; position: absolute; right: 0; bottom: 0; margin-right: 20px; margin-top: 20px; margin-bottom: 20px; margin-left: 20px; justify-content: space-between;">
-        <ui:VisualElement name="build-button-container" style="flex-grow: 1; align-items: center;">
-            <ui:Label text="B" class="hud-text" />
-            <ui:Button name="build-button" class="hud-button" />
+    <ui:VisualElement name="hud-root" class="root-element">
+        <ui:VisualElement name="hud-buttons-container" style="flex-grow: 1; flex-direction: row; position: absolute; right: 0; bottom: 0; margin-right: 20px; margin-top: 20px; margin-bottom: 0; margin-left: 20px; justify-content: space-between;">
+            <ui:VisualElement name="build-button-container" style="flex-grow: 1; align-items: center;">
+                <ui:Label text="B" class="hud-text hud-menu-header" style="position: relative; left: auto; color: rgb(255, 237, 202); -unity-font-style: normal; -unity-text-outline-width: 2px;" />
+                <ui:Button name="build-button" class="hud-button">
+                    <ui:VisualElement name="build-button-icon" class="hud-button-icon" style="background-image: url(&quot;project://database/Assets/UI/HUD/buildingButton.png?fileID=2800000&amp;guid=803493dace1c7a543b281fdd249a214a&amp;type=3#buildingButton&quot;); -unity-background-image-tint-color: rgb(98, 68, 49);" />
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="building-root" picking-mode="Ignore" class="root-element" style="flex-grow: 1;">
+        <ui:VisualElement name="building-container" enabled="true" class="build-menu">
+            <ui:VisualElement name="building-content-container" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/HUD/building/build-ui-background.png?fileID=2800000&amp;guid=3ba68173f7e05fd43b1d88202c58b09a&amp;type=3#build-ui-background&quot;);">
+                <ui:ScrollView mode="Horizontal" name="build-tile-list" style="position: absolute; height: 150px; width: 864px; top: 30px; bottom: 0; left: 0; right: auto; flex-direction: row; align-self: auto; align-items: center; padding-left: 35px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="building-header-container" style="flex-grow: 1; position: absolute; top: -51px; left: 9px;">
+                <ui:VisualElement style="background-image: url(&quot;project://database/Assets/UI/HUD/building/build-ui-hammer.png?fileID=2800000&amp;guid=7bd4fad9e25c75a44b9f82864574bd02&amp;type=3#build-ui-hammer&quot;); width: 400px; height: 80px;" />
+                <ui:Label text="Build Catalog" name="building-header-text" class="hud-menu-header" style="top: -3px;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

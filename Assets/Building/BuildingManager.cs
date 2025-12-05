@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
+using UnityEngine.UIElements;
 
 public class BuildingManager : MonoBehaviour
 {
     // Singleton
-    private static BuildingManager instance;
-    public static BuildingManager Instance { get {return instance; }}
+    public static BuildingManager Instance { get; private set;}
 
     // ---
     [Header("References")]
@@ -19,6 +19,7 @@ public class BuildingManager : MonoBehaviour
     private Vector2Int currentCoord; // what is the current coordinate the mouse is hovering over
     private LayerMask gridMask;
     private Vector3 hiddenMarkerPos = new Vector3(0, 50, 0);
+    private Button buildButton = null;
     // ===
 
     /// <summary>
@@ -26,7 +27,7 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        if (instance == null) { instance = this; }
+        if (Instance == null) { Instance = this; }
 
         gridMask = LayerMask.GetMask("BuildingGrid");
         gridMarker.position = Vector3.up * 50;
@@ -48,6 +49,8 @@ public class BuildingManager : MonoBehaviour
     void Activate()
     {
         grid.FadeGrid(true);
+        if (buildButton != null) { buildButton.AddToClassList("hud-button-on"); }
+        UIManager.Instance.ToggleBuildUI(true);
     }
 
     /// <summary>
@@ -57,6 +60,8 @@ public class BuildingManager : MonoBehaviour
     {
         gridMarker.position = hiddenMarkerPos;
         grid.FadeGrid(false);
+        if (buildButton != null) { buildButton.RemoveFromClassList("hud-button-on"); }
+        UIManager.Instance.ToggleBuildUI(false);
     }
 
     /// <summary>
@@ -82,5 +87,24 @@ public class BuildingManager : MonoBehaviour
         } else {
             gridMarker.position = hiddenMarkerPos;
         }
+    }
+
+    /// <summary>
+    /// Provides the manager with a reference to the button that toggles the state. Also sets up the button click behavior.
+    /// </summary>
+    public void SetButton(Button btn) {
+        if (btn == null) { return; }
+        if (buildButton != null) { buildButton.clicked -= Toggle; }
+
+        buildButton = btn;
+        buildButton.clicked += Toggle;
+    }
+
+    /// <summary>
+    /// Behavior for when the user selects a tile from the list.
+    /// </summary>
+    public void SelectTile(PlaceableTile tile)
+    {
+        
     }
 }

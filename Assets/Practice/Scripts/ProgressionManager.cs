@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 public class ProgressionManager : MonoBehaviour
 {
-    private static ProgressionManager instance = null;
-    public static ProgressionManager Instance { get { return instance; } }
+    public static ProgressionManager Instance { get; private set; }
+
+    public int Money {get; private set;}
 
     [Header("Stat Scaling")]
     [Range(1, 50f)] public float basePatientStatPool = 10f; // Base value to scale stat pool off of
@@ -19,17 +21,16 @@ public class ProgressionManager : MonoBehaviour
     //
     // PRIVATE DATA
     //
-
     private uint rank = 0; // Rank will always increase, even when moving up a tier
     private uint tier = 0; // Tier increases have to be bought into
-
     //
     //
     //
 
     void Awake()
     {
-        if (instance == null) { instance = this; }
+        if (Instance == null) { Instance = this; }
+        Money = 0;
     }
 
     /// <summary>
@@ -38,11 +39,11 @@ public class ProgressionManager : MonoBehaviour
     public float GetStatTotal()
     {
         float total = basePatientStatPool * (1 + (rankStatMultiplier * rank)) * (1 + (tierStatMultiplier * tier));
-        return Random.Range(total * statTotalMinVariance, total);
+        return UnityEngine.Random.Range(total * statTotalMinVariance, total);
     }
 
     /// <summary>
-    /// This function will return the current difficulty of patients that should generate
+    /// This function will return the current difficulty of patients that should generate.
     /// </summary>
     public PatientDifficulty GetPatientDifficulty()
     {
@@ -56,6 +57,15 @@ public class ProgressionManager : MonoBehaviour
         {
             return PatientDifficulty.HARD;
         }
+    }
+
+    /// <summary>
+    /// Adjust the player's money. Ensure the appropriate game systems are updated.
+    /// </summary>
+    public void AdjustMoney(int val)
+    {
+        Money = Math.Max(0, Money + val);
+        UIManager.Instance.RefreshTileList();
     }
 
 }
