@@ -48,7 +48,11 @@ public class TileList : MonoBehaviour
     private void BindItem(VisualElement ve, PlaceableTile data)
     {
         ve.userData = data;
-        ve.RegisterCallback<ClickEvent>(OnItemClicked);
+        ve.Q<Button>("build-tile-item").RegisterCallback<ClickEvent>(evt =>
+        {
+            OnItemClicked(evt);
+            BuildingManager.Instance.SelectTile(data);
+        });
 
         Label cost = ve.Q<Label>("build-tile-cost");
         VisualElement icon = ve.Q<VisualElement>("build-tile-icon");
@@ -61,12 +65,9 @@ public class TileList : MonoBehaviour
 
     private void UpdateTileButtonStatus(VisualElement ve)
     {
-        // Ensure the state of the UI reflects the affordability
-        if ((ve.userData as PlaceableTile).cost > ProgressionManager.Instance.Money)
-        {
-            ve.SetEnabled(false);
-            ve.Q<VisualElement>("build-tile-icon").SetEnabled(false);
-        }
+        bool canAfford = (ve.userData as PlaceableTile).cost <= ProgressionManager.Instance.Money;
+        ve.SetEnabled(canAfford);
+        ve.Q<VisualElement>("build-tile-icon").SetEnabled(canAfford);
     }
 
     private void OnItemClicked(ClickEvent evt)
@@ -76,7 +77,5 @@ public class TileList : MonoBehaviour
         if (currentSelection != null) { currentSelection.RemoveFromClassList("build-tile-selected"); }
         currentSelection = ve;
         currentSelection.AddToClassList("build-tile-selected");
-
-        // TODO: Do stuff with the BuildingManager
     }
 }

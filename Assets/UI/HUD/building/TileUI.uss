@@ -69,3 +69,8 @@
 .build-tile-selected {
     -unity-background-image-tint-color: rgb(255, 246, 184);
 }
+
+.build-tile-selected:hover {
+    scale: 1 1;
+    -unity-background-image-tint-color: rgb(255, 246, 184);
+}

@@ -9,12 +9,12 @@ public class UIManager : MonoBehaviour
 
     public UIDocument hud;
 
-    public TileList tileList;
 
     // -----
     // PRIVATE
     // -----
     public VisualElement buildingContainer;
+    private TileList tileList;
     // -----
 
     void Awake()
@@ -35,6 +35,8 @@ public class UIManager : MonoBehaviour
     {
         BuildingManager.Instance.SetButton(hud.rootVisualElement.Q<Button>("build-button"));
         ToggleBuildUI(false);
+
+        tileList = GetComponent<TileList>();
     }
 
     /// <summary>
