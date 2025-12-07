@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableTile
   icon: {fileID: 2800000, guid: c0741357179e547a18c4404b28cf6bfc, type: 3}
   cost: 3000
-  size: {x: 2, y: 2}
+  size: {x: 3, y: 2}
   prefab: {fileID: 5968335074230735502, guid: a32f172f237618e4f8cc34c67774d299, type: 3}

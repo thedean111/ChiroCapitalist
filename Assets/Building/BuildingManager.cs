@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 using UnityEngine.UIElements;
+using UnityEditor.ShaderGraph;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -22,7 +23,6 @@ public class BuildingManager : MonoBehaviour
     private Vector2Int selectedTileSize = Vector2Int.one;
     private Vector3 hiddenMarkerPos = new Vector3(0, 50, 0);
     private Button buildButton = null;
-    private Transform selectedTileHighlight = null;
     // ===
 
     /// <summary>
@@ -33,8 +33,6 @@ public class BuildingManager : MonoBehaviour
         if (Instance == null) { Instance = this; }
 
         gridMask = LayerMask.GetMask("BuildingGrid");
-        gridMarker.transform.position = Vector3.up * 50;
-        gridMarker.Reset();
     }
 
     /// <summary>
@@ -42,7 +40,9 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        grid.Initialize();    
+        grid.Initialize();
+        gridMarker.transform.position = Vector3.up * 50;
+        gridMarker.Reset();
     }
 
     /// <summary>
@@ -60,6 +60,7 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     void Activate()
     {
+        gridMarker.Reset();
         grid.FadeGrid(true);
         if (buildButton != null) { buildButton.AddToClassList("hud-button-on"); }
         UIManager.Instance.ToggleBuildUI(true);
@@ -70,10 +71,8 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     void Deactivate()
     {
-        if (selectedTileHighlight != null) { Destroy(selectedTileHighlight.gameObject); }
-        selectedTileHighlight = null;
+        gridMarker.transform.DOKill();
         gridMarker.transform.position = hiddenMarkerPos;
-        gridMarker.Reset();
         selectedTileSize = Vector2Int.one;
         grid.FadeGrid(false);
         if (buildButton != null) { buildButton.RemoveFromClassList("hud-button-on"); }
@@ -104,12 +103,7 @@ public class BuildingManager : MonoBehaviour
                 else
                     gridMarker.transform.DOMove(gridPos, gridMarkerSpeed);
             }
-
-        // Since we didn't hit the grid, hide the marker
         } 
-        // else {
-        //     gridMarker.transform.position = hiddenMarkerPos;
-        // }
     }
 
     /// <summary>
@@ -128,6 +122,13 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     public void SelectTile(PlaceableTile tile)
     {
+        // If the new size won't fit on the grid, put it in the first available tile
+        // NOTE: Assumption here is that resizing always happens in the +X/+Z direction
+        if (!grid.IsValidPlacement(lastValidCoord, tile.size))
+        {
+            lastValidCoord = currentCoord = grid.FindValidPlacementCoord(lastValidCoord, tile.size);
+            gridMarker.transform.DOMove(grid.GridToWorld(lastValidCoord), gridMarkerSpeed);
+        }
 
         // Resize the grid marker to accurately represent the selected tile
         // TODO: Create some shader logic for showing a highlight of the prefab

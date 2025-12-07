@@ -7,6 +7,7 @@ public class BuildingGrid : MonoBehaviour
 {
     //--------------------------------
     public float fadeTime = 0.2f;
+    public int coordCheckDepthCount = 10; // how many tiles in either axis to check for valid placement
     //--------------------------------
     //=================================
     private Dictionary<Vector2Int, int> placeableTiles = new Dictionary<Vector2Int, int>();
@@ -45,6 +46,20 @@ public class BuildingGrid : MonoBehaviour
             currentCoord.x  * cellSize,
             0.05f,
             currentCoord.y * cellSize
+        );
+    }
+
+    /// <summary>
+    /// Given a grid coordinate, return a world space position.
+    /// </summary>
+    /// <param name="coord">Coordinate to transform.</param>
+    public Vector3 GridToWorld(Vector2Int coord)
+    {
+        float cellSize = gridMat.material.GetFloat("_CellSize");
+        return new Vector3(
+            coord.x * cellSize,
+            0,
+            coord.y * cellSize
         );
     }
 
@@ -88,5 +103,26 @@ public class BuildingGrid : MonoBehaviour
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Given a starting point and size, walk backwards until a valid position on the grid is found.
+    /// </summary>
+    /// <param name="coord"> Starting coordinate for the search. </param>
+    /// <param name="size"> Size of the tile that needs to fit on the grid </param>
+    public Vector2Int FindValidPlacementCoord(Vector2Int coord, Vector2Int size)
+    {
+        for (int x = coord.x; x >= coord.x - coordCheckDepthCount; x--)
+        {
+            for (int y = coord.y; y >= coord.y - coordCheckDepthCount; y--)
+            {
+                Vector2Int newCoord = new Vector2Int(x, y);
+                if (IsValidPlacement(newCoord, size))
+                {
+                    return newCoord;
+                }
+            }
+        }
+        return Vector2Int.down;
     }
 }

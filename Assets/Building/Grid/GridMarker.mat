@@ -87,6 +87,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
+    - _Alpha: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
@@ -101,6 +102,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _DstBlendAlpha: 10
+    - _EdgeWidth: 0.95
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -108,6 +110,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 1
     - _ReceiveShadows: 0
     - _SampleGI: 0
@@ -121,9 +124,12 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.2796309, b: 1, a: 0.6431373}
-    - _Color: {r: 0, g: 0.27963087, b: 1, a: 0.6431373}
+    - _BaseColor: {r: 0, g: 0, b: 0, a: 0.50980395}
+    - _Color: {r: 0, g: 0, b: 0, a: 0.50980395}
+    - _EdgeColor: {r: 0.7181201, g: 3.0650034, b: 3.0943396, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FillColor: {r: 0.9212269, g: 1.4016302, b: 1.3766598, a: 0.22352941}
+    - _GlowColor: {r: 1, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
