@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using DG.Tweening;
 using UnityEngine.UIElements;
 using UnityEditor.ShaderGraph;
+using System.Collections.Generic;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class BuildingManager : MonoBehaviour
     public Color invalidPlacementColor;
     // ---
     private bool active = false;
+    private bool editing = true;
     private bool mouseOnGrid = false;
     private bool validPlacementLocation = true;
     private Vector2Int currentCoord; // what is the current coordinate the mouse is hovering over
@@ -30,6 +32,7 @@ public class BuildingManager : MonoBehaviour
     private LayerMask gridMask;
     private Vector3 hiddenMarkerPos = new Vector3(0, 50, 0);
     private Button buildButton = null;
+    private Button editButton = null;
     private Tile selectedHologram = null;
     private PlaceableTile selectedTile;
     // ===
@@ -49,9 +52,15 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        SetButtons();
+
         grid.Initialize();
         gridMarker.transform.position = Vector3.up * 50;
         gridMarker.Reset();
+
+        // For edit mode to be true the first time the build UI is opened
+        editing = false;
+        ToggleEdit();
     }
 
     /// <summary>
@@ -69,7 +78,6 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     void Activate()
     {
-        gridMarker.Reset();
         grid.FadeGrid(true);
         if (buildButton != null) { buildButton.AddToClassList("hud-button-on"); }
         UIManager.Instance.ToggleBuildUI(true);
@@ -85,8 +93,8 @@ public class BuildingManager : MonoBehaviour
         grid.FadeGrid(false);
         if (buildButton != null) { buildButton.RemoveFromClassList("hud-button-on"); }
         UIManager.Instance.ToggleBuildUI(false);
-        if (selectedHologram != null) { Destroy(selectedHologram); selectedHologram = null; }
-        selectedTile = null;
+
+        if (!editing) { ToggleEdit(); }
     }
 
     /// <summary>
@@ -109,6 +117,7 @@ public class BuildingManager : MonoBehaviour
             // Only move the tile if it actually will fit on the grid
             if (grid.FitsOnGrid(currentCoord, targetSize) && currentCoord != lastValidCoord) {
                 lastValidCoord = currentCoord;
+                if (editing) {grid.HighlightTile(currentCoord); }
                 if (gridMarker.transform.position == hiddenMarkerPos) {
                     gridMarker.transform.position = gridPos;
                     UpdateTileHighlighter();
@@ -125,12 +134,14 @@ public class BuildingManager : MonoBehaviour
     /// <summary>
     /// Provides the manager with a reference to the button that toggles the state. Also sets up the button click behavior.
     /// </summary>
-    public void SetButton(Button btn) {
-        if (btn == null) { return; }
+    public void SetButtons() {
         if (buildButton != null) { buildButton.clicked -= Toggle; }
 
-        buildButton = btn;
+        buildButton = (Button)UIManager.Instance.GetFromHud("build-button");
         buildButton.clicked += Toggle;
+
+        editButton = (Button)UIManager.Instance.GetFromHud("build-menu-edit-button");
+        editButton.clicked += ToggleEdit;
     }
 
     /// <summary>
@@ -138,10 +149,11 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     public void SelectTile(PlaceableTile tile)
     {
-        if (selectedHologram != null)
-        {
-            Destroy(selectedHologram.gameObject);
-        }
+        // When a tile is selected, we are put in placement mode (which is just not editing)
+        if (editing) { ToggleEdit(); }
+
+        // Replace the previous selection if there was one
+        if (selectedHologram != null) { Destroy(selectedHologram.gameObject); }
         selectedHologram = Instantiate(tile.hologram, gridMarker.transform).GetComponent<Tile>();
 
         // If the new size won't fit on the grid, put it in the first available tile
@@ -155,7 +167,6 @@ public class BuildingManager : MonoBehaviour
         }
 
         // Resize the grid marker to accurately represent the selected tile
-        // TODO: Create some shader logic for showing a highlight of the prefab
         gridMarker.Resize(tile.size);
         selectedTile = tile;
     }
@@ -169,7 +180,7 @@ public class BuildingManager : MonoBehaviour
         // TODO: Place the tile, deduct money, update grid
         Tile t = Instantiate(selectedTile.prefab, grid.GridToWorld(lastValidCoord), Quaternion.identity, transform).GetComponent<Tile>();
         t.Place(tilePlacementTime, selectedHologram.propParent.rotation.eulerAngles);
-        grid.AddTileToGrid(lastValidCoord, selectedTile.size, selectedTile.defaultType, selectedHologram.specialCells);
+        grid.AddTileToGrid(lastValidCoord, selectedTile.size, selectedTile.defaultType, selectedHologram.specialCells, t);
         UpdateTileHighlighter();
         ProgressionManager.Instance.AdjustMoney(-selectedTile.cost);
     }
@@ -180,6 +191,24 @@ public class BuildingManager : MonoBehaviour
     public void RotateTile() {
         if (selectedHologram != null) {
             selectedHologram.Rotate(tileRotationTime, UpdateTileHighlighter);
+        }
+    }
+
+    /// <summary>
+    /// Edit mode is the default state where no tile is selected from the menu. In this state existing tiles may be selected and moved or deleted.
+    /// </summary>
+    public void ToggleEdit()
+    {
+        editing = !editing;
+        // When edit mode is entered, ensure no tiles are active
+        if (editing) {
+            editButton.AddToClassList("edit-mode-active");
+            gridMarker.Reset();
+            if (selectedHologram != null) { Destroy(selectedHologram.gameObject); selectedHologram = null; }
+            selectedTile = null;
+
+        } else {
+            editButton.RemoveFromClassList("edit-mode-active");
         }
     }
 

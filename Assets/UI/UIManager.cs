@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -33,7 +34,6 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        BuildingManager.Instance.SetButton(hud.rootVisualElement.Q<Button>("build-button"));
         ToggleBuildUI(false);
 
         tileList = GetComponent<TileList>();
@@ -55,9 +55,19 @@ public class UIManager : MonoBehaviour
         buildingContainer.SetEnabled(status);
     }
 
+    /// <summary>
+    /// Use the event system to determine if the pointer is over any UI.
+    /// </summary>
     public bool IsPointerOverUI()
     {   
         return EventSystem.current.IsPointerOverGameObject();
     }
 
+    /// <summary>
+    /// Query a HUD element.
+    /// </summary>
+    public VisualElement GetFromHud(string name)
+    {
+        return hud.rootVisualElement.Q(name);
+    }
 }

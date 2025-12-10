@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour
 
     private Vector3 targetRotation = Vector3.zero;
     private Tween rotationTween = null;
+    private bool outlineEnabled;
 
     /// <summary>
     /// Logic for placing down a tile.
@@ -54,5 +55,17 @@ public class Tile : MonoBehaviour
         targetRotation += Vector3.up * 90;
         if (rotationTween != null) { rotationTween.Kill(); }
         rotationTween = propParent.DOLocalRotate(targetRotation, animateTime).SetEase(Ease.OutBack).OnComplete(() => onComplete?.Invoke());
+    }
+
+    /// <summary>
+    /// Turn the outline of all meshes on or off, if they have the Outline component.
+    /// </summary>
+    public void ToggleOutline() {
+        outlineEnabled = !outlineEnabled;
+
+        foreach (Outline o in transform.GetComponentsInChildren<Outline>())
+        {
+            o.enabled = outlineEnabled;
+        }
     }
 }

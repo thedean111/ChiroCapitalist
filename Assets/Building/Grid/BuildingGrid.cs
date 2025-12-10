@@ -3,6 +3,7 @@ using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework.Internal;
 
 public class BuildingGrid : MonoBehaviour
 {
@@ -18,9 +19,12 @@ public class BuildingGrid : MonoBehaviour
     public int coordCheckDepthCount = 10; // how many tiles in either axis to check for valid placement
     //--------------------------------
     //=================================
-    private Dictionary<Vector2Int, CellType> placeableTiles = new Dictionary<Vector2Int, CellType>();
-    private Dictionary<AdjEdgeKey, Transform> walls = new Dictionary<AdjEdgeKey, Transform>();
+    private Dictionary<Vector2Int, CellData> placeableTiles = new Dictionary<Vector2Int, CellData>();
+    private Dictionary<AdjEdgeKey, Outline> walls = new Dictionary<AdjEdgeKey, Outline>();
+    private List<AdjEdgeKey> highlightedWalls = new List<AdjEdgeKey>();
+
     private float cellSize;
+    private Tile highlightedTile = null;
 
     enum WallType
     {
@@ -103,7 +107,7 @@ public class BuildingGrid : MonoBehaviour
         {
             for (int z = zPos; z < zSize; z++)
             {
-                placeableTiles.Add(new Vector2Int(x, z), CellType.NONE);
+                placeableTiles.Add(new Vector2Int(x, z), new CellData());
             }
         }
     }
@@ -162,7 +166,7 @@ public class BuildingGrid : MonoBehaviour
         for (int x = coord.x; x < coord.x + size.x; x++) {
             for (int y = coord.y; y < coord.y + size.y; y++) {
                 Vector2Int testCoord = new Vector2Int(x, y);
-                if (placeableTiles[testCoord] != CellType.NONE) {
+                if (placeableTiles[testCoord].type != CellType.NONE) {
                     return false;
                 }
             }
@@ -176,10 +180,10 @@ public class BuildingGrid : MonoBehaviour
             sc.effectiveCoord = WorldToGrid(sc.transform.position);
             Debug.Log("Special Cell == World Pos: " + sc.transform.position + " || Coord: " + sc.effectiveCoord);
 
-            cellSatisfied |= sc.CheckCell(placeableTiles.GetValueOrDefault(sc.effectiveCoord + Vector2Int.up, CellType.NONE));
-            cellSatisfied |= sc.CheckCell(placeableTiles.GetValueOrDefault(sc.effectiveCoord + Vector2Int.right, CellType.NONE));
-            cellSatisfied |= sc.CheckCell(placeableTiles.GetValueOrDefault(sc.effectiveCoord + Vector2Int.down, CellType.NONE));
-            cellSatisfied |= sc.CheckCell(placeableTiles.GetValueOrDefault(sc.effectiveCoord + Vector2Int.left, CellType.NONE));
+            cellSatisfied |= sc.CheckCell(placeableTiles.GetValueOrDefault(sc.effectiveCoord + Vector2Int.up, new CellData()).type);
+            cellSatisfied |= sc.CheckCell(placeableTiles.GetValueOrDefault(sc.effectiveCoord + Vector2Int.right, new CellData()).type);
+            cellSatisfied |= sc.CheckCell(placeableTiles.GetValueOrDefault(sc.effectiveCoord + Vector2Int.down, new CellData()).type);
+            cellSatisfied |= sc.CheckCell(placeableTiles.GetValueOrDefault(sc.effectiveCoord + Vector2Int.left, new CellData()).type);
 
             allSpecialCellsSatisfied &= cellSatisfied;
         }
@@ -192,7 +196,7 @@ public class BuildingGrid : MonoBehaviour
     /// </summary>
     /// <param name="coord"> Starting coordinate for the search. </param>
     /// <param name="tile"> Contains placement information for a tile. </param>
-    public void AddTileToGrid(Vector2Int coord, Vector2Int size, CellType defaultType, List<SpecialCell> specialCells)
+    public void AddTileToGrid(Vector2Int coord, Vector2Int size, CellType defaultType, List<SpecialCell> specialCells, Tile tile)
     {
         // For every space the tile takes up, map that coord to the tile
         for (int x = 0; x < size.x; x++)
@@ -200,14 +204,16 @@ public class BuildingGrid : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 Vector2Int testCoord = new Vector2Int(x + coord.x, y + coord.y);
-                placeableTiles[testCoord] = defaultType;
+                placeableTiles[testCoord].type = defaultType;
+                placeableTiles[testCoord].tile = tile;
+                placeableTiles[testCoord].size = size;
             }
         }
 
         // Ensure unique cells are handled
         // sc.effectiveCoord is computed before the user even clicks to place the tile
         foreach (SpecialCell sc in specialCells) {
-            placeableTiles[sc.effectiveCoord] = sc.type;
+            placeableTiles[sc.effectiveCoord].type = sc.type;
             
         }
 
@@ -222,6 +228,21 @@ public class BuildingGrid : MonoBehaviour
     /// <param name="size"> Size of the tile that needs to fit on the grid. </param>
     public void UpdateWalls(Vector2Int coord, Vector2Int size)
     {
+        List<AdjEdgeKey> edges = new List<AdjEdgeKey>();
+        ExtractPerimeter(coord, size, ref edges);
+
+        foreach (AdjEdgeKey edge in edges) {
+            SpawnWall(edge);
+        }
+    }
+
+    /// <summary>
+    /// Given .
+    /// </summary>
+    /// <param name="coord"> Starting coordinate for the search. </param>
+    /// <param name="size"> Size of the tile that needs to fit on the grid. </param>
+    private void ExtractPerimeter(Vector2Int coord, Vector2Int size, ref List<AdjEdgeKey> edges)
+    {
         Vector2Int checkCoord = new Vector2Int();
 
         // Top / Bottom
@@ -230,21 +251,19 @@ public class BuildingGrid : MonoBehaviour
             // Checks the bottom (-Z) adjacent cells
             checkCoord.x = coord.x + x;
             checkCoord.y = coord.y - 1;
-            AdjEdgeKey edge = new AdjEdgeKey(new Vector2Int(checkCoord.x, coord.y), checkCoord);
-            SpawnWall(edge, new Vector3(
+            edges.Add(new AdjEdgeKey(new Vector2Int(checkCoord.x, coord.y), checkCoord, new Vector3(
                 checkCoord.x * cellSize,
                 0,
                 coord.y * cellSize
-            ), 0);
+            ), 0));
 
             // Checks the top (+Z) adjacent cells
             checkCoord.y = coord.y + size.y;
-            edge = new AdjEdgeKey(new Vector2Int(checkCoord.x, coord.y + size.y - 1), checkCoord);
-            SpawnWall(edge, new Vector3(
+            edges.Add(new AdjEdgeKey(new Vector2Int(checkCoord.x, coord.y + size.y - 1), checkCoord, new Vector3(
                 (checkCoord.x + 1) * cellSize,
                 0,
                 (coord.y + size.y) * cellSize
-            ), 180);
+            ), 180));
         }
 
         // Left / Right
@@ -252,21 +271,18 @@ public class BuildingGrid : MonoBehaviour
         {
             checkCoord.y = coord.y + y;
             checkCoord.x = coord.x - 1;
-            AdjEdgeKey edge = new AdjEdgeKey(new Vector2Int(coord.x, checkCoord.y), checkCoord);
-            SpawnWall(edge, new Vector3(
+            edges.Add(new AdjEdgeKey(new Vector2Int(coord.x, checkCoord.y), checkCoord, new Vector3(
                 coord.x * cellSize,
                 0,
                 (checkCoord.y + 1) * cellSize
-            ), 90);
+            ), 90));
 
             checkCoord.x = coord.x + size.x;
-            edge = new AdjEdgeKey(new Vector2Int(coord.x + size.x - 1, checkCoord.y), checkCoord);
-            SpawnWall(edge, new Vector3(
+            edges.Add(new AdjEdgeKey(new Vector2Int(coord.x + size.x - 1, checkCoord.y), checkCoord, new Vector3(
                 (coord.x + size.x) * cellSize,
                 0,
                 checkCoord.y * cellSize
-            ), 270);
-
+            ), 270));
         }
     }
 
@@ -280,16 +296,16 @@ public class BuildingGrid : MonoBehaviour
             return WallType.INTERIOR_EXTERIOR;
 
         // If one of the cells is empty then there needs to be a wall to enclose the space
-        } else if (placeableTiles[edge.coord1] == CellType.NONE || placeableTiles[edge.coord2] == CellType.NONE) {
+        } else if (placeableTiles[edge.coord1].type == CellType.NONE || placeableTiles[edge.coord2].type == CellType.NONE) {
             return WallType.INTERIOR_EXTERIOR;
 
         // Cells may only interface with hallways
-        } else if ((placeableTiles[edge.coord1] == CellType.INTERFACE && placeableTiles[edge.coord2] == CellType.HALLWAY) || 
-                    (placeableTiles[edge.coord2] == CellType.INTERFACE && placeableTiles[edge.coord1] == CellType.HALLWAY)) {
+        } else if ((placeableTiles[edge.coord1].type == CellType.INTERFACE && placeableTiles[edge.coord2].type == CellType.HALLWAY) || 
+                    (placeableTiles[edge.coord2].type == CellType.INTERFACE && placeableTiles[edge.coord1].type == CellType.HALLWAY)) {
             return WallType.INTERFACE;
 
         // Two hallways should always merge together
-        } else if (placeableTiles[edge.coord1] == CellType.HALLWAY && placeableTiles[edge.coord2] == CellType.HALLWAY) {
+        } else if (placeableTiles[edge.coord1].type == CellType.HALLWAY && placeableTiles[edge.coord2].type == CellType.HALLWAY) {
             return WallType.NONE;
 
         // All other cases are two neighboring cells that should be divided?
@@ -303,16 +319,14 @@ public class BuildingGrid : MonoBehaviour
     /// <summary>
     /// Helper that actually instantiates a wall given a WallType.
     /// </summary>
-    private void SpawnWall(AdjEdgeKey edge, Vector3 position, float yRot)
+    private void SpawnWall(AdjEdgeKey edge)
     {
         WallType type = EvaluateBorder(edge);
         GameObject spawnObj;
         switch (type) {
             case WallType.NONE:
-                Debug.Log("remove wall");
                 if (walls.ContainsKey(edge)) {
-                    Debug.Log("Destroying wall");
-                    Destroy(walls[edge].gameObject);
+                    Destroy(walls[edge].transform.parent.gameObject);
                     walls.Remove(edge);
                 }
                 return;
@@ -335,20 +349,78 @@ public class BuildingGrid : MonoBehaviour
         }
 
         if (walls.ContainsKey(edge)) {
-            Destroy(walls[edge].gameObject);
+            Destroy(walls[edge].transform.parent.gameObject);
         }
-        walls[edge] = Instantiate(spawnObj, position, Quaternion.Euler(0, yRot, 0), wallRoot).transform;
+        walls[edge] = Instantiate(spawnObj, edge.position, Quaternion.Euler(0, edge.yRotation, 0), wallRoot).GetComponentInChildren<Outline>();
+    }
 
+    /// <summary>
+    /// If there is a tile at the input coordinate, then toggle on its outline. If a new tile is being highlighted disable the previous ones outline.
+    /// </summary>
+    public void HighlightTile(Vector2Int coord) {
+        if (placeableTiles[coord].type != CellType.NONE)
+        {
+            if (highlightedTile == null)
+            {
+                highlightedTile = placeableTiles[coord].tile;
+                highlightedTile.ToggleOutline();
+                highlightedWalls.Clear();
+                ExtractPerimeter(WorldToGrid(placeableTiles[coord].tile.transform.position), placeableTiles[coord].size, ref highlightedWalls);
+                foreach(AdjEdgeKey edge in highlightedWalls)
+                {
+                    if (walls.ContainsKey(edge)) {
+                        walls[edge].enabled = true;
+                    }
+                }
+            }
+            else if (placeableTiles[coord].tile != highlightedTile) { 
+                highlightedTile.ToggleOutline();
+                foreach(AdjEdgeKey edge in highlightedWalls)
+                {
+                    if (walls.ContainsKey(edge)) {
+                        walls[edge].enabled = false;
+                    }
+                }
+                highlightedTile = placeableTiles[coord].tile;
+                highlightedTile.ToggleOutline();
+                highlightedWalls.Clear();
+                ExtractPerimeter(WorldToGrid(placeableTiles[coord].tile.transform.position), placeableTiles[coord].size, ref highlightedWalls);
+                foreach(AdjEdgeKey edge in highlightedWalls)
+                {
+                    if (walls.ContainsKey(edge)) {
+                            walls[edge].enabled = true;
+                    }
+                }
+            }
+            
+        } else if (highlightedTile != null)
+        {
+            highlightedTile.ToggleOutline();
+            highlightedTile = null;
+
+            foreach(AdjEdgeKey edge in highlightedWalls)
+            {
+                if (walls.ContainsKey(edge)) {
+                    walls[edge].enabled = false;
+                }
+            }
+            highlightedWalls.Clear();
+        }
     }
 
     class AdjEdgeKey
     {
         public Vector2Int coord1;
         public Vector2Int coord2;
+        public Vector3 position;
+        public float yRotation;
 
         // coord1 is always less than coord2
-        public AdjEdgeKey(Vector2Int c1, Vector2Int c2)
+        public AdjEdgeKey(Vector2Int c1, Vector2Int c2, Vector3 position, float yRotation)
         {
+            this.position = position;
+            this.yRotation = yRotation;
+
             if (c1.sqrMagnitude < c2.sqrMagnitude)
             {
                 coord1 = c1;
@@ -375,6 +447,19 @@ public class BuildingGrid : MonoBehaviour
             {
                 return (coord1.GetHashCode() * 397) ^ coord2.GetHashCode();
             }   
+        }
+    }
+
+    class CellData
+    {
+        public CellType type;
+        public Tile tile;
+        public Vector2Int size;
+
+        public CellData()
+        {
+            type = CellType.NONE;
+            tile = null;
         }
     }
 }
