@@ -50,6 +50,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "AttemptTilePlacement",
+                    "type": "Button",
+                    "id": "b33492a9-ac7c-4be1-905b-4604096f6e2b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateTile",
+                    "type": "Button",
+                    "id": "ab8517a8-2f88-478c-8961-24166613acbf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -226,6 +244,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "AddMoney",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a235f784-9215-4266-bb0f-2a19fa804500",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "AttemptTilePlacement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3c2ea087-9d3e-4bc1-97b9-053dadb764c2",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "RotateTile",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

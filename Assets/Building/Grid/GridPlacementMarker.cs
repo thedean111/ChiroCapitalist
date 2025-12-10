@@ -3,14 +3,14 @@ using DG.Tweening;
 
 public class GridPlacementMarker : MonoBehaviour
 {
-    public float activeEdgeWidth = 0.95f;
-
     private Vector3 defaultScale = new Vector3(1, 0.1f, 1);
     private MeshRenderer rend;
+    private Transform highlight;
 
     void Awake()
     {
         rend = GetComponentInChildren<MeshRenderer>();
+        highlight = transform.GetChild(0);
     }
 
     /// <summary>
@@ -20,7 +20,7 @@ public class GridPlacementMarker : MonoBehaviour
     public void Resize(Vector2Int size)
     {
         // TODO: Add a shader to the marker that can adapt to any tile size, and change colors on the bottom where the grid cells overlap.
-        transform.DOScale(new Vector3(size.x, .1f, size.y), 0.25f).SetEase(Ease.OutCubic);
+        highlight.DOScale(new Vector3(size.x, .1f, size.y), 0.25f).SetEase(Ease.OutCubic);
         rend.material.SetFloat("_Alpha", 1f);
     }
 
@@ -31,7 +31,7 @@ public class GridPlacementMarker : MonoBehaviour
     {
         // TODO: Add a shader to the marker that can fill in.
         rend.material.SetFloat("_Alpha", 0.5f);
-        transform.DOScale(defaultScale, 0.25f).SetEase(Ease.OutCubic);
-        transform.localScale = defaultScale;
+        highlight.DOScale(defaultScale, 0.25f).SetEase(Ease.OutCubic);
+        highlight.localScale = defaultScale;
     }
 }

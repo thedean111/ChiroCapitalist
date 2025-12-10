@@ -236,8 +236,7 @@ MonoBehaviour:
   tileTemplate: {fileID: 9197481963319205126, guid: 7aeb1ed8c2677024eb2cbc9ccd7e94b6, type: 3}
   tiles:
   - {fileID: 11400000, guid: 20c2ba0000f0aae4db2d1a60cd397ae2, type: 2}
-  - {fileID: 11400000, guid: f2b941df3d59cbb4691ae38d8fd425ee, type: 2}
-  - {fileID: 11400000, guid: ccf5e78290a34ae4589470e046474be4, type: 2}
+  - {fileID: 11400000, guid: 074af1bcc6d52144bb3fc001bad599f7, type: 2}
 --- !u!1 &244328947
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,7 +710,75 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingManager
   grid: {fileID: 1716908049}
   gridMarker: {fileID: 1936469802}
+  holographicMat: {fileID: 2100000, guid: 8fb4663d9d3b1c84a9de461501bbad18, type: 2}
   gridMarkerSpeed: 0.1
+  tilePlacementTime: 0.2
+  tileRotationTime: 0.25
+  validPlacementColor: {r: 1, g: 1, b: 1, a: 0.6}
+  invalidPlacementColor: {r: 1, g: 0.35759977, b: 0, a: 0.6}
+--- !u!1 &629316183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 629316184}
+  m_Layer: 0
+  m_Name: bottomHighlightCont
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &629316184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629316183}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 0.1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1264911715}
+  m_Father: {fileID: 1936469801}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &637856195
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 637856196}
+  m_Layer: 6
+  m_Name: wallRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &637856196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637856195}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 727527880}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &693042419
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,6 +899,7 @@ Transform:
   m_Children:
   - {fileID: 1039667901}
   - {fileID: 924804017}
+  - {fileID: 637856196}
   - {fileID: 1716908048}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1080,7 +1148,7 @@ Transform:
   m_LocalScale: {x: 3, y: 1, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1936469801}
+  m_Father: {fileID: 629316184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1275194045
 GameObject:
@@ -1556,6 +1624,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5acfdcbcd4b62fb409b4bab5318d8bb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingGrid
+  wallRoot: {fileID: 637856196}
+  wall_intExt: {fileID: 1549890850404684573, guid: 9b81cf221b614e14798034e4a68e980c, type: 3}
+  wall_intInt: {fileID: 1382916865766497441, guid: 5592f6cb936881c489ae0b7ce82a40b9, type: 3}
+  door: {fileID: 492286893422357718, guid: 22c41913d40d5cc4ab2a84eda2a4b381, type: 3}
   fadeTime: 0.2
   coordCheckDepthCount: 10
 --- !u!1 &1791531855
@@ -1649,10 +1721,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.06, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1264911715}
+  - {fileID: 629316184}
   m_Father: {fileID: 579913061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1936469802
@@ -1667,7 +1739,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a33c28473a9af4a4ba0250257baef148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridPlacementMarker
-  activeEdgeWidth: 0.95
 --- !u!1 &1960014735
 GameObject:
   m_ObjectHideFlags: 0
