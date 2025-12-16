@@ -50,6 +50,9 @@ MonoBehaviour:
   decorRoot: {fileID: 1375830887107361527}
   tileType: 1
   propParent: {fileID: 5884184752719873802}
+  lockOutline: 0
+  isValid: 1
+  isDirty: 0
 --- !u!1 &4731113514354511992
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,8 +331,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 1
-  outlineColor: {r: 1, g: 0.92073476, b: 0, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 1, g: 0.92156863, b: 0, a: 1}
+  outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
@@ -411,8 +414,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 1
-  outlineColor: {r: 1, g: 0.92073476, b: 0, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 1, g: 0.92156863, b: 0, a: 1}
+  outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
@@ -570,8 +573,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 1
-  outlineColor: {r: 1, g: 0.92073476, b: 0, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 1, g: 0.92156863, b: 0, a: 1}
+  outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
@@ -727,8 +730,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 1
-  outlineColor: {r: 1, g: 0.92073476, b: 0, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 1, g: 0.92156863, b: 0, a: 1}
+  outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
@@ -939,8 +942,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 1
-  outlineColor: {r: 1, g: 0.9063071, b: 0.2999999, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 1, g: 0.92156863, b: 0, a: 1}
+  outlineWidth: 5
   precomputeOutline: 1
   bakeKeys:
   - {fileID: 8065096235206118866, guid: b2e7ef0e2cb58fd4c936f8728d730cef, type: 3}
@@ -2752,8 +2755,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 1
-  outlineColor: {r: 1, g: 0.92073476, b: 0, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 1, g: 0.92156863, b: 0, a: 1}
+  outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []

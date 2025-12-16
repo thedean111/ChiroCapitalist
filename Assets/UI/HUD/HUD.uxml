@@ -11,7 +11,7 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="building-root" picking-mode="Ignore" enabled="true" class="root-element" style="flex-grow: 1;">
-        <ui:VisualElement name="building-container" enabled="true" class="build-menu">
+        <ui:VisualElement name="building-container" class="build-menu">
             <ui:Button text="EDIT" name="build-menu-edit-button" class="hud-text build-menu-edit-button" />
             <ui:VisualElement name="building-content-container" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/HUD/building/build-ui-background.png?fileID=2800000&amp;guid=3ba68173f7e05fd43b1d88202c58b09a&amp;type=3#build-ui-background&quot;);">
                 <ui:ScrollView mode="Horizontal" name="build-tile-list" style="position: absolute; height: 150px; width: 864px; top: 30px; bottom: 0; left: 0; right: auto; flex-direction: row; align-self: auto; align-items: center; padding-left: 35px;" />
@@ -20,6 +20,13 @@
                 <ui:VisualElement style="background-image: url(&quot;project://database/Assets/UI/HUD/building/build-ui-hammer.png?fileID=2800000&amp;guid=7bd4fad9e25c75a44b9f82864574bd02&amp;type=3#build-ui-hammer&quot;); width: 400px; height: 80px;" />
                 <ui:Label text="Build Catalog" name="building-header-text" class="hud-menu-header" style="top: -3px;" />
             </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="overlay-root" picking-mode="Ignore" style="flex-grow: 1;">
+        <ui:VisualElement name="edit-tile-opt-container" enabled="true" class="edit-tile-menu">
+            <ui:Label text="EDIT" class="hud-text" style="position: absolute; top: -52px; background-color: rgb(154, 95, 58); width: 142px; -unity-text-align: middle-center; height: 62px; border-left-color: rgb(29, 18, 11); border-right-color: rgb(29, 18, 11); border-top-color: rgb(29, 18, 11); border-bottom-color: rgb(29, 18, 11); border-top-width: 6px; border-right-width: 6px; border-bottom-width: 6px; border-left-width: 6px; border-top-left-radius: 11px; border-top-right-radius: 11px; border-bottom-right-radius: 11px; border-bottom-left-radius: 11px;" />
+            <ui:Button name="edit-tile-move" class="edit-tile-opt-button" style="background-image: url(&quot;project://database/Assets/UI/HUD/quad_arrow.png?fileID=2800000&amp;guid=eb6a178d22f78c549917f51d7fe85896&amp;type=3#quad_arrow&quot;);" />
+            <ui:Button name="edit-tile-delete" class="edit-tile-opt-button" style="background-image: url(&quot;project://database/Assets/UI/HUD/trashCan.png?fileID=2800000&amp;guid=e7f118328e1b4d847b24b3e2add7df7a&amp;type=3#trashCan&quot;); -unity-background-image-tint-color: rgb(206, 86, 74);" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -206,3 +206,74 @@
 .edit-mode-active {
     background-color: rgb(168, 121, 76);
 }
+
+.edit-tile-menu {
+    position: absolute;
+    width: 160px;
+    height: 275px;
+    justify-content: space-around;
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    align-items: center;
+    scale: 1 1;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-back;
+    background-color: rgba(29, 18, 11, 0.73);
+    border-top-width: 6px;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 6px;
+    border-left-color: rgb(29, 18, 11);
+    border-right-color: rgb(29, 18, 11);
+    border-top-color: rgb(29, 18, 11);
+    border-bottom-color: rgb(29, 18, 11);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    top: 15%;
+    left: 56%;
+}
+
+.edit-tile-menu:disabled {
+    scale: 0 0;
+    transition-timing-function: ease;
+    transition-duration: 0.1s;
+}
+
+.edit-tile-opt-button {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    height: 100px;
+    width: 100px;
+    background-size: 70% 70%;
+    background-color: rgb(255, 237, 202);
+    -unity-background-image-tint-color: rgb(154, 95, 58);
+    border-left-color: rgb(29, 18, 11);
+    border-right-color: rgb(29, 18, 11);
+    border-top-color: rgb(29, 18, 11);
+    border-bottom-color: rgb(29, 18, 11);
+    border-top-width: 6px;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 6px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    transition-duration: 0.2s;
+    scale: 1 1;
+}
+
+.edit-tile-opt-button:hover {
+    scale: 1.05 1;
+}
+
+.edit-tile-opt-button:active {
+    scale: 1.02 1.02 1.02;
+    background-color: rgb(209, 190, 155);
+}

@@ -14,10 +14,15 @@ public class Tile : MonoBehaviour
     public TileType tileType;
 
     public Transform propParent;
+    public bool lockOutline = false;
+    public bool isValid = true;
+    public bool isDirty = false;
+    public bool anchor;
 
     private Vector3 targetRotation = Vector3.zero;
     private Tween rotationTween = null;
     private bool outlineEnabled;
+    private List<Outline> outlinedObjects = new List<Outline>();
 
     /// <summary>
     /// Logic for placing down a tile.
@@ -26,8 +31,10 @@ public class Tile : MonoBehaviour
     /// <param name="propRotation"> The euler angles that container for props should be set to. </param>
     public void Place(float animateTime, Vector3 propRotation)
     {
-        if (decorRoot == null) { return; }
+        // Any tile successfully placed starts off as valid
+        isValid = true;
 
+        if (decorRoot == null) { return; }
         propParent.Rotate(propRotation);
         
         bool isRoot = true;
@@ -43,6 +50,12 @@ public class Tile : MonoBehaviour
 
             child.DOScale(scaleT, animateTime).SetEase(Ease.OutBack);
             child.DOLocalMove(posT, animateTime).SetEase(Ease.OutBack);
+        }
+
+        // Store a list of Outline components for this tile
+        outlinedObjects.Clear();
+        foreach (Outline o in transform.GetComponentsInChildren<Outline>()) {
+            outlinedObjects.Add(o);
         }
     }
 
@@ -60,12 +73,39 @@ public class Tile : MonoBehaviour
     /// <summary>
     /// Turn the outline of all meshes on or off, if they have the Outline component.
     /// </summary>
-    public void ToggleOutline() {
-        outlineEnabled = !outlineEnabled;
+    public void ToggleOutline(bool status) {
+        if (lockOutline) {return;}
+        outlineEnabled = status;
 
-        foreach (Outline o in transform.GetComponentsInChildren<Outline>())
+        foreach (Outline o in outlinedObjects)
         {
             o.enabled = outlineEnabled;
         }
+    }
+
+    /// <summary>
+    /// Change the outline color of this tile
+    /// </summary>
+    public void ChangeOutlineColor(Color color) {
+        foreach (Outline o in outlinedObjects)
+        {
+            o.OutlineColor = color;
+        }
+    }
+
+    /// <summary>
+    /// Force this tile to be highlighted based on its validity.
+    /// </summary>
+    public void ValidityOutline(Color valid, Color invalid)
+    {
+        lockOutline = false;
+        // FIXME: DEBUG SO ITS OBVIOUS WHICH TILES ARE INVALID
+        if (!isValid)
+        {
+            transform.DOMove(Vector3.one, 0.2f);
+        }
+        ChangeOutlineColor(isValid ? valid : invalid);
+        ToggleOutline(true);
+        lockOutline = true;
     }
 }

@@ -6,7 +6,7 @@ public class TileList : MonoBehaviour
 {
     [SerializeField] private UIDocument hud;
     [SerializeField] private VisualTreeAsset tileTemplate;
-    [SerializeField] private List<PlaceableTile> tiles;
+    [SerializeField] private List<TileDefinition> tiles;
     
     private ScrollView sv;
     private VisualElement currentSelection = null;
@@ -21,7 +21,7 @@ public class TileList : MonoBehaviour
         Build();
     }
 
-    public void UpdateTileList(List<PlaceableTile> t)
+    public void UpdateTileList(List<TileDefinition> t)
     {
         tiles = t;
         Build();
@@ -29,7 +29,7 @@ public class TileList : MonoBehaviour
 
     public void Build() {
         sv.Clear();
-        foreach (PlaceableTile tile in tiles)
+        foreach (TileDefinition tile in tiles)
         {
             VisualElement item = tileTemplate.Instantiate();
             BindItem(item, tile);
@@ -45,13 +45,13 @@ public class TileList : MonoBehaviour
         }
     }
 
-    private void BindItem(VisualElement ve, PlaceableTile data)
+    private void BindItem(VisualElement ve, TileDefinition data)
     {
         ve.userData = data;
         ve.Q<Button>("build-tile-item").RegisterCallback<ClickEvent>(evt =>
         {
             OnItemClicked(evt);
-            BuildingManager.Instance.SelectTile(data);
+            BuildingService.Instance.SelectTile(data);
         });
 
         Label cost = ve.Q<Label>("build-tile-cost");
@@ -65,7 +65,7 @@ public class TileList : MonoBehaviour
 
     private void UpdateTileButtonStatus(VisualElement ve)
     {
-        bool canAfford = (ve.userData as PlaceableTile).cost <= ProgressionManager.Instance.Money;
+        bool canAfford = (ve.userData as TileDefinition).cost <= ProgressionManager.Instance.Money;
         ve.SetEnabled(canAfford);
         ve.Q<VisualElement>("build-tile-icon").SetEnabled(canAfford);
     }

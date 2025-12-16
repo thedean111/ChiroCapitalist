@@ -2,6 +2,7 @@ using System;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class CameraController : MonoBehaviour
 {
@@ -59,9 +60,11 @@ public class CameraController : MonoBehaviour
 
         // Inverting the value feels better here
         MoveCameraTarget(-ctx.ReadValue<Vector2>(), clickDragSpeed);
+
+        //BuildingManager.Instance.StopCurrentEdit();
     }
 
-    private void OnHoldStarted(InputAction.CallbackContext ctx) => holding = true;
+    private void OnHoldStarted(InputAction.CallbackContext ctx) {/*BuildingManager.Instance.StopCurrentEdit();*/ holding = true;}
 
     private void OnHoldCanceled(InputAction.CallbackContext ctx) => holding = false;
 
@@ -105,6 +108,15 @@ public class CameraController : MonoBehaviour
         float x = Math.Clamp(camTarg.position.x, xLimits.x, xLimits.y);
         float z = Math.Clamp(camTarg.position.z, zLimits.x, zLimits.y);
         camTarg.position = new Vector3(x, 0, z);
+    }
+
+    /// <summary>
+    /// Force the camera target to the input position.
+    /// </summary>
+    /// <param name="pos">Position to set the camera target to.</param>
+    public void ForceCameraPosition(Vector3 pos)
+    {
+        camTarg.DOMove(pos, 0.5f);
     }
 
 

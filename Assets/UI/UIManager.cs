@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     // -----
     public VisualElement buildingContainer;
     private TileList tileList;
+    private Button _toggleBuildButton;
     // -----
 
     void Awake()
@@ -34,8 +35,12 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        ToggleBuildUI(false);
+        // Build mode related stuff
+        _toggleBuildButton = hud.rootVisualElement.Q<Button>("build-button");
+        _toggleBuildButton.clicked += () => { BuildingService.Instance.Toggle();};
+        hud.rootVisualElement.Q<VisualElement>("edit-tile-opt-container").SetEnabled(false);
 
+        ToggleBuildUI(false);
         tileList = GetComponent<TileList>();
     }
 

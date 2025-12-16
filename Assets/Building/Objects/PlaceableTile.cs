@@ -11,11 +11,3 @@ public class PlaceableTile : ScriptableObject
     public GameObject prefab;
     public GameObject hologram;
 }
-
-public enum CellType {
-    NONE,
-    ANY,
-    HALLWAY,
-    OFFICE,
-    INTERFACE
-}
