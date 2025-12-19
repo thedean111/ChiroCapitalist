@@ -221,6 +221,7 @@ MonoBehaviour:
   previewMaterial: {fileID: 2100000, guid: 8fb4663d9d3b1c84a9de461501bbad18, type: 2}
   validColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   invalidColor: {r: 1, g: 0.22869183, b: 0.15499997, a: 0.5019608}
+  pendingMoveColor: {r: 0, g: 0, b: 0, a: 0}
   colorPropertyName: _BaseColor
 --- !u!1 &199051627
 GameObject:
@@ -760,6 +761,7 @@ MonoBehaviour:
   grid: {fileID: 1716908050}
   gridMarker: {fileID: 1936469802}
   previewer: {fileID: 107942638}
+  movePreviewer: {fileID: 637240684}
   wallBuilder: {fileID: 579913063}
   placementSound: {fileID: 11400000, guid: f094102cc9ecd9c448b561902a084904, type: 2}
 --- !u!114 &579913063
@@ -810,6 +812,55 @@ Transform:
   - {fileID: 1264911715}
   m_Father: {fileID: 1936469801}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &637240682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 637240683}
+  - component: {fileID: 637240684}
+  m_Layer: 0
+  m_Name: move preview
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &637240683
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637240682}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 954933891}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &637240684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637240682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aaecfe3c9bc5d243a71e7ec23ed90ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TilePreviewer
+  previewMaterial: {fileID: 2100000, guid: 8fb4663d9d3b1c84a9de461501bbad18, type: 2}
+  validColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+  invalidColor: {r: 1, g: 0.22869183, b: 0.15499997, a: 0.5019608}
+  pendingMoveColor: {r: 1, g: 0.64698446, b: 0, a: 0.5019608}
+  colorPropertyName: _BaseColor
 --- !u!1 &637856195
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,6 +972,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &693042422
 MeshFilter:
@@ -1066,6 +1118,7 @@ Transform:
   - {fileID: 1716908048}
   - {fileID: 1936469801}
   - {fileID: 579913061}
+  - {fileID: 637240683}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &980611029
@@ -1277,6 +1330,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1039667904
 MeshFilter:
@@ -1401,6 +1455,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1264911714
 MeshFilter:
@@ -1505,6 +1560,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1275194048
 MeshFilter:
@@ -1626,6 +1682,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1319413531
 MeshFilter:
@@ -1661,14 +1718,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470752659}
   m_Enabled: 1
-  serializedVersion: 11
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
+  m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -1842,6 +1899,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1596185291
 MeshFilter:
@@ -1893,7 +1951,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1716908048}
-  - component: {fileID: 1716908049}
   - component: {fileID: 1716908050}
   m_Layer: 6
   m_Name: grid
@@ -1918,18 +1975,6 @@ Transform:
   - {fileID: 2004976289}
   m_Father: {fileID: 954933891}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1716908049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1716908044}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5acfdcbcd4b62fb409b4bab5318d8bb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BuildingGrid
 --- !u!114 &1716908050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2216,6 +2261,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1969469181
 MeshFilter:
@@ -2305,6 +2351,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1982508272
 MeshFilter:
@@ -2417,6 +2464,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &2004976292
 MeshFilter:

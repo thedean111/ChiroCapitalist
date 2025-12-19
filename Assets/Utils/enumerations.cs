@@ -16,3 +16,9 @@ public enum WallType {
     Interior,
     Door
 }
+
+public enum TilePreviewState {
+    Valid,
+    Invalid,
+    Pending_Move
+}

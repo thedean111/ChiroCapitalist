@@ -7,7 +7,7 @@
             "id": "df70fa95-8a34-4494-b137-73ab6b9c7d37",
             "actions": [
                 {
-                    "name": "HoldRight",
+                    "name": "MousePan",
                     "type": "Button",
                     "id": "9e325837-23c2-4c1e-84fc-2d7e2d05d01b",
                     "expectedControlType": "",
@@ -64,6 +64,15 @@
                     "name": "RotateTile",
                     "type": "Button",
                     "id": "ab8517a8-2f88-478c-8961-24166613acbf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CancelEdit",
+                    "type": "Button",
+                    "id": "3edc3244-46ac-4aec-b439-745dc9c7f5d4",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -206,11 +215,11 @@
                 {
                     "name": "",
                     "id": "1716aeac-8592-4987-835f-629cc93ceab1",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "HoldRight",
+                    "action": "MousePan",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -266,6 +275,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "RotateTile",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9f2a03b3-0a05-4800-80ae-f88708ea34ac",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CancelEdit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

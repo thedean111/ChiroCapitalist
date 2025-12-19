@@ -45,6 +45,12 @@ public class TileList : MonoBehaviour
         }
     }
 
+    public void ClearSelection() {
+        if (currentSelection != null) {
+            currentSelection.RemoveFromClassList("build-tile-selected");
+        }
+    }
+
     private void BindItem(VisualElement ve, TileDefinition data)
     {
         ve.userData = data;

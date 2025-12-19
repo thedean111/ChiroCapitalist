@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour
     private InputAction addMoney;
     private InputAction interactCell;
     private InputAction rotateTile;
+    private InputAction cancelEdit;
 
     void Awake()
     {
@@ -27,11 +28,13 @@ public class InputManager : MonoBehaviour
         addMoney = gameActions.FindAction("AddMoney");
         interactCell = gameActions.FindAction("AttemptCellInteraction");
         rotateTile = gameActions.FindAction("RotateTile");
+        cancelEdit = gameActions.FindAction("CancelEdit");
 
         buildMode.performed += EnterBuildMode;
         addMoney.performed += AddMoney;
         interactCell.performed += InteractCell;
         rotateTile.performed += RotateTile;
+        cancelEdit.performed += CancelEdit;
 
     }
 
@@ -41,6 +44,7 @@ public class InputManager : MonoBehaviour
         buildMode.performed -= EnterBuildMode;
         interactCell.performed -= InteractCell;
         rotateTile.performed -= RotateTile;
+        cancelEdit.performed -= CancelEdit;
     }
 
     // ===================================================================================================
@@ -50,4 +54,5 @@ public class InputManager : MonoBehaviour
     private void AddMoney(InputAction.CallbackContext ctx) { ProgressionManager.Instance.AdjustMoney(500); }
     private void InteractCell(InputAction.CallbackContext ctx) { BuildingService.Instance.InteractCell(); }
     private void RotateTile(InputAction.CallbackContext ctx) { BuildingService.Instance.RotateSelection(); }
+    private void CancelEdit(InputAction.CallbackContext ctx) { BuildingService.Instance.CancelEdit(); }
 }

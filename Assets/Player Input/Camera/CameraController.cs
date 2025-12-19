@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
     // References to inputs and actions
     private InputActionMap gameActions;
     private InputAction move;
-    private InputAction holdRight;
+    private InputAction mousePan;
     private InputAction pan;
 
     void Awake()
@@ -38,19 +38,19 @@ public class CameraController : MonoBehaviour
     {
         gameActions = inputs.FindActionMap("Player");
         move = gameActions.FindAction("Move");
-        holdRight = gameActions.FindAction("HoldRight");
+        mousePan = gameActions.FindAction("MousePan");
         pan = gameActions.FindAction("Pan");
 
-        holdRight.performed += OnHoldStarted;
-        holdRight.canceled += OnHoldCanceled;
+        mousePan.performed += OnHoldStarted;
+        mousePan.canceled += OnHoldCanceled;
         pan.performed += OnPan;
     }
 
     // Unsubscribe from input events
     void OnDisable()
     {
-        holdRight.performed -= OnHoldStarted;
-        holdRight.canceled -= OnHoldCanceled;
+        mousePan.performed -= OnHoldStarted;
+        mousePan.canceled -= OnHoldCanceled;
         pan.performed -= OnPan;
     }
 

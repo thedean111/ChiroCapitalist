@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.InputSystem;
 
 public class TilePreviewer : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class TilePreviewer : MonoBehaviour
     public Material previewMaterial;
     public Color validColor;
     public Color invalidColor;
+    public Color pendingMoveColor;
     public string colorPropertyName = "_BaseColor";
 
     //---------------------------------------------------------------------
@@ -35,7 +37,7 @@ public class TilePreviewer : MonoBehaviour
     /// How to properly set a prefab to be previewed
     /// </summary>
     public void SetPrefab(GameObject prefab) {
-        if (prefab == _currentPrefab) return;
+        if (prefab == _currentPrefab) { _previewInstance.SetActive(true); return;}
 
         _currentPrefab = prefab;
 
@@ -45,7 +47,7 @@ public class TilePreviewer : MonoBehaviour
             _renderers = null;
         }
 
-        SetValid(true);
+        SetTint(TilePreviewState.Valid);
 
         _previewInstance = Instantiate(prefab, transform);
         _previewInstance.name = $"{_currentPrefab.name}_PREVIEW";
@@ -63,10 +65,15 @@ public class TilePreviewer : MonoBehaviour
     /// <summary>
     /// Enable the prefab parent.
     /// </summary>
-    public void SetValid(bool status) {
+    public void SetTint(TilePreviewState state) {
         if (_previewInstance == null || _renderers == null) return;
 
-        Color tint = status ? validColor : invalidColor;
+        Color tint = state switch {
+            TilePreviewState.Valid => validColor,
+            TilePreviewState.Invalid => invalidColor,
+            TilePreviewState.Pending_Move => pendingMoveColor,
+            _ => invalidColor
+        };
 
         _mpb.Clear();
         _mpb.SetColor(_colorPropertyId, tint);
@@ -88,6 +95,7 @@ public class TilePreviewer : MonoBehaviour
     /// Sets the position and rotation relative to the parent.
     /// </summary>
     public void SetLocalPositionRotation(Vector3 localPos, Vector3 localRot) {
+        localPos.y = 1f;
         _previewInstance.transform.DORotate(localRot, 0.2f).SetEase(Ease.OutBack);
         _previewInstance.transform.DOLocalMove(localPos, 0.2f).SetEase(Ease.OutBack);
     }

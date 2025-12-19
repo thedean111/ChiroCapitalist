@@ -5,4 +5,5 @@ public class TileInstance {
     public TileDefinition def;
     public Vector2Int origin;
     public GameObject instance;
+    public int rotation;
 }

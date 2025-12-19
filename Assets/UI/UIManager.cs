@@ -47,6 +47,7 @@ public class UIManager : MonoBehaviour
         _activateEditMode.clicked += () => { BuildingService.Instance.ToggleEdit(true); };
                 
         _editPopup = hud.rootVisualElement.Q<VisualElement>("edit-tile-opt-container");
+        hud.rootVisualElement.Q<Button>("edit-tile-move").clicked += () => { BuildingService.Instance.PickupTile(); };
         ToggleEditPopup(false);
         ToggleBuildUI(false);
         tileList = GetComponent<TileList>();
@@ -99,5 +100,9 @@ public class UIManager : MonoBehaviour
 
     public void ToggleEditPopup(bool status) {
         _editPopup.SetEnabled(status);
+    }
+
+    public void ClearTileListSelection() {
+        tileList.ClearSelection();
     }
 }

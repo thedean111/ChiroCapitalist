@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UIElements;
+using UnityEngine.InputSystem.Interactions;
 
 /// <summary>
 /// Building service for the game. Helps route functionality between different objects and performs basic validation.
@@ -21,6 +22,7 @@ public class BuildingService : MonoBehaviour
     public InteractableGrid grid;
     public GridPlacementMarker gridMarker;
     public TilePreviewer previewer;
+    public TilePreviewer movePreviewer;
     public WallBuilder wallBuilder;
 
     [Header("Audio Effects")]
@@ -36,6 +38,8 @@ public class BuildingService : MonoBehaviour
     private int _rot;
     private Vector2Int _effectiveSize;
     private bool _editing;
+    private Vector2Int _focusedCell;
+    private TileInstance _movingInstance;
     
     //*********************************************************************
 
@@ -89,7 +93,10 @@ public class BuildingService : MonoBehaviour
             previewer.Hide();
             _selectedTileDefinition = null;
             gridMarker.Resize(Vector2Int.one);
+            grid.UpdateFootprint(Vector2Int.one);
+
             UIManager.Instance.ActivateEditButton(true);
+            UIManager.Instance.ClearTileListSelection();
         } else {
             UIManager.Instance.ActivateEditButton(false);
         }
@@ -119,24 +126,118 @@ public class BuildingService : MonoBehaviour
     public void InteractCell() {
         if (!_active || UIManager.Instance.IsPointerOverUI()) { return; }
 
-        if (_selectedTileDefinition != null && _validCoord) {
+        // This is for placing a new tile
+        if (!holdingTile && _selectedTileDefinition != null && _validCoord) {
             _placement.TryPlace(grid.HoveredCoord, _selectedTileDefinition, _rot, transform);
             SoundManager.Instance.PlayBuildEffect(placementSound);
             wallBuilder.RebuildPerimeter(grid.HoveredCoord, _effectiveSize, _placement.GetCells());
             CheckSelectionValidity(grid.HoveredCoord);
-        }
 
-        if (_editing && _placement.HasCellData(grid.HoveredCoord)) {
+        // If the player picked up a tile this flag turns to true, attempt to place it at the mouse position.
+        } else if (holdingTile) {
+            ConfirmEdit();
+        
+        // The player is interacting with an arbitrary cell
+        } else  if (_editing && _placement.HasCellData(grid.HoveredCoord)) {
+            _focusedCell = grid.HoveredCoord;
             UIManager.Instance.ToggleEditPopup(true);
             CameraController.Instance.ForceCameraPosition(grid.GridToWorld(grid.HoveredCoord));
         }
+
     }
 
     /// <summary>
-    /// Will attempt to stop the edit. Depending
+    /// Pick up the tile that is currently focused.
     /// </summary>
-    public void TryStopEdit() {
+    public void PickupTile() {
+        if (!_editing) { return; }
 
+        // Get the tile definition at the selected cell
+        TileInstance tile = _placement.GetTileInstance(_focusedCell);
+        if (tile == null) {
+            Debug.LogWarning("BuildingService: Attempting to pick up a tile that doesn't exist!");
+            return;
+        }
+        UIManager.Instance.ToggleEditPopup(false);
+
+        // Holding tile in the context of editing, but treat the movement like a normal placement
+        holdingTile = true;
+        _selectedTileDefinition = tile.def;
+        _movingInstance = tile;
+
+        // Use the placement previewer to visualize where the tile will be moved to
+        previewer.SetPrefab(tile.def.prefab);
+        Vector3 localPos = UpdateEffectiveSize(_rot, tile.def.size);
+        _rot = tile.rotation;
+        previewer.SetLocalPositionRotation(localPos, Vector3.up * _rot * -90);
+        grid.UpdateFootprint(_selectedTileDefinition.size);
+        gridMarker.Resize(_selectedTileDefinition.size);
+
+        // Use the move previewer to show the original tile location
+        movePreviewer.SetPrefab(tile.def.prefab);
+        movePreviewer.transform.position = tile.instance.transform.position;
+        movePreviewer.transform.rotation = tile.instance.transform.rotation;
+        movePreviewer.SetTint(TilePreviewState.Pending_Move);
+
+        // Hide the instance of the tile
+        tile.instance.SetActive(false);
+
+        // Capture the initial state of the tile and then remove it from the grid
+        _placement.RemoveCellFootprint(tile.origin, tile.def.size);
+        wallBuilder.RebuildPerimeter(tile.origin, tile.def.size, _placement.GetCells());
+    }
+
+    /// <summary>
+    /// If a tile is currently being moved, cancel the move and restore the original state.
+    /// </summary>
+    public void CancelEdit() {
+        if (!holdingTile) { return; }
+
+        // Add the original instance back to the placement dictionary data
+        _placement.UpdateInstance(_movingInstance.origin, _movingInstance, _movingInstance.rotation);
+
+        // Reset the original instance
+        // TODO: Play some undo sound
+        _movingInstance.instance.SetActive(true);
+        wallBuilder.RebuildPerimeter(_movingInstance.origin, _movingInstance.def.size, _placement.GetCells());
+
+        // Hide previews        
+        movePreviewer.Hide();
+        previewer.Hide();
+
+        // Set internal data
+        holdingTile = false;
+        _selectedTileDefinition = null;
+        _movingInstance = null;
+        gridMarker.Resize(Vector2Int.one);
+    }
+
+    /// <summary>
+    /// If a tile is currently being moved, place it down on the current grid coordinate--assuming its a valid position.
+    /// </summary>
+    public void ConfirmEdit() {
+        if (_editing && _selectedTileDefinition != null) {
+            if (!_validCoord) {
+                Debug.LogWarning("Cannot move tile to an invalid coordinate!");
+            }
+
+            // Update the existing instance and build new walls
+            // TODO: Play a special sound for moving instances
+            _placement.UpdateInstance(grid.HoveredCoord, _movingInstance, _rot);
+            _movingInstance.instance.SetActive(true);
+            SoundManager.Instance.PlayBuildEffect(placementSound);
+            wallBuilder.RebuildPerimeter(grid.HoveredCoord, _effectiveSize, _placement.GetCells());
+            
+            // Hide previews        
+            movePreviewer.Hide();
+            previewer.Hide();
+
+            // Update flags
+            _movingInstance = null;
+            _selectedTileDefinition = null;
+            holdingTile = false;
+            gridMarker.Resize(Vector2Int.one);
+        }
     }
 
     /// <summary>
@@ -146,29 +247,39 @@ public class BuildingService : MonoBehaviour
         if (_selectedTileDefinition == null) { return; }
 
         _rot = (_rot + 1) % 4;
-        Vector2Int offset2D = grid.RotationOffset(_rot, _selectedTileDefinition.size);
 
-        // When rotating determine the size to use for checks
-        _effectiveSize = _rot switch {
-            0 => _selectedTileDefinition.size,
-            1 => new Vector2Int(_selectedTileDefinition.size.y, _selectedTileDefinition.size.x),
-            2 => _selectedTileDefinition.size,
-            3 => new Vector2Int(_selectedTileDefinition.size.y, _selectedTileDefinition.size.x),
-            _ => _selectedTileDefinition.size
-        };
         gridMarker.Resize(_effectiveSize);
-
-        float w = offset2D.x * grid.CellSize;
-        float h = offset2D.y * grid.CellSize;
-
-        Vector3 offset = new Vector3(w, 0, h);
 
         if (grid.UpdateFootprint(_effectiveSize)) {
             UpdateGridMarker(grid.HoveredCoord);
         }
 
-        previewer.SetLocalPositionRotation(offset, Vector3.up * _rot * -90);
+        previewer.SetLocalPositionRotation(
+            UpdateEffectiveSize(_rot, _selectedTileDefinition.size),
+             Vector3.up * _rot * -90);
+
         CheckSelectionValidity(grid.HoveredCoord);
+    }
+
+    /// <summary>
+    /// Given a rotation and base size, compute the rotated size.
+    /// </summary>
+    private Vector3 UpdateEffectiveSize(int rot, Vector2Int baseSize) {
+        Vector2Int offset2D = grid.RotationOffset(_rot, baseSize);
+
+        // When rotating determine the size to use for checks
+        _effectiveSize = _rot switch {
+            0 => baseSize,
+            1 => new Vector2Int(baseSize.y, baseSize.x),
+            2 => baseSize,
+            3 => new Vector2Int(baseSize.y, baseSize.x),
+            _ => baseSize
+        };
+
+        float w = offset2D.x * grid.CellSize;
+        float h = offset2D.y * grid.CellSize;
+
+       return new Vector3(w, 0, h);
     }
 
     /// <summary>
@@ -210,7 +321,7 @@ public class BuildingService : MonoBehaviour
 
         if(_placement.CheckOverlap(coord, _effectiveSize)) {
             _validCoord = false;
-            previewer.SetValid(_validCoord);
+            previewer.SetTint(TilePreviewState.Invalid);
             return;
         } 
         
@@ -224,10 +335,10 @@ public class BuildingService : MonoBehaviour
 
         if (!allSpecialCellsSatisfied) {
             _validCoord = false;
-            previewer.SetValid(_validCoord);
+            previewer.SetTint(TilePreviewState.Invalid);
             return;
         }
 
-        previewer.SetValid(_validCoord);
+        previewer.SetTint(TilePreviewState.Valid);
     }
 }

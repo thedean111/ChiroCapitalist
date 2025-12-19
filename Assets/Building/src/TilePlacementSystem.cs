@@ -32,6 +32,7 @@ public class TilePlacementSystem {
         instance.tileID = uid;
         instance.def = def;
         instance.origin = coord;
+        instance.rotation = rot;
         Vector3 spawnPos = _grid.GridToWorld(coord + _grid.RotationOffset(rot, def.size));
         instance.instance = Object.Instantiate(
             def.prefab, // prefab to create
@@ -63,6 +64,39 @@ public class TilePlacementSystem {
         }
 
         uid++;
+    }
+
+    /// <summary>
+    /// Take an existing tile instance and move it to the location at coord.
+    /// </summary>
+    public void UpdateInstance(Vector2Int coord, TileInstance instance, int rot) {
+        Vector3 spawnPos = _grid.GridToWorld(coord + _grid.RotationOffset(rot, instance.def.size));
+        instance.instance.transform.position = spawnPos;
+        instance.origin = coord;
+        instance.rotation = rot;
+        instance.instance.transform.rotation = Quaternion.Euler(0, rot * -90, 0);
+        tiles.Add(instance.tileID, instance);
+
+        // For each cell coordinate the tile spans, add its cell data
+        for (int x = 0; x < instance.def.size.x; x++) {
+            for (int y = 0; y < instance.def.size.y; y++) {
+                // Situate the coordinates
+                Vector2Int local = new Vector2Int(x, y);
+                Vector2Int rotatedLocal = _grid.RotateLocal(local, instance.def.size, rot);
+                Vector2Int world = coord + rotatedLocal;
+
+                // Base cell data
+                CellData data = new CellData();
+                data.tileID = instance.tileID;
+                data.type = instance.def.type;
+                
+                // Extract the potential flags from the local coordinate
+                instance.def.GetFlags(local, out data.flags);
+
+                // Add the cell to the dictionary
+                cells.Add(world, data);
+            }
+        }
     }
 
     /// <summary>
@@ -98,5 +132,35 @@ public class TilePlacementSystem {
     /// </summary>
     public bool HasCellData(Vector2Int coord) {
         return cells.ContainsKey(coord);
+    }
+
+    /// <summary>
+    /// Extract a tile instance from the input coordinate if it exists.
+    /// </summary>
+    public TileInstance GetTileInstance(Vector2Int coord) {
+        if (cells.TryGetValue(coord, out CellData data)) {
+            if (tiles.TryGetValue(data.tileID, out TileInstance inst)) {
+                return inst;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Remove any data and tile instances that are tied to the footprint of cells.
+    /// </summary>
+    public void RemoveCellFootprint(Vector2Int coord, Vector2Int size) {
+        for (int x = coord.x; x < coord.x + size.x; x++) {
+            for (int y = coord.y; y < coord.y + size.y; y++) {
+                Vector2Int checkCoord = new Vector2Int(x, y);
+                if (cells.TryGetValue(checkCoord, out CellData data)) {
+                    if (tiles.ContainsKey(data.tileID)) {
+                        tiles.Remove(data.tileID);
+                    }
+                    cells.Remove(checkCoord);
+                }
+            }
+        }
     }
 }

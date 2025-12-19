@@ -133,6 +133,11 @@ public class WallBuilder : MonoBehaviour
         bool hasInData = cells.TryGetValue(inCoord, out var inData);
         bool hasOutdata = cells.TryGetValue(outCoord, out var outData);
 
+        // Two cells with no data
+        if (!hasInData && !hasOutdata) {
+            return WallType.None;
+        }
+
         if ((hasInData && !hasOutdata) || (!hasInData && hasOutdata)) {
             return WallType.Exterior;
         }
