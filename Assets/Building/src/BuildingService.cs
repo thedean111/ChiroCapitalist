@@ -147,6 +147,28 @@ public class BuildingService : MonoBehaviour
     }
 
     /// <summary>
+    /// Attempt to delete the focused tile.
+    /// TODO: Check for anchor chain breakage before confirming a deletion.
+    /// </summary>
+    public void DeleteFocusedTile() {
+        if (!_editing) { return; }
+
+        TileInstance tile = _placement.GetTileInstance(_focusedCell);
+        if (tile == null) {
+            Debug.LogWarning("BuildingService: Attempting to delete a tile that doesn't exist!");
+            return;
+        }
+
+        _placement.RemoveCellFootprint(tile.origin, tile.def.size);
+        wallBuilder.RebuildPerimeter(tile.origin, tile.def.size, _placement.GetCells());
+
+        // TODO: If this tile is tied to other game objects (Office-doctor-patient), reallocate resources properly
+        Destroy(tile.instance);
+
+        UIManager.Instance.ToggleEditPopup(false);
+    }
+
+    /// <summary>
     /// Pick up the tile that is currently focused.
     /// </summary>
     public void PickupTile() {

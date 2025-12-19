@@ -48,6 +48,7 @@ public class UIManager : MonoBehaviour
                 
         _editPopup = hud.rootVisualElement.Q<VisualElement>("edit-tile-opt-container");
         hud.rootVisualElement.Q<Button>("edit-tile-move").clicked += () => { BuildingService.Instance.PickupTile(); };
+        hud.rootVisualElement.Q<Button>("edit-tile-delete").clicked += () => { BuildingService.Instance.DeleteFocusedTile(); };
         ToggleEditPopup(false);
         ToggleBuildUI(false);
         tileList = GetComponent<TileList>();
