@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     public VisualElement buildingContainer;
     private TileList tileList;
     private Button _toggleBuildButton;
+    private Button _activateEditMode;
+    private VisualElement _editPopup;
     // -----
 
     void Awake()
@@ -35,13 +37,22 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        // Build mode related stuff
+        //__________________________________________________________________________________________
+        // BUILD MODE UI
+        //__________________________________________________________________________________________
         _toggleBuildButton = hud.rootVisualElement.Q<Button>("build-button");
         _toggleBuildButton.clicked += () => { BuildingService.Instance.Toggle();};
-        hud.rootVisualElement.Q<VisualElement>("edit-tile-opt-container").SetEnabled(false);
 
+        _activateEditMode = hud.rootVisualElement.Q<Button>("build-menu-edit-button");
+        _activateEditMode.clicked += () => { BuildingService.Instance.ToggleEdit(true); };
+                
+        _editPopup = hud.rootVisualElement.Q<VisualElement>("edit-tile-opt-container");
+        ToggleEditPopup(false);
         ToggleBuildUI(false);
         tileList = GetComponent<TileList>();
+        //__________________________________________________________________________________________
+
+
     }
 
     /// <summary>
@@ -74,5 +85,19 @@ public class UIManager : MonoBehaviour
     public VisualElement GetFromHud(string name)
     {
         return hud.rootVisualElement.Q(name);
+    }
+
+    /// <summary>
+    /// Toggle class on edit button.
+    /// </summary>
+    public void ActivateEditButton(bool status) {
+        if (status)
+            _activateEditMode.AddToClassList("edit-mode-active");
+        else
+             _activateEditMode.RemoveFromClassList("edit-mode-active");
+    }
+
+    public void ToggleEditPopup(bool status) {
+        _editPopup.SetEnabled(status);
     }
 }

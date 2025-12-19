@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class TilePlacementSystem {
@@ -21,6 +22,8 @@ public class TilePlacementSystem {
         _grid = grid;
     }
 
+    public Dictionary<Vector2Int, CellData> GetCells() { return cells; }
+
     /// <summary>
     /// Attempt to place a tile on the grid. Only checks for grid validity.
     /// </summary>
@@ -29,8 +32,13 @@ public class TilePlacementSystem {
         instance.tileID = uid;
         instance.def = def;
         instance.origin = coord;
-        instance.instance = Object.Instantiate(def.prefab, _grid.GridToWorld(coord), Quaternion.identity, root);
-
+        Vector3 spawnPos = _grid.GridToWorld(coord + _grid.RotationOffset(rot, def.size));
+        instance.instance = Object.Instantiate(
+            def.prefab, // prefab to create
+            spawnPos + Vector3.up, // world position
+            Quaternion.Euler(0, rot * -90, 0), // rotation
+            root); // parent transform
+        instance.instance.transform.DOMove(spawnPos, 0.15f).SetEase(Ease.InCubic);
         tiles.Add(uid, instance);
 
         // For each cell coordinate the tile spans, add its cell data
@@ -68,5 +76,27 @@ public class TilePlacementSystem {
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Checks if the footprint provided by the input overlaps with any cells that are already established.
+    /// </summary>
+    public bool IsSpecialCellSatisfied(Vector2Int worldCoord, SpecialCellData sc) {
+        // All interfaces must connect to a hallway
+        if (sc.overrideType == CellFlags.Interface) {
+            if (cells.TryGetValue(worldCoord + Vector2Int.up, out var cd) && cd.type == CellType.Hallway) return true;
+            if (cells.TryGetValue(worldCoord + Vector2Int.right, out cd) && cd.type == CellType.Hallway) return true;
+            if (cells.TryGetValue(worldCoord + Vector2Int.down, out cd) && cd.type == CellType.Hallway) return true;
+            if (cells.TryGetValue(worldCoord + Vector2Int.left, out cd) && cd.type == CellType.Hallway) return true;
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Checks the dictionary at the coordinate to see if there is cell data.
+    /// </summary>
+    public bool HasCellData(Vector2Int coord) {
+        return cells.ContainsKey(coord);
     }
 }

@@ -49,5 +49,5 @@ public class InputManager : MonoBehaviour
     private void EnterBuildMode(InputAction.CallbackContext ctx) { BuildingService.Instance.Toggle(); }
     private void AddMoney(InputAction.CallbackContext ctx) { ProgressionManager.Instance.AdjustMoney(500); }
     private void InteractCell(InputAction.CallbackContext ctx) { BuildingService.Instance.InteractCell(); }
-    private void RotateTile(InputAction.CallbackContext ctx) { /*BuildingManager.Instance.RotateTile();*/ }
+    private void RotateTile(InputAction.CallbackContext ctx) { BuildingService.Instance.RotateSelection(); }
 }

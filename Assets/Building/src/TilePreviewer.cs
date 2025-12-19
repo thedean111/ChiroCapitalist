@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class TilePreviewer : MonoBehaviour
 {
@@ -82,5 +82,13 @@ public class TilePreviewer : MonoBehaviour
         if (_previewInstance != null) {
             _previewInstance.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// Sets the position and rotation relative to the parent.
+    /// </summary>
+    public void SetLocalPositionRotation(Vector3 localPos, Vector3 localRot) {
+        _previewInstance.transform.DORotate(localRot, 0.2f).SetEase(Ease.OutBack);
+        _previewInstance.transform.DOLocalMove(localPos, 0.2f).SetEase(Ease.OutBack);
     }
 }

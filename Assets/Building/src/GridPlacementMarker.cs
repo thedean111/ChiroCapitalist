@@ -8,6 +8,8 @@ public class GridPlacementMarker : MonoBehaviour
     //*********************************************************************
     // Public
     //---------------------------------------------------------------------
+    public Vector2Int Size {get; private set;}
+
     [Range(0,1f)] public float markerMoveTime = 0.2f;
     [Range(0,1f)] public float markerScaleTime = 0.2f;
 
@@ -49,6 +51,7 @@ public class GridPlacementMarker : MonoBehaviour
     {
         // TODO: Add a shader to the marker that can adapt to any tile size, and change colors on the bottom where the grid cells overlap.
         _cellHighlighter.DOScale(new Vector3(size.x, .1f, size.y), markerScaleTime).SetEase(Ease.OutCubic);
+        Size = size;
     }
 
     /// <summary>
@@ -57,6 +60,6 @@ public class GridPlacementMarker : MonoBehaviour
     public void Reset()
     {
         transform.position = _defaultMarkerPosition;
-        _cellHighlighter.DOScale(_defaultScale, markerScaleTime).SetEase(Ease.OutCubic);
+        Resize(Vector2Int.one);
     }
 }
