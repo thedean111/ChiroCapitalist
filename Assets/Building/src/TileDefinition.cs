@@ -13,6 +13,7 @@ public class TileDefinition : ScriptableObject
     [Header("Tile Footprint")]
     public Vector2Int size;
     public CellType type;
+    public CellFlags defaultFlag;
 
     [Header("Prefab")]
     public GameObject prefab;
@@ -21,7 +22,7 @@ public class TileDefinition : ScriptableObject
     public List<SpecialCellData> specialCells = new();
 
     public void GetFlags(Vector2Int localCell, out CellFlags flags) {
-        flags = CellFlags.None;
+        flags = defaultFlag;
         foreach (SpecialCellData sc in specialCells) {
             if (sc.localCoord == localCell) { 
                 flags |= sc.overrideType;

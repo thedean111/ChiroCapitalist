@@ -60,7 +60,7 @@
 }
 
 .hud-button-icon {
-    -unity-background-image-tint-color: rgb(184, 114, 70);
+    -unity-background-image-tint-color: rgb(255, 175, 124);
     top: -12px;
     align-self: stretch;
     height: 62px;
@@ -130,6 +130,10 @@
     border-bottom-color: rgb(29, 18, 11);
     left: -19px;
     height: 54px;
+    color: rgb(255, 237, 202);
+    font-size: 32px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 0;
 }
 
 .build-menu-header {

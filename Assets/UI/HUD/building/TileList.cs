@@ -57,7 +57,7 @@ public class TileList : MonoBehaviour
         ve.Q<Button>("build-tile-item").RegisterCallback<ClickEvent>(evt =>
         {
             OnItemClicked(evt);
-            BuildingService.Instance.SelectTile(data);
+            ConstructionManager.Instance.SelectTile(data);
         });
 
         Label cost = ve.Q<Label>("build-tile-cost");

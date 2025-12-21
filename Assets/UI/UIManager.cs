@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     public VisualElement buildingContainer;
     private TileList tileList;
     private Button _toggleBuildButton;
+    private Button _toggleEditButton;
     private Button _activateEditMode;
     private VisualElement _editPopup;
     // -----
@@ -38,20 +39,31 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         //__________________________________________________________________________________________
-        // BUILD MODE UI
+        // PLACEMENT MODE UI
         //__________________________________________________________________________________________
-        _toggleBuildButton = hud.rootVisualElement.Q<Button>("build-button");
-        _toggleBuildButton.clicked += () => { BuildingService.Instance.Toggle();};
+        _toggleBuildButton = hud.rootVisualElement.Q<Button>("placement-button");
+        _toggleBuildButton.clicked += () => { 
+            ServiceManager.Instance.ToggleService<BuildingService>(!BuildingService.Instance.Active);
+        };
 
         _activateEditMode = hud.rootVisualElement.Q<Button>("build-menu-edit-button");
-        _activateEditMode.clicked += () => { BuildingService.Instance.ToggleEdit(true); };
+        // _activateEditMode.clicked += () => { BuildingService.Instance.ToggleEdit(true); };
                 
         _editPopup = hud.rootVisualElement.Q<VisualElement>("edit-tile-opt-container");
-        hud.rootVisualElement.Q<Button>("edit-tile-move").clicked += () => { BuildingService.Instance.PickupTile(); };
-        hud.rootVisualElement.Q<Button>("edit-tile-delete").clicked += () => { BuildingService.Instance.DeleteFocusedTile(); };
+        // hud.rootVisualElement.Q<Button>("edit-tile-move").clicked += () => { BuildingService.Instance.PickupTile(); };
+        // hud.rootVisualElement.Q<Button>("edit-tile-delete").clicked += () => { BuildingService.Instance.DeleteFocusedTile(); };
         ToggleEditPopup(false);
-        ToggleBuildUI(false);
+        ToggleTileCatalog(false);
         tileList = GetComponent<TileList>();
+        //__________________________________________________________________________________________
+
+        //__________________________________________________________________________________________
+        // EDIT MODE UI
+        //__________________________________________________________________________________________
+        _toggleEditButton = hud.rootVisualElement.Q<Button>("edit-button");
+        _toggleEditButton.clicked += () => { 
+            ServiceManager.Instance.ToggleService<EditService>(!EditService.Instance.Active);
+        };
         //__________________________________________________________________________________________
 
 
@@ -68,7 +80,7 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// Toggle the UI that contains the tile list for building.
     /// </summary>
-    public void ToggleBuildUI(bool status)
+    public void ToggleTileCatalog(bool status)
     {
         buildingContainer.SetEnabled(status);
     }

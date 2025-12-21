@@ -38,7 +38,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 1
+    - _Alpha: 0
     - _BorderGap: 0.27
     - _BorderThickness: 0.06
     - _CellSize: 3

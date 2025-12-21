@@ -7,7 +7,8 @@ public enum CellType {
 public enum CellFlags {
     None = 0,
     Interface = 1<<0,
-    Merge = 1<<1
+    ConnectSameOrAnchor = 1<<1,
+    Anchor = 1<<2
 }
 
 public enum WallType {

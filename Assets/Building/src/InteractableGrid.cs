@@ -38,15 +38,18 @@ public class InteractableGrid : MonoBehaviour
 
     //*********************************************************************
 
-    /// <summary>
-    /// Unity start method.
-    /// </summary>
-    private void Start() {
+    void Awake()
+    {
         _gridRenderer = GetComponentInChildren<MeshRenderer>();
         _cellSize = _gridRenderer.material.GetFloat("_CellSize");
         _halfCellSize = _cellSize * 0.5f;
         _gridMask = LayerMask.GetMask("BuildingGrid");
+    }
 
+    /// <summary>
+    /// Unity start method.
+    /// </summary>
+    private void Start() {
         int xSize = (int)(transform.localScale.x / _cellSize);
         int zSize = (int)(transform.localScale.z / _cellSize);
         int xPos = (int)(transform.position.x / _cellSize);

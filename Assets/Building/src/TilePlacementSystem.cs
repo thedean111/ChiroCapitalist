@@ -8,6 +8,7 @@ public class TilePlacementSystem {
     //*********************************************************************
     // Public
     //---------------------------------------------------------------------
+    public Vector2Int EffectiveSize {get; private set;}
 
     //---------------------------------------------------------------------
     // Private
@@ -16,18 +17,97 @@ public class TilePlacementSystem {
     private Dictionary<Vector2Int, CellData> cells = new(); // Every cell on the grid that has data
     private Dictionary<int, TileInstance> tiles = new(); // All tile instances mapped by their id
     private int uid = 0;
+    private TileDefinition _selectedTileDef;
+    private int _rot;
+    private bool _validCoord;
+    //---------------------------------------------------------------------
+
+    // Constructor, Getter
+    //*********************************************************************
+    public TilePlacementSystem(InteractableGrid grid) { _grid = grid; }
+    public Dictionary<Vector2Int, CellData> GetCells() { return cells; }
+    public TileDefinition SelectedTileDef() { return _selectedTileDef; }
     //*********************************************************************
 
-    public TilePlacementSystem(InteractableGrid grid) {
-        _grid = grid;
+    /// <summary>
+    /// Clean up data when setting a new tile. Not every set tile will be at 0 rotation.
+    /// </summary>
+    public void SetSelectedTile(TileDefinition def, int rot) { 
+        _selectedTileDef = def; 
+
+        if (def != null) {
+            UpdateRotation(rot, def.size);
+            EffectiveSize = def.size; 
+        }
     }
 
-    public Dictionary<Vector2Int, CellData> GetCells() { return cells; }
+    /// <summary>
+    /// Given a rotation and base size, compute the rotated size.
+    /// </summary>
+    public Vector3 UpdateRotation(int rot, Vector2Int baseSize) {
+        Vector2Int offset2D = _grid.RotationOffset(rot, baseSize);
+        _rot = rot;
+
+        // When rotating determine the size to use for checks
+        EffectiveSize = rot switch {
+            0 => baseSize,
+            1 => new Vector2Int(baseSize.y, baseSize.x),
+            2 => baseSize,
+            3 => new Vector2Int(baseSize.y, baseSize.x),
+            _ => baseSize
+        };
+
+        float w = offset2D.x * _grid.CellSize;
+        float h = offset2D.y * _grid.CellSize;
+
+       return new Vector3(w, 0, h);
+    }
 
     /// <summary>
-    /// Attempt to place a tile on the grid. Only checks for grid validity.
+    /// If there is a selected tile, check if it would be valid on the input coordinate.
     /// </summary>
-    public void TryPlace(Vector2Int coord, TileDefinition def, int rot, Transform root) {
+    public bool IsSelectionValid(Vector2Int coord) {
+        _validCoord = true;
+
+        if (_selectedTileDef == null) { return false; }
+
+        // Does the tile size overlap with any existing tiles?
+        if(CheckOverlap(coord, EffectiveSize)) {
+            _validCoord = false;
+            return false;
+        } 
+        
+        // Check all the special cells now
+        bool allSpecialCellsSatisfied = true;
+        foreach (SpecialCellData sc in _selectedTileDef.specialCells) {
+            Vector2Int rotatedLocal = _grid.RotateLocal(sc.localCoord, _selectedTileDef.size, _rot);
+            Vector2Int adjustedWorld = rotatedLocal + _grid.HoveredCoord;
+            allSpecialCellsSatisfied &= IsSpecialCellSatisfied(adjustedWorld, sc);
+        }
+
+        if (!allSpecialCellsSatisfied) {
+            _validCoord = false;
+            return false;
+        }
+
+        _validCoord = true;
+        return true;
+    }
+
+    /// <summary>
+    /// Without a tile definition input, the tile placement system will attempt to spawn the currently
+    /// selected tile.
+    /// </summary>
+    public bool TrySpawn(Vector2Int coord, Transform root, float tweenTime=0.15f) {
+        if (_selectedTileDef == null || !_validCoord) { return false;}
+        SpawnTile(coord, _selectedTileDef, _rot, root, tweenTime);
+        return true;
+    }
+
+    /// <summary>
+    /// Spawn whatever is provided to this method without performing any checks. There is a chance to overwrite data if not used properly.
+    /// </summary>
+    public void SpawnTile(Vector2Int coord, TileDefinition def, int rot, Transform root, float tweenTime=0.15f) {
         TileInstance instance = new TileInstance();
         instance.tileID = uid;
         instance.def = def;
@@ -39,7 +119,7 @@ public class TilePlacementSystem {
             spawnPos + Vector3.up, // world position
             Quaternion.Euler(0, rot * -90, 0), // rotation
             root); // parent transform
-        instance.instance.transform.DOMove(spawnPos, 0.15f).SetEase(Ease.InCubic);
+        instance.instance.transform.DOMove(spawnPos, tweenTime).SetEase(Ease.InCubic);
         tiles.Add(uid, instance);
 
         // For each cell coordinate the tile spans, add its cell data
@@ -117,13 +197,23 @@ public class TilePlacementSystem {
     /// </summary>
     public bool IsSpecialCellSatisfied(Vector2Int worldCoord, SpecialCellData sc) {
         // All interfaces must connect to a hallway
-        if (sc.overrideType == CellFlags.Interface) {
-            if (cells.TryGetValue(worldCoord + Vector2Int.up, out var cd) && cd.type == CellType.Hallway) return true;
-            if (cells.TryGetValue(worldCoord + Vector2Int.right, out cd) && cd.type == CellType.Hallway) return true;
-            if (cells.TryGetValue(worldCoord + Vector2Int.down, out cd) && cd.type == CellType.Hallway) return true;
-            if (cells.TryGetValue(worldCoord + Vector2Int.left, out cd) && cd.type == CellType.Hallway) return true;
+        if (sc.overrideType == CellFlags.Interface || sc.overrideType == CellFlags.ConnectSameOrAnchor) {
+            if (cells.TryGetValue(worldCoord + Vector2Int.up, out var cd) && (cd.type == CellType.Hallway || ((cd.flags & CellFlags.Anchor) != 0))) return true;
+            if (cells.TryGetValue(worldCoord + Vector2Int.right, out cd) && (cd.type == CellType.Hallway || ((cd.flags & CellFlags.Anchor) != 0))) return true;
+            if (cells.TryGetValue(worldCoord + Vector2Int.down, out cd) && (cd.type == CellType.Hallway || ((cd.flags & CellFlags.Anchor) != 0))) return true;
+            if (cells.TryGetValue(worldCoord + Vector2Int.left, out cd) && (cd.type == CellType.Hallway || ((cd.flags & CellFlags.Anchor) != 0))) return true;
             return false;
-        }
+
+        // This special cell must be adjacent to something, no matter what it is
+        } 
+        // else if (sc.overrideType == CellFlags.ConnectSameOrAnchor) {
+        //     if (cells.ContainsKey(worldCoord + Vector2Int.up)) return true;
+        //     if (cells.ContainsKey(worldCoord + Vector2Int.right)) return true;
+        //     if (cells.ContainsKey(worldCoord + Vector2Int.down)) return true;
+        //     if (cells.ContainsKey(worldCoord + Vector2Int.left)) return true;
+        //     return false;
+        // }
+
         return true;
     }
 

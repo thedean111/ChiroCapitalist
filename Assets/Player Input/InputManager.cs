@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     private InputAction interactCell;
     private InputAction rotateTile;
     private InputAction cancelEdit;
+    private InputAction toggleEditMode;
 
     void Awake()
     {
@@ -29,8 +30,10 @@ public class InputManager : MonoBehaviour
         interactCell = gameActions.FindAction("AttemptCellInteraction");
         rotateTile = gameActions.FindAction("RotateTile");
         cancelEdit = gameActions.FindAction("CancelEdit");
+        toggleEditMode = gameActions.FindAction("ToggleEditMode");
 
-        buildMode.performed += EnterBuildMode;
+        buildMode.performed += TogglePlacementMode;
+        toggleEditMode.performed += ToggleEditMode;
         addMoney.performed += AddMoney;
         interactCell.performed += InteractCell;
         rotateTile.performed += RotateTile;
@@ -41,7 +44,8 @@ public class InputManager : MonoBehaviour
     // Unsubscribe from input events
     void OnDisable()
     {
-        buildMode.performed -= EnterBuildMode;
+        buildMode.performed -= TogglePlacementMode;
+        toggleEditMode.performed -= ToggleEditMode;
         interactCell.performed -= InteractCell;
         rotateTile.performed -= RotateTile;
         cancelEdit.performed -= CancelEdit;
@@ -50,9 +54,15 @@ public class InputManager : MonoBehaviour
     // ===================================================================================================
     // WRAPPERS TO ALL THE UI INTERACTIONS
     // ===================================================================================================
-    private void EnterBuildMode(InputAction.CallbackContext ctx) { BuildingService.Instance.Toggle(); }
+    private void TogglePlacementMode(InputAction.CallbackContext ctx) { 
+        ServiceManager.Instance.ToggleService<BuildingService>(!BuildingService.Instance.Active);
+    }
+    private void ToggleEditMode(InputAction.CallbackContext ctx) { 
+        ServiceManager.Instance.ToggleService<EditService>(!EditService.Instance.Active);
+    }
+    
     private void AddMoney(InputAction.CallbackContext ctx) { ProgressionManager.Instance.AdjustMoney(500); }
     private void InteractCell(InputAction.CallbackContext ctx) { BuildingService.Instance.InteractCell(); }
-    private void RotateTile(InputAction.CallbackContext ctx) { BuildingService.Instance.RotateSelection(); }
-    private void CancelEdit(InputAction.CallbackContext ctx) { BuildingService.Instance.CancelEdit(); }
+    private void RotateTile(InputAction.CallbackContext ctx) { ConstructionManager.Instance.RotateSelection(); }
+    private void CancelEdit(InputAction.CallbackContext ctx) {  }
 }

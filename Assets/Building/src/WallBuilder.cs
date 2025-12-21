@@ -150,6 +150,10 @@ public class WallBuilder : MonoBehaviour
         if (inData.type == CellType.Hallway && outData.type == CellType.Hallway)
             return WallType.None;
 
+        // Anything next to an anchor will spawn a door
+        if ((inData.flags & CellFlags.Anchor) != 0 || (outData.flags & CellFlags.Anchor) != 0)
+            return WallType.Door;
+
         // Any interface cell next to a hallway will spawn a door
         // TODO: How to prevent two doors from spawning on one cell?
         if ((inData.flags == CellFlags.Interface && outData.type == CellType.Hallway) || 

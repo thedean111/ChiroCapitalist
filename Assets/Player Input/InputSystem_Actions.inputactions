@@ -77,6 +77,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleEditMode",
+                    "type": "Button",
+                    "id": "1a8d534d-6bcc-4f13-ae2b-e21dcf5cd715",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -286,6 +295,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CancelEdit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3f93c4db-c2c2-45ec-bbca-67845cfb290b",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ToggleEditMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
