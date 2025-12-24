@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -19,7 +20,9 @@ public class UIManager : MonoBehaviour
     private Button _toggleBuildButton;
     private Button _toggleEditButton;
     private Button _activateEditMode;
-    private VisualElement _editPopup;
+    private Button _deleteTileButton;
+    private VisualElement _selectedTileMouseElement;
+    private bool _followMouse = false;
     // -----
 
     void Awake()
@@ -47,14 +50,9 @@ public class UIManager : MonoBehaviour
         };
 
         _activateEditMode = hud.rootVisualElement.Q<Button>("build-menu-edit-button");
-        // _activateEditMode.clicked += () => { BuildingService.Instance.ToggleEdit(true); };
-                
-        _editPopup = hud.rootVisualElement.Q<VisualElement>("edit-tile-opt-container");
-        // hud.rootVisualElement.Q<Button>("edit-tile-move").clicked += () => { BuildingService.Instance.PickupTile(); };
-        // hud.rootVisualElement.Q<Button>("edit-tile-delete").clicked += () => { BuildingService.Instance.DeleteFocusedTile(); };
-        ToggleEditPopup(false);
-        ToggleTileCatalog(false);
+
         tileList = GetComponent<TileList>();
+        ToggleTileCatalog(false);
         //__________________________________________________________________________________________
 
         //__________________________________________________________________________________________
@@ -64,9 +62,23 @@ public class UIManager : MonoBehaviour
         _toggleEditButton.clicked += () => { 
             ServiceManager.Instance.ToggleService<EditService>(!EditService.Instance.Active);
         };
+
+        _deleteTileButton = hud.rootVisualElement.Q<Button>("edit-mode-delete-button");
+        _deleteTileButton.clicked += EditService.Instance.DeletePayload;
+        ToggleEditServiceUI(false);
+
+        _selectedTileMouseElement = hud.rootVisualElement.Q<VisualElement>("selected-tile-mouse-element");
+        _selectedTileMouseElement.SetEnabled(false);
         //__________________________________________________________________________________________
 
+    }
 
+    private void Update() {
+        if (_followMouse) {
+            Vector2 panel = ScreenToPanel(Mouse.current.position.ReadValue());
+            _selectedTileMouseElement.style.left = panel.x;
+            _selectedTileMouseElement.style.top  = panel.y;
+        }
     }
 
     /// <summary>
@@ -83,6 +95,7 @@ public class UIManager : MonoBehaviour
     public void ToggleTileCatalog(bool status)
     {
         buildingContainer.SetEnabled(status);
+        ClearTileListSelection();
     }
 
     /// <summary>
@@ -101,6 +114,14 @@ public class UIManager : MonoBehaviour
         return hud.rootVisualElement.Q(name);
     }
 
+
+    /// <summary>
+    /// Toggle relevant UI elements for the edit service.
+    /// </summary>
+    public void ToggleEditServiceUI(bool status) {
+        _deleteTileButton.SetEnabled(status);
+    }
+
     /// <summary>
     /// Toggle class on edit button.
     /// </summary>
@@ -111,11 +132,37 @@ public class UIManager : MonoBehaviour
              _activateEditMode.RemoveFromClassList("edit-mode-active");
     }
 
-    public void ToggleEditPopup(bool status) {
-        _editPopup.SetEnabled(status);
-    }
-
+    /// <summary>
+    /// Resets UI elements relating to the tile list in placement mode.
+    /// </summary>
     public void ClearTileListSelection() {
         tileList.ClearSelection();
     }
+
+    /// <summary>
+    /// Turn on or off the element to follow the mouse
+    /// </summary>
+    public void ToggleSelectedTileElement(bool status) {
+        _selectedTileMouseElement.SetEnabled(status);
+        _followMouse = status;
+        Vector2 panel = ScreenToPanel(Mouse.current.position.ReadValue());
+        _selectedTileMouseElement.style.left = panel.x;
+        _selectedTileMouseElement.style.top  = panel.y;
+    }
+
+    /// <summary>
+    /// Sets the icon to use for the selected tile visual element.
+    /// </summary>
+    public void SetSelectedTileElement(Texture2D icon) {
+        _selectedTileMouseElement.style.backgroundImage = icon;
+    }
+
+    private Vector2 ScreenToPanel(Vector2 screenPos) {
+        screenPos.y = Screen.height - screenPos.y;
+
+        // Convert Screen -> Panel coordinates
+        Vector2 panel = RuntimePanelUtils.ScreenToPanel(hud.rootVisualElement.panel, screenPos);
+        return panel;
+    }
+
 }

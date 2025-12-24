@@ -218,11 +218,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aaecfe3c9bc5d243a71e7ec23ed90ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TilePreviewer
-  previewMaterial: {fileID: 2100000, guid: 8fb4663d9d3b1c84a9de461501bbad18, type: 2}
-  validColor: {r: 1, g: 1, b: 1, a: 0.5019608}
-  invalidColor: {r: 1, g: 0.22869183, b: 0.15499997, a: 0.5019608}
+  previewMaterial: {fileID: 2100000, guid: c949fe7b8733f424288a884b98426d39, type: 2}
+  validColor: {r: 1, g: 1, b: 1, a: 0.7490196}
+  invalidColor: {r: 1, g: 0.58680993, b: 0.54905653, a: 0.7490196}
   pendingMoveColor: {r: 0, g: 0, b: 0, a: 0}
-  colorPropertyName: _BaseColor
+  colorPropertyName: _HolographicColor
 --- !u!1 &199051627
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,11 +942,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aaecfe3c9bc5d243a71e7ec23ed90ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TilePreviewer
-  previewMaterial: {fileID: 2100000, guid: 8fb4663d9d3b1c84a9de461501bbad18, type: 2}
+  previewMaterial: {fileID: 2100000, guid: c949fe7b8733f424288a884b98426d39, type: 2}
   validColor: {r: 1, g: 1, b: 1, a: 0.5019608}
   invalidColor: {r: 1, g: 0.22869183, b: 0.15499997, a: 0.5019608}
   pendingMoveColor: {r: 1, g: 0.64698446, b: 0, a: 0.5019608}
-  colorPropertyName: _BaseColor
+  colorPropertyName: _HolographicColor
 --- !u!1 &637856195
 GameObject:
   m_ObjectHideFlags: 0
@@ -1924,6 +1924,11 @@ MonoBehaviour:
   previewer: {fileID: 107942638}
   movePreviewer: {fileID: 637240684}
   wallBuilder: {fileID: 339892113}
+  hologramColorProperty: _HolographicColor
+  hologramLayerName: Hologram
+  baseHologramTint: {r: 0.8338511, g: 1, b: 0.7150943, a: 0.5019608}
+  activeHologramTint: {r: 0.9910456, g: 1, b: 0.76862746, a: 0.5019608}
+  islandColor: {r: 1, g: 0.43260795, b: 0.3150943, a: 0.5019608}
 --- !u!1 &1596185288
 GameObject:
   m_ObjectHideFlags: 0

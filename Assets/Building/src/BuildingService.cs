@@ -63,7 +63,7 @@ public class BuildingService : ServiceState
             gridMarker.Reset();
             UIManager.Instance.ToggleTileCatalog(false);
             if (tilePlacer.SelectedTileDef() != null) {
-                previewer.Hide();
+                previewer.Toggle(false);
                 tilePlacer.SetSelectedTile(null, 0);
             }
         }

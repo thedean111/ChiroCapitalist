@@ -83,20 +83,34 @@ public class TilePreviewer : MonoBehaviour
     }
 
     /// <summary>
-    /// Disable the preview.
+    /// Enable the prefab parent.
     /// </summary>
-    public void Hide() {
+    public void SetTint(Color color) {
+        if (_previewInstance == null || _renderers == null) return;
+
+        _mpb.Clear();
+        _mpb.SetColor(_colorPropertyId, color);
+
+        for (int i = 0; i < _renderers.Length; i++)
+            _renderers[i].SetPropertyBlock(_mpb);
+    }
+
+    public void Toggle(bool status) {
         if (_previewInstance != null) {
-            _previewInstance.SetActive(false);
+            _previewInstance.SetActive(status);
         }
     }
 
     /// <summary>
     /// Sets the position and rotation relative to the parent.
     /// </summary>
-    public void SetLocalPositionRotation(Vector3 localPos, Vector3 localRot) {
-        localPos.y = 1f;
-        _previewInstance.transform.DORotate(localRot, 0.2f).SetEase(Ease.OutBack);
-        _previewInstance.transform.DOLocalMove(localPos, 0.2f).SetEase(Ease.OutBack);
+    public void SetLocalPositionRotation(Vector3 localPos, Vector3 localRot, float time = 0.2f) {
+        _previewInstance.transform.DORotate(localRot, time).SetEase(Ease.OutBack);
+        _previewInstance.transform.DOLocalMove(localPos, time).SetEase(Ease.OutBack);
+    }
+
+    public void SetPositionRotation(Vector3 worldPos, Vector3 localRot) {
+        _previewInstance.transform.position = worldPos;
+        _previewInstance.transform.rotation = Quaternion.Euler(localRot);
     }
 }

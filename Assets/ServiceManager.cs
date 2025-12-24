@@ -15,10 +15,9 @@ public class ServiceManager : MonoBehaviour
     /// This method may potentially have more complicated constraints depending on the service type.
     /// </summary>
     public void ToggleService<T>(bool status) where T : ServiceState {
-        Debug.Log(status);
         for (int i = 0; i < services.Count; i++) {
             if (services[i] == null) { continue; }
-            bool targ = services[i].GetType() == typeof(T) ? status : false;
+            bool targ = services[i].GetType() == typeof(T) && status;
             services[i].Toggle(targ);
         }
     }

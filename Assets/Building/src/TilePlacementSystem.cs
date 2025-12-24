@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class TilePlacementSystem {
@@ -9,17 +11,19 @@ public class TilePlacementSystem {
     // Public
     //---------------------------------------------------------------------
     public Vector2Int EffectiveSize {get; private set;}
+    public bool IsValidCoord { get {return _validCoord;}}
+    public Dictionary<int, TileInstance> tiles = new(); // All tile instances mapped by their id
 
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
     private InteractableGrid _grid;
-    private Dictionary<Vector2Int, CellData> cells = new(); // Every cell on the grid that has data
-    private Dictionary<int, TileInstance> tiles = new(); // All tile instances mapped by their id
+    private Dictionary<Vector2Int, CellData> cells = new();
     private int uid = 0;
     private TileDefinition _selectedTileDef;
     private int _rot;
     private bool _validCoord;
+    private List<int> _anchors = new();
     //---------------------------------------------------------------------
 
     // Constructor, Getter
@@ -30,15 +34,25 @@ public class TilePlacementSystem {
     //*********************************************************************
 
     /// <summary>
+    /// Explicitly define a tile at given coordinate as an anchor tile.
+    /// </summary>
+    public void AddAnchor(Vector2Int coord) {
+        if (!cells.ContainsKey(coord)) { return; }
+
+        _anchors.Add(cells[coord].tileID);
+    }
+
+    /// <summary>
     /// Clean up data when setting a new tile. Not every set tile will be at 0 rotation.
     /// </summary>
-    public void SetSelectedTile(TileDefinition def, int rot) { 
+    public Vector3 SetSelectedTile(TileDefinition def, int rot) { 
         _selectedTileDef = def; 
 
         if (def != null) {
-            UpdateRotation(rot, def.size);
-            EffectiveSize = def.size; 
+            return UpdateRotation(rot, def.size);
         }
+
+        return Vector3.zero;
     }
 
     /// <summary>
@@ -118,7 +132,7 @@ public class TilePlacementSystem {
             def.prefab, // prefab to create
             spawnPos + Vector3.up, // world position
             Quaternion.Euler(0, rot * -90, 0), // rotation
-            root); // parent transform
+            root).GetComponent<Tile>(); // parent transform
         instance.instance.transform.DOMove(spawnPos, tweenTime).SetEase(Ease.InCubic);
         tiles.Add(uid, instance);
 
@@ -149,9 +163,16 @@ public class TilePlacementSystem {
     /// <summary>
     /// Take an existing tile instance and move it to the location at coord.
     /// </summary>
+    public void UpdateInstance(Vector2Int coord, TileInstance instance) {
+        UpdateInstance(coord, instance, _rot);
+    }
+
+    /// <summary>
+    /// Take an existing tile instance and move it to the location at coord.
+    /// </summary>
     public void UpdateInstance(Vector2Int coord, TileInstance instance, int rot) {
         Vector3 spawnPos = _grid.GridToWorld(coord + _grid.RotationOffset(rot, instance.def.size));
-        instance.instance.transform.position = spawnPos;
+        instance.instance.transform.DOMove(spawnPos, 0.2f);
         instance.origin = coord;
         instance.rotation = rot;
         instance.instance.transform.rotation = Quaternion.Euler(0, rot * -90, 0);
@@ -252,5 +273,73 @@ public class TilePlacementSystem {
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Evaluate all of the tiles present and return if there are islands or not.
+    /// </summary>
+    public bool IdentifyIslands(Color notIslandColor, Color islandColor) {
+        if (_anchors.Count == 0) { return false; }
+
+        // Create a temporary hash set instances to track which ones have been visited
+        HashSet<int> notVisited = new HashSet<int>(tiles.Keys);
+
+        // Search all adjacencies around the tile
+        foreach (int anchor in _anchors) {
+            MarkAdjacencies(anchor, ref notVisited);
+        }
+
+        // Set the color of the islands accordingly
+        foreach (int tileID in tiles.Keys) {
+            tiles[tileID].instance.SetOverlayColor(notVisited.Contains(tileID) ? islandColor : notIslandColor);
+        }
+
+        // There are islands if some tiles are left unvisited
+        _validCoord &= notVisited.Count == 0;
+        return notVisited.Count != 0;
+    }
+
+    /// <summary>
+    /// Recursively visit all tiles that are connected to the provided tile and remove them from the notVisited list.
+    /// </summary>
+    private bool MarkAdjacencies(int tileID, ref HashSet<int> notVisited) {
+        // If the provided tile has not been visited, then remove it from the HashSet
+        if (notVisited.Contains(tileID)) { notVisited.Remove(tileID); }
+
+        // These two vectors define the tiles footprint
+        // NOTE: We only care about the adjacencies of tiles that haven't already been visited
+        Vector2Int coord = tiles[tileID].origin;
+        Vector2Int size = tiles[tileID].def.size;
+
+        for (int x = 0; x < size.x; x++) {
+            // Bottom edge
+            Vector2Int outTileCoord = new Vector2Int(coord.x + x, coord.y - 1);
+            if (cells.ContainsKey(outTileCoord) && notVisited.Contains(cells[outTileCoord].tileID)) {
+                MarkAdjacencies(cells[outTileCoord].tileID, ref notVisited);
+            }
+
+            // Top edge
+            outTileCoord.y = coord.y + size.y;
+            if (cells.ContainsKey(outTileCoord) && notVisited.Contains(cells[outTileCoord].tileID)) {
+                MarkAdjacencies(cells[outTileCoord].tileID, ref notVisited);
+            }
+        }
+
+        // One loop in the Y-direction that will evaluate the left and right border
+        for (int y = 0; y < size.y; y++) {
+            // Left edge
+            Vector2Int outTileCoord = new Vector2Int(coord.x - 1, coord.y + y);
+            if (cells.ContainsKey(outTileCoord) && notVisited.Contains(cells[outTileCoord].tileID)) {
+                MarkAdjacencies(cells[outTileCoord].tileID, ref notVisited);
+            }
+
+            // Right edge
+            outTileCoord.x = coord.x + size.x;
+            if (cells.ContainsKey(outTileCoord) && notVisited.Contains(cells[outTileCoord].tileID)) {
+                MarkAdjacencies(cells[outTileCoord].tileID, ref notVisited);
+            }
+        }
+
+        return false;
     }
 }

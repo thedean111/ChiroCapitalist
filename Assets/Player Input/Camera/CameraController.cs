@@ -60,12 +60,9 @@ public class CameraController : MonoBehaviour
 
         // Inverting the value feels better here
         MoveCameraTarget(-ctx.ReadValue<Vector2>(), clickDragSpeed);
-
-        if (!BuildingService.Instance.holdingTile) { UIManager.Instance.ToggleEditPopup(false); }
     }
 
     private void OnHoldStarted(InputAction.CallbackContext ctx) {
-        if (!BuildingService.Instance.holdingTile) { UIManager.Instance.ToggleEditPopup(false); }
         holding = true;
     }
 

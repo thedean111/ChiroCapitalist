@@ -62,7 +62,11 @@ public class InputManager : MonoBehaviour
     }
     
     private void AddMoney(InputAction.CallbackContext ctx) { ProgressionManager.Instance.AdjustMoney(500); }
-    private void InteractCell(InputAction.CallbackContext ctx) { BuildingService.Instance.InteractCell(); }
+    private void InteractCell(InputAction.CallbackContext ctx) { 
+        BuildingService.Instance.InteractCell();
+        EditService.Instance.InteractCell();
+    }
+    
     private void RotateTile(InputAction.CallbackContext ctx) { ConstructionManager.Instance.RotateSelection(); }
-    private void CancelEdit(InputAction.CallbackContext ctx) {  }
+    private void CancelEdit(InputAction.CallbackContext ctx) { EditService.Instance.CancelEdit(); }
 }

@@ -21,10 +21,10 @@
 }
 
 .hud-button {
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 0;
-    border-left-width: 3px;
+    border-top-width: 7px;
+    border-right-width: 7px;
+    border-bottom-width: 7px;
+    border-left-width: 7px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     border-bottom-right-radius: 0;
@@ -65,9 +65,9 @@
     align-self: stretch;
     height: 62px;
     margin-top: 10px;
-    margin-right: 10px;
+    margin-right: 8px;
     margin-bottom: 10px;
-    margin-left: 10px;
+    margin-left: 8px;
     background-size: 100% 83%;
 }
 
@@ -157,60 +157,6 @@
     translate: -50px 0;
 }
 
-.build-menu-edit-button {
-    right: -126px;
-    top: 68px;
-    bottom: auto;
-    width: 117px;
-    height: 90px;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    background-color: rgb(255, 237, 202);
-    border-top-left-radius: 11px;
-    border-top-right-radius: 11px;
-    border-bottom-right-radius: 11px;
-    border-bottom-left-radius: 11px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
-    border-left-color: rgb(29, 18, 11);
-    border-right-color: rgb(29, 18, 11);
-    border-top-color: rgb(29, 18, 11);
-    border-bottom-color: rgb(29, 18, 11);
-    transition-property: translate, background-color, scale;
-    transition-duration: 0.3s, 0.25s, 0.2s;
-    transition-timing-function: ease-out-back, ease, ease;
-    transition-delay: 0.1s, 0s, 0s;
-    translate: 0 0;
-    position: absolute;
-}
-
-.build-menu-edit-button:enabled:hover {
-    scale: 1.05 1.05 1.05;
-}
-
-.build-menu-edit-button:enabled:active {
-    scale: 1.02 1.02 1.02;
-    background-color: rgb(210, 195, 166);
-}
-
-.build-menu-edit-button:disabled {
-    position: absolute;
-    opacity: 0;
-    translate: -50px 0;
-}
-
-.edit-mode-active {
-    background-color: rgb(168, 121, 76);
-}
-
 .edit-tile-menu {
     position: absolute;
     width: 160px;
@@ -247,37 +193,99 @@
     transition-duration: 0.1s;
 }
 
-.edit-tile-opt-button {
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    height: 100px;
-    width: 100px;
+.edit-mode-delete-tile {
+    position: absolute;
+    left: 25px;
+    bottom: 25px;
+    width: 150px;
+    height: 150px;
     background-size: 70% 70%;
-    background-color: rgb(255, 237, 202);
-    -unity-background-image-tint-color: rgb(154, 95, 58);
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+    border-bottom-right-radius: 17px;
+    border-bottom-left-radius: 17px;
+    background-color: rgb(255, 181, 181);
+    -unity-background-image-tint-color: rgb(255, 100, 108);
+    border-left-color: rgb(28, 0, 0);
+    border-right-color: rgb(28, 0, 0);
+    border-top-color: rgb(28, 0, 0);
+    border-bottom-color: rgb(28, 0, 0);
+    transition-duration: 0.15s, 0.3s, 0.15s;
+    transition-property: scale, translate, background-color;
+    transition-timing-function: ease, ease-out-back, ease;
+    scale: 1 1;
+    translate: 0 0;
+    transition-delay: 0s, 0.15s, 0s;
+}
+
+.edit-mode-delete-tile:hover {
+    scale: 1.02 1.02;
+    background-color: rgb(255, 200, 200);
+}
+
+.edit-mode-delete-tile:active {
+    scale: 0.98 0.98 0.98;
+    background-color: rgb(232, 157, 157);
+}
+
+.edit-mode-delete-tile:disabled {
+    translate: -300px 0;
+    transition-delay: 0s;
+}
+
+.selected-tile-mouse-element {
+    flex-grow: 0;
+    width: 100px;
+    height: 100px;
+    background-color: rgb(154, 95, 58);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
     border-left-color: rgb(29, 18, 11);
     border-right-color: rgb(29, 18, 11);
     border-top-color: rgb(29, 18, 11);
     border-bottom-color: rgb(29, 18, 11);
-    border-top-width: 6px;
-    border-right-width: 6px;
-    border-bottom-width: 6px;
-    border-left-width: 6px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    transition-duration: 0.2s;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    background-image: none;
+    background-size: 80% 80%;
+    translate: -14px -14px;
     scale: 1 1;
+    position: absolute;
+    top: auto;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-out-back;
+    transition-property: scale;
 }
 
-.edit-tile-opt-button:hover {
-    scale: 1.05 1;
-}
-
-.edit-tile-opt-button:active {
-    scale: 1.02 1.02 1.02;
-    background-color: rgb(209, 190, 155);
+.selected-tile-mouse-element:disabled {
+    flex-grow: 0;
+    width: 100px;
+    height: 100px;
+    background-color: rgb(154, 95, 58);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-left-color: rgb(29, 18, 11);
+    border-right-color: rgb(29, 18, 11);
+    border-top-color: rgb(29, 18, 11);
+    border-bottom-color: rgb(29, 18, 11);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    background-image: none;
+    background-size: 80% 80%;
+    translate: -14px -14px;
+    scale: 0 0;
+    position: absolute;
+    top: auto;
 }

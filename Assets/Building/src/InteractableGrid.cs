@@ -15,6 +15,9 @@ public class InteractableGrid : MonoBehaviour
     // Public
     //---------------------------------------------------------------------
     public event Action<Vector2Int> OnHoveredCellChange;
+    public event Action OnMouseExitGrid;
+    public event Action OnMouseEnterGrid;
+
     public Vector2Int HoveredCoord {get { return _lastHoveredCoord; }}
     public float CellSize {get { return _cellSize; }}
     public float HalfCell {get { return _halfCellSize; }}
@@ -28,6 +31,7 @@ public class InteractableGrid : MonoBehaviour
     //---------------------------------------------------------------------
     private float _cellSize; // NOTE: extracted from the grid shader
     private float _halfCellSize;
+    private bool _previouslyOnGrid = false;
     private MeshRenderer _gridRenderer;
     private Vector2Int _lastHoveredCoord;
     private bool _gridActive = false;
@@ -74,11 +78,19 @@ public class InteractableGrid : MonoBehaviour
         // Fire an event if the hovered cell changes
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, 50, _gridMask)) {
+            if (!_previouslyOnGrid) { 
+                OnMouseEnterGrid?.Invoke();
+                _previouslyOnGrid = true;
+            }
+
             Vector2Int hitCoord = WorldToGrid(hit.point);
             if (hitCoord != _lastHoveredCoord && FootprintOnGrid(hitCoord)) {
                 _lastHoveredCoord = hitCoord;
                 OnHoveredCellChange?.Invoke(hitCoord);
             }
+        } else if (_previouslyOnGrid) {
+            _previouslyOnGrid = false;
+            OnMouseExitGrid?.Invoke();
         }
     }
 
@@ -115,8 +127,13 @@ public class InteractableGrid : MonoBehaviour
     /// Tween the alpha value of the grid material.
     /// </summary>
     public void ToggleGrid(bool target) {
+        // TODO: Really bad bandaid, but only fix if needed
+        // This prevents services that need the grid from fighting when the are enabled and disabled
+        if (BuildingService.Instance.Active || EditService.Instance.Active) { target = true; }
+
         _gridActive = target;
         _gridRenderer.material.DOFloat(target ? 1f : 0f, "_Alpha", fadeTime);
+        _previouslyOnGrid = false;
     }
 
     /// <summary>

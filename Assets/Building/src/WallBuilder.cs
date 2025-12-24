@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 /// <summary>
 /// This object will spawn walls based on placement rules given groups of cells.
@@ -22,7 +23,7 @@ public class WallBuilder : MonoBehaviour
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
-    Dictionary<AdjEdgeKey, GameObject> _edges = new();
+    private Dictionary<AdjEdgeKey, GameObject> _edges = new();
     //*********************************************************************
 
     /// <summary>
@@ -44,7 +45,7 @@ public class WallBuilder : MonoBehaviour
     //         Debug.Log(edge);
     //         WallType type = EvaluateEdge(edge, cells);
     //         ApplyEdge(edge, type);
-    //     }
+    //     }b
 
     //     List<AdjEdgeKey> toRemove = null;
 
@@ -62,6 +63,11 @@ public class WallBuilder : MonoBehaviour
     //     for (int i = 0; i < toRemove.Count; i++)
     //         RemoveEdge(toRemove[i]);
     // }
+
+    public void ToggleWalls(bool status) {
+        Vector3 target = status ? Vector3.zero : (Vector3.down * 2);
+        transform.DOMove(target, 0.3f).SetEase(Ease.OutBack);
+    }
 
     /// <summary>
     /// Evaluates edges on the perimeter defined by the starting coordinate and the footprint size.
@@ -192,7 +198,8 @@ public class WallBuilder : MonoBehaviour
         }
 
         // Spawn the prefab and position it properly
-        _edges[edge] = Instantiate(prefab, position, Quaternion.Euler(rotation), transform);
+        _edges[edge] = Instantiate(prefab, Vector3.zero, Quaternion.Euler(rotation), transform);
+        _edges[edge].transform.localPosition = position;
     }
 
     /// <summary>

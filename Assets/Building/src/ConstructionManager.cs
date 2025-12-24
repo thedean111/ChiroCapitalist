@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 /// <summary>
@@ -72,8 +73,10 @@ public class ConstructionManager : MonoBehaviour
 
         // Setup all the callback for hovered grid cell change
         if (grid == null || gridMarker == null) { Debug.LogWarning("Grid objects not set properly!"); }
-        else {
-            grid.OnHoveredCellChange += UpdateCellFeedback;
+        else { 
+            grid.OnHoveredCellChange += UpdateCellFeedback; 
+            grid.OnMouseEnterGrid += () => editService.ToggleTileWorldPreview(true);
+            grid.OnMouseExitGrid += () => editService.ToggleTileWorldPreview(false);
         }
     }
 
@@ -85,6 +88,7 @@ public class ConstructionManager : MonoBehaviour
 
         Vector2Int mainOfficeCoord = new Vector2Int(-2, 3);
         _tilePlacer.SpawnTile(mainOfficeCoord, mainOffice, 0, transform, 0);
+        _tilePlacer.AddAnchor(mainOfficeCoord);
         wallBuilder.RebuildPerimeter(mainOfficeCoord, mainOffice.size, _tilePlacer.GetCells());
     }
 
@@ -114,10 +118,12 @@ public class ConstructionManager : MonoBehaviour
 
         _rot = (_rot + 1) % 4;
 
+        previewer.SetLocalPositionRotation( _tilePlacer.UpdateRotation(_rot, def.size), Vector3.up * _rot * -90);
         gridMarker.Resize(_tilePlacer.EffectiveSize);
         grid.UpdateFootprint(_tilePlacer.EffectiveSize);
-        previewer.SetLocalPositionRotation( _tilePlacer.UpdateRotation(_rot, def.size), Vector3.up * _rot * -90);
         CheckMarkerValidity(grid.HoveredCoord);
+
+        if (editService.Active) { editService.EditOnCellChange(grid.HoveredCoord); }
     }
 
     /// <summary>

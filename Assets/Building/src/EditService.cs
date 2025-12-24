@@ -17,161 +17,231 @@ public class EditService : ServiceState
     public WallBuilder wallBuilder;
     public TilePlacementSystem tilePlacer;
 
+    [Header("Params")]
+    public string hologramColorProperty = "_BaseColor";
+    public string hologramLayerName = "Hologram";
+    public Color baseHologramTint;
+    public Color activeHologramTint;
+    public Color islandColor;
+
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
+    private int _holoLayerMask;
+    private TileInstance _payload = null;
+    private Vector2Int _lastCoordWhileMoving;
+    private Vector2Int _originalEditCoord;
     //---------------------------------------------------------------------
 
 
     void Awake() {
         if (Instance == null) { Instance = this;}
+        _holoLayerMask = LayerMask.NameToLayer(hologramLayerName);
     }
 
-    // /// <summary>
-    // /// Performs any logic necessary for toggling edit mode on and off.
-    // /// </summary>
-    // public void ToggleEdit(bool status) {
-    //     _editing = status;
+    /// <summary>
+    /// Performs any logic necessary for toggling the service on and off.
+    /// </summary>
+    public override void Toggle(bool status) {
+        if (!CanToggle(status)) { return; }
+        base.Toggle(status);
 
-    //     if (_editing) {
-    //         previewer.Hide();
-    //         _selectedTileDefinition = null;
-    //         gridMarker.Resize(Vector2Int.one);
-    //         grid.UpdateFootprint(Vector2Int.one);
+        // Ensure the grid is on and toggle the 
+        if (Active) {
+            UIManager.Instance.ToggleEditServiceUI(true);
+            grid.ToggleGrid(true);
+            ToggleOverlays(true);
+            wallBuilder.ToggleWalls(false);
+            grid.OnHoveredCellChange += EditOnCellChange;
 
-    //         UIManager.Instance.ActivateEditButton(true);
-    //         UIManager.Instance.ClearTileListSelection();
-    //     } else {
-    //         UIManager.Instance.ActivateEditButton(false);
-    //     }
-    // }
+        } else {
+            grid.OnHoveredCellChange -= EditOnCellChange;
+            CancelEdit();
+            UIManager.Instance.ToggleEditServiceUI(false);
+            grid.ToggleGrid(false);
+            ToggleOverlays(false);
+            wallBuilder.ToggleWalls(true);
+            gridMarker.Reset();
+            if (tilePlacer.SelectedTileDef() != null) {
+                previewer.Toggle(false);
+                tilePlacer.SetSelectedTile(null, 0);
+            }
+        }
+    }
 
-    //  else  if (_editing && _placement.HasCellData(grid.HoveredCoord)) {
-    //         _focusedCell = grid.HoveredCoord;
-    //         UIManager.Instance.ToggleEditPopup(true);
-    //         CameraController.Instance.ForceCameraPosition(grid.GridToWorld(grid.HoveredCoord));
-    //     } else if (holdingTile) {
-        //     ConfirmEdit();
-                // If the player picked up a tile this flag turns to true, attempt to place it at the mouse position.
+    /// <summary>
+    /// This is called when the player executes the input that interacts with the current cell. This does nothing while not in build mode.
+    /// </summary>
+    public void InteractCell() {
+        if (!Active || UIManager.Instance.IsPointerOverUI()) { return; }
 
-        // // The player is interacting with an arbitrary cell
-        // }
+        // If there is currently no payload then the player wants to attempt picking up whatever is at 
+        // the current cell coordinate
+        if (_payload == null) {
+            PickupTile();
 
+        // If there is a payload then the player wants the place what they are holding at the current cell
+        // coordinate
+        } else {
+            PlaceTile();
+        }
+    }
+
+    /// <summary>
+    /// Restore the original state of the active payload.
+    /// </summary>
+    public void CancelEdit() {
+        if (_payload == null) { return; }
+
+        // Hide the previews and show the original tile again
+        previewer.Toggle(false);
+        movePreviewer.Toggle(false);
+        _payload.instance.gameObject.SetActive(true);
+
+        // Remove whatever was being shown to the player
+        tilePlacer.RemoveCellFootprint(_lastCoordWhileMoving, tilePlacer.EffectiveSize);
+        wallBuilder.RebuildPerimeter(_lastCoordWhileMoving, tilePlacer.EffectiveSize, tilePlacer.GetCells());
+
+        // Add the original tile back to the placer and update walls
+        tilePlacer.UpdateInstance(_originalEditCoord, _payload, _payload.rotation);
+        wallBuilder.RebuildPerimeter(_originalEditCoord, tilePlacer.EffectiveSize, tilePlacer.GetCells());
+        tilePlacer.IdentifyIslands(baseHologramTint, islandColor);
+        
+        // Reset
+        gridMarker.Resize(Vector2Int.one);
+        _payload = null;
+    }
+
+    /// <summary>
+    /// Called when the player selects the delete button while holding a payload.
+    /// </summary>
+    public void DeletePayload() {
+        if (_payload == null) { return; }
+
+        // TODO: Show a popup dialog that asks the player to confirm this deletion
+
+        // TODO: For any tiles that are tied with other systems (offices, doctors, patients, etc.)
+        // reallocate the resources where necessary so the player doesn't lose them
+        Destroy(_payload.instance.gameObject);
+
+        UIManager.Instance.ToggleSelectedTileElement(false);
+        _payload = null;
+        previewer.Toggle(false);
+        movePreviewer.Toggle(false);
+        gridMarker.Resize(Vector2Int.one);
+    }
+
+    /// <summary>
+    /// Switch between a world-space preview of the selected tile and a screen-space-mouse-anchored preview of the selected tile. True equates to world space.
+    /// </summary>
+    public void ToggleTileWorldPreview(bool status) {
+        if (_payload == null) { return; }
+
+        UIManager.Instance.ToggleSelectedTileElement(!status);
+        previewer.Toggle(status);
+    }
+
+    /// <summary>
+    /// For all the tiles, puts the game objects in a new layer that has an overlay material drawn on it.
+    /// </summary>
+    private void ToggleOverlays(bool status) {
+        foreach (TileInstance tile in tilePlacer.tiles.Values) {
+            if (status) {
+                tile.instance.EnableOverlay(_holoLayerMask);
+                tile.instance.SetTargetProperty(hologramColorProperty);
+                tile.instance.SetOverlayColor(baseHologramTint);
+            } else
+                tile.instance.DisableOverlay();
+        }
+    }
+
+    /// <summary>
+    /// When holding a payload, for every valid position simulate the new state of the grid.
+    /// </summary>
+    public void EditOnCellChange(Vector2Int coord) {
+        if (_payload == null) { return; }
+
+        // Remove the payload information from the previously simulated cell
+        tilePlacer.RemoveCellFootprint(_lastCoordWhileMoving, tilePlacer.EffectiveSize);
+        wallBuilder.RebuildPerimeter(_lastCoordWhileMoving, tilePlacer.EffectiveSize, tilePlacer.GetCells());
+
+        // If the coord and tile wouldn't be valid, don't simulate anything
+        if (!tilePlacer.IsValidCoord) { return; }
+
+        // At the new coord update the instance and generate the new all placement
+        tilePlacer.UpdateInstance(coord, _payload);
     
-    /// <summary>
-    /// Attempt to delete the focused tile.
-    /// TODO: Check for anchor chain breakage before confirming a deletion.
-    /// </summary>
-    // public void DeleteFocusedTile() {
-    //     if (!_editing) { return; }
+        // Feedback to the user how this position affects islands.
+        // If this newly hovered coord DOES NOT create islands then simulate the walls
+        if (!tilePlacer.IdentifyIslands(baseHologramTint, islandColor)) {
+            wallBuilder.RebuildPerimeter(coord, tilePlacer.EffectiveSize, tilePlacer.GetCells());
+            tilePlacer.RemoveCellFootprint(coord, tilePlacer.EffectiveSize);
+        }
 
-    //     TileInstance tile = _placement.GetTileInstance(_focusedCell);
-    //     if (tile == null) {
-    //         Debug.LogWarning("BuildingService: Attempting to delete a tile that doesn't exist!");
-    //         return;
-    //     }
-
-    //     _placement.RemoveCellFootprint(tile.origin, tile.def.size);
-    //     wallBuilder.RebuildPerimeter(tile.origin, tile.def.size, _placement.GetCells());
-
-    //     // TODO: If this tile is tied to other game objects (Office-doctor-patient), reallocate resources properly
-    //     Destroy(tile.instance);
-
-    //     UIManager.Instance.ToggleEditPopup(false);
-    // }
+        _lastCoordWhileMoving = coord;
+    }
 
     /// <summary>
-    /// Pick up the tile that is currently focused.
+    /// Actual logic for picking up a tile and creating an edit payload with it.
     /// </summary>
-    // public void PickupTile() {
-    //     if (!_editing) { return; }
+    private void PickupTile() {
+        // Get the tile definition at the selected cell
+        _payload = tilePlacer.GetTileInstance(grid.HoveredCoord);
+        if (_payload == null) {
+            Debug.LogWarning("EditService: Attempting to pick up a tile that doesn't exist!");
+            return;
+        }
 
-    //     // Get the tile definition at the selected cell
-    //     TileInstance tile = _placement.GetTileInstance(_focusedCell);
-    //     if (tile == null) {
-    //         Debug.LogWarning("BuildingService: Attempting to pick up a tile that doesn't exist!");
-    //         return;
-    //     }
-    //     UIManager.Instance.ToggleEditPopup(false);
+        // Set the icon in case the mouse leaves the grid
+        UIManager.Instance.SetSelectedTileElement(_payload.def.icon);
 
-    //     // Holding tile in the context of editing, but treat the movement like a normal placement
-    //     holdingTile = true;
-    //     _selectedTileDefinition = tile.def;
-    //     _movingInstance = tile;
+        // Use the placement previewer to visualize where the tile will be moved to
+        Vector3 localPos = tilePlacer.SetSelectedTile(_payload.def, _payload.rotation);
+        previewer.SetPrefab(_payload.def.prefab);
+        previewer.SetPositionRotation(_payload.instance.transform.position, Vector3.up * _payload.rotation * -90);
+        previewer.SetLocalPositionRotation(localPos + Vector3.up, Vector3.up * _payload.rotation * -90);
+        grid.UpdateFootprint(tilePlacer.EffectiveSize);
+        gridMarker.Resize(tilePlacer.EffectiveSize);
 
-    //     // Use the placement previewer to visualize where the tile will be moved to
-    //     previewer.SetPrefab(tile.def.prefab);
-    //     Vector3 localPos = UpdateEffectiveSize(_rot, tile.def.size);
-    //     _rot = tile.rotation;
-    //     previewer.SetLocalPositionRotation(localPos, Vector3.up * _rot * -90);
-    //     grid.UpdateFootprint(_selectedTileDefinition.size);
-    //     gridMarker.Resize(_selectedTileDefinition.size);
+        // Use the move previewer to show the original tile location
+        movePreviewer.SetPrefab(_payload.def.prefab);
+        movePreviewer.transform.position = _payload.instance.transform.position;
+        movePreviewer.transform.rotation = _payload.instance.transform.rotation;
+        movePreviewer.SetTint(activeHologramTint);
 
-    //     // Use the move previewer to show the original tile location
-    //     movePreviewer.SetPrefab(tile.def.prefab);
-    //     movePreviewer.transform.position = tile.instance.transform.position;
-    //     movePreviewer.transform.rotation = tile.instance.transform.rotation;
-    //     movePreviewer.SetTint(TilePreviewState.Pending_Move);
+        // Hide the instance of the tile
+        _payload.instance.gameObject.SetActive(false);
 
-    //     // Hide the instance of the tile
-    //     tile.instance.SetActive(false);
+        // Capture the initial state of the tile and then remove it from the grid
+        tilePlacer.RemoveCellFootprint(_payload.origin, tilePlacer.EffectiveSize);
+        wallBuilder.RebuildPerimeter(_payload.origin, tilePlacer.EffectiveSize, tilePlacer.GetCells());
 
-    //     // Capture the initial state of the tile and then remove it from the grid
-    //     _placement.RemoveCellFootprint(tile.origin, tile.def.size);
-    //     wallBuilder.RebuildPerimeter(tile.origin, tile.def.size, _placement.GetCells());
-    // }
+        // Immediately determine if any islands are formed by picking up the tile
+        tilePlacer.IdentifyIslands(baseHologramTint, islandColor);
+        _lastCoordWhileMoving = grid.HoveredCoord;
+        _originalEditCoord = _payload.origin;
 
+    }
 
     /// <summary>
-    /// If a tile is currently being moved, cancel the move and restore the original state.
+    /// Actual logic for placing down the current edit payload.
     /// </summary>
-    // public void CancelEdit() {
-    //     if (!holdingTile) { return; }
+    private void PlaceTile() {
+        // This is also updated when the islands are identified
+        if (!tilePlacer.IsValidCoord) { return; }
 
-    //     // Add the original instance back to the placement dictionary data
-    //     _placement.UpdateInstance(_movingInstance.origin, _movingInstance, _movingInstance.rotation);
+        // Sound!
+        SoundManager.Instance.PlayBuildEffect(ConstructionManager.Instance.placementSound);
 
-    //     // Reset the original instance
-    //     // TODO: Play some undo sound
-    //     _movingInstance.instance.SetActive(true);
-    //     wallBuilder.RebuildPerimeter(_movingInstance.origin, _movingInstance.def.size, _placement.GetCells());
-
-    //     // Hide previews        
-    //     movePreviewer.Hide();
-    //     previewer.Hide();
-
-    //     // Set internal data
-    //     holdingTile = false;
-    //     _selectedTileDefinition = null;
-    //     _movingInstance = null;
-    //     gridMarker.Resize(Vector2Int.one);
-    // }
-
-    // /// <summary>
-    // /// If a tile is currently being moved, place it down on the current grid coordinate--assuming its a valid position.
-    // /// </summary>
-    // public void ConfirmEdit() {
-    //     if (_editing && _selectedTileDefinition != null) {
-    //         if (!_validCoord) {
-    //             Debug.LogWarning("Cannot move tile to an invalid coordinate!");
-    //         }
-
-    //         // Update the existing instance and build new walls
-    //         // TODO: Play a special sound for moving instances
-    //         _placement.UpdateInstance(grid.HoveredCoord, _movingInstance, _rot);
-    //         _movingInstance.instance.SetActive(true);
-    //         SoundManager.Instance.PlayBuildEffect(placementSound);
-    //         wallBuilder.RebuildPerimeter(grid.HoveredCoord, _effectiveSize, _placement.GetCells());
-            
-    //         // Hide previews        
-    //         movePreviewer.Hide();
-    //         previewer.Hide();
-
-    //         // Update flags
-    //         _movingInstance = null;
-    //         _selectedTileDefinition = null;
-    //         holdingTile = false;
-    //         gridMarker.Resize(Vector2Int.one);
-    //     }
-    // }
+        // Move the instance and update the local walls
+        tilePlacer.UpdateInstance(grid.HoveredCoord, _payload);
+        _payload.instance.gameObject.SetActive(true);
+        // wallBuilder.RebuildPerimeter(grid.HoveredCoord, tilePlacer.EffectiveSize, tilePlacer.GetCells());
+        
+        // Reset selection stuff
+        _payload = null;
+        previewer.Toggle(false);
+        movePreviewer.Toggle(false);
+        gridMarker.Resize(Vector2Int.one);
+    }
 }
