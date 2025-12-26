@@ -112,16 +112,17 @@ public class TilePlacementSystem {
     /// Without a tile definition input, the tile placement system will attempt to spawn the currently
     /// selected tile.
     /// </summary>
-    public bool TrySpawn(Vector2Int coord, Transform root, float tweenTime=0.15f) {
+    public bool TrySpawn(Vector2Int coord, Transform root, float tweenTime, out TileInstance newTile) {
+        newTile = null;
         if (_selectedTileDef == null || !_validCoord) { return false;}
-        SpawnTile(coord, _selectedTileDef, _rot, root, tweenTime);
+        newTile = SpawnTile(coord, _selectedTileDef, _rot, root, tweenTime);
         return true;
     }
 
     /// <summary>
     /// Spawn whatever is provided to this method without performing any checks. There is a chance to overwrite data if not used properly.
     /// </summary>
-    public void SpawnTile(Vector2Int coord, TileDefinition def, int rot, Transform root, float tweenTime=0.15f) {
+    public TileInstance SpawnTile(Vector2Int coord, TileDefinition def, int rot, Transform root, float tweenTime=0.15f) {
         TileInstance instance = new TileInstance();
         instance.tileID = uid;
         instance.def = def;
@@ -158,6 +159,7 @@ public class TilePlacementSystem {
         }
 
         uid++;
+        return instance;
     }
 
     /// <summary>

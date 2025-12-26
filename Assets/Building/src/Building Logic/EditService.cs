@@ -236,6 +236,7 @@ public class EditService : ServiceState
         // Move the instance and update the local walls
         tilePlacer.UpdateInstance(grid.HoveredCoord, _payload);
         _payload.instance.gameObject.SetActive(true);
+        _payload.instance.PlaceTile();
         // wallBuilder.RebuildPerimeter(grid.HoveredCoord, tilePlacer.EffectiveSize, tilePlacer.GetCells());
         
         // Reset selection stuff

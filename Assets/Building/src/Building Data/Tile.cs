@@ -14,7 +14,18 @@ public class Tile : MonoBehaviour
     private Renderer[] _renderers;
     private string _targetProperty;
     private MaterialPropertyBlock _mpb;
+    protected bool _firstPlace = true;
     //---------------------------------------------------------------------
+
+    /// <summary>
+    /// Initialization of this tile the first time its placed down
+    /// </summary>
+    public virtual void Initialize() { PlaceTile(); }
+
+    /// <summary>
+    /// Logic for placing down the tile..
+    /// </summary>
+    public virtual void PlaceTile() {}
 
     /// <summary>
     /// Unity enable method.

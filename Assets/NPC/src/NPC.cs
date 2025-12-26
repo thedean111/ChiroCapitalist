@@ -89,9 +89,11 @@ public class NPCData
     public Mesh hair, head, torso, pants, shoes;
     public ColorSet skinColors, hairColors, torsoColors, pantsColors, shoesColors;
     public string name;
-    public Vector3 stats; // x - Strength, y - Technique, z - Magic
+    public NPCStats stats; // x - Strength, y - Technique, z - Magic
 
-    // TODO: Stats
+    public NPCData() {
+        stats = new NPCStats();
+    }
 
 
     public struct ColorSet

@@ -50,7 +50,7 @@ public class NPCFactory : MonoBehaviour
         PatientData pd = new PatientData();
 
         // Pick a random race, and populate the patient data object with its details
-        races[UnityEngine.Random.Range(0, races.Length)].PopulateNPCData(pd);
+        races[Random.Range(0, races.Length)].PopulateNPCData(pd);
 
         // The patient needs are separate from the race distribution, so generate the patient's needs here
         // Consult the progression manager for the current patient difficulty and a stat total for the patient
@@ -69,13 +69,13 @@ public class NPCFactory : MonoBehaviour
             switch (types[idx])
             {
                 case StatType.STRENGTH:
-                    pd.stats.x = Random.Range(.2f, 1f);
+                    pd.stats.strength = Random.Range(.2f, 1f);
                     break;
                 case StatType.TECHNIQUE:
-                    pd.stats.y = Random.Range(.2f, 1f);
+                    pd.stats.technique = Random.Range(.2f, 1f);
                     break;
                 case StatType.MAGIC:
-                    pd.stats.z = Random.Range(.2f, 1f);
+                    pd.stats.magic = Random.Range(.2f, 1f);
                     break;
                 default:
                     break;
@@ -85,7 +85,10 @@ public class NPCFactory : MonoBehaviour
 
         // Currently, the stats in 'pd' just contain the randomly generated weights...
         // convert them to stat totals here by normalizing the weights
-        pd.stats = pd.stats / (pd.stats.x + pd.stats.y + pd.stats.z) * pool;
+        float total = pd.stats.strength + pd.stats.technique + pd.stats.magic;
+        pd.stats.strength = pd.stats.strength / total * pool;
+        pd.stats.technique = pd.stats.technique / total * pool;
+        pd.stats.magic = pd.stats.magic / total * pool;
 
         return pd;
     }

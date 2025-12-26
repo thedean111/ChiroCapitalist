@@ -76,7 +76,8 @@ public class BuildingService : ServiceState
         if (!Active || UIManager.Instance.IsPointerOverUI()) { return; }
 
         // This is for placing a new tile
-        if (tilePlacer.TrySpawn(grid.HoveredCoord, transform)) {
+        if (tilePlacer.TrySpawn(grid.HoveredCoord, transform, 0.15f, out TileInstance newTile)) {
+            newTile.instance.Initialize();
             SoundManager.Instance.PlayBuildEffect(ConstructionManager.Instance.placementSound);
             wallBuilder.RebuildPerimeter(grid.HoveredCoord, tilePlacer.EffectiveSize, tilePlacer.GetCells());
             ConstructionManager.Instance.CheckMarkerValidity(grid.HoveredCoord);

@@ -57,7 +57,6 @@ public class NPCRaceData : ScriptableObject
         data.hairColors.tertiary = tertiary[Random.Range(0, tertiary.Length)];
         data.hairColors.accent = c_Skin;
 
-        Debug.Log(primary);
         data.torsoColors.primary = primary[Random.Range(0, primary.Length)];
         data.torsoColors.secondary = secondary[Random.Range(0, secondary.Length)];
         data.torsoColors.tertiary = tertiary[Random.Range(0, tertiary.Length)];
