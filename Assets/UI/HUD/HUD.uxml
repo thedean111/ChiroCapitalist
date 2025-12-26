@@ -1,0 +1,40 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/HUD/hud.uss?fileID=7433441132597879392&amp;guid=fd5a90d896f1f0d44b4f9a4179014235&amp;type=3#hud"/>
+    <ui:VisualElement name="hud-root" picking-mode="Ignore" class="root-element">
+        <ui:VisualElement name="hud-buttons-container" style="flex-grow: 1; flex-direction: row; position: absolute; right: 0; bottom: 0; margin-right: 20px; margin-top: 20px; margin-bottom: 0; margin-left: 20px; justify-content: space-between; width: 213px;">
+            <ui:VisualElement name="edit-button-container" style="flex-grow: 1; align-items: center;">
+                <ui:Button name="edit-button" class="hud-button" style="overflow: visible;">
+                    <ui:VisualElement name="edit-button-icon" class="hud-button-icon" style="background-image: url(&quot;project://database/Assets/UI/HUD/editTilesButton.svg?fileID=7388822144124034973&amp;guid=ec1069fe0223fba45a51ba305e50b993&amp;type=3#editTilesButton&quot;); background-size: 100% 88%;"/>
+                    <ui:Label text="E" name="edit-keybind-label" class="hud-text hud-menu-header hud-keybind-label"/>
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="build-button-container" style="flex-grow: 1; align-items: center;">
+                <ui:Button name="placement-button" class="hud-button" style="overflow: visible;">
+                    <ui:VisualElement name="build-button-icon" class="hud-button-icon" style="background-image: url(&quot;project://database/Assets/UI/HUD/buildingButton.svg?fileID=7388822144124034973&amp;guid=8520ff82fdf8da24ab8a4cfdf57cf1cc&amp;type=3#buildingButton&quot;); background-size: 100% 63%;"/>
+                    <ui:Label text="B" name="build-keybind-label" class="hud-text hud-menu-header hud-keybind-label"/>
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="construction-root" picking-mode="Ignore" enabled="true" class="root-element" style="flex-grow: 1;">
+        <ui:VisualElement name="placement-mode-container" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+            <ui:VisualElement name="building-container" class="build-menu">
+                <ui:VisualElement name="building-content-container" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/HUD/building/build-ui-background.png?fileID=2800000&amp;guid=3ba68173f7e05fd43b1d88202c58b09a&amp;type=3#build-ui-background&quot;);">
+                    <ui:ScrollView mode="Horizontal" name="build-tile-list" style="position: absolute; height: 150px; width: 864px; top: 30px; bottom: 0; left: 0; right: auto; flex-direction: row; align-self: auto; align-items: center; padding-left: 35px;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="building-header-container" enabled="true" class="test-enabled build-menu-header">
+                    <ui:VisualElement style="background-image: url(&quot;project://database/Assets/UI/HUD/building/build-ui-hammer.png?fileID=2800000&amp;guid=7bd4fad9e25c75a44b9f82864574bd02&amp;type=3#build-ui-hammer&quot;); width: 400px; height: 80px;"/>
+                    <ui:Label text="Build Catalog" name="building-header-text" class="hud-menu-header" style="top: -3px;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="edit-mode-container" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+            <ui:Button name="edit-mode-delete-button" enabled="true" class="edit-mode-delete-tile">
+                <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/HUD/trashCan.svg?fileID=7388822144124034973&amp;guid=d7aef0da184bf304491506710593b741&amp;type=3#trashCan&quot;); -unity-background-image-tint-color: rgb(255, 100, 108);"/>
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="overlay-root" picking-mode="Ignore" enabled="true" style="flex-grow: 1;">
+        <ui:VisualElement name="selected-tile-mouse-element" picking-mode="Ignore" class="selected-tile-mouse-element"/>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,291 @@
+:root {
+}
+
+.hud-text {
+    -unity-font-style: bold;
+    font-size: 32px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/Fonts/Nunito/static/Nunito-Bold.ttf?fileID=12800000&guid=b827e42db90a5e247836969d7d8a8109&type=3#Nunito-Bold");
+    color: rgb(0, 0, 0);
+}
+
+.hud-button {
+    border-top-width: 7px;
+    border-right-width: 7px;
+    border-bottom-width: 7px;
+    border-left-width: 7px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 10px;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    width: 75px;
+    height: 109px;
+    background-color: rgb(255, 237, 202);
+    transition-duration: 0.2s;
+    background-size: 80% 80%;
+    align-self: auto;
+    align-items: center;
+    border-left-color: rgb(29, 18, 11);
+    border-right-color: rgb(29, 18, 11);
+    border-top-color: rgb(29, 18, 11);
+    border-bottom-color: rgb(29, 18, 11);
+    translate: 0 30px;
+}
+
+.hud-button:hover {
+    translate: 0 5px;
+}
+
+.hud-button:active {
+    background-color: rgb(209, 190, 155);
+}
+
+.hud-button-icon {
+    -unity-background-image-tint-color: rgb(255, 175, 124);
+    top: -12px;
+    align-self: stretch;
+    height: 62px;
+    margin-top: 10px;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    margin-left: 8px;
+    background-size: 100% 83%;
+}
+
+.hud-button-on {
+    background-color: rgb(169, 102, 66);
+    translate: 0 5px;
+}
+
+.root-element {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.hud-menu-header {
+    -unity-font-definition: url("project://database/Assets/Fonts/Nunito/static/Nunito-ExtraBold.ttf?fileID=12800000&guid=ba5e3656578597f46a5f876e7d06eb55&type=3#Nunito-ExtraBold");
+    -unity-font-style: bold;
+    font-size: 40px;
+    position: absolute;
+    left: 47px;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgb(29, 18, 11);
+    color: rgb(255, 237, 202);
+    letter-spacing: -1px;
+}
+
+.build-menu {
+    width: 900px;
+    height: 200px;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    transition-duration: 0.2s;
+    translate: 0 0;
+}
+
+.build-menu:disabled {
+    opacity: 0;
+    translate: -1000px 0;
+}
+
+.hud-keybind-label {
+    position: absolute;
+    top: -40px;
+    background-color: rgb(154, 95, 58);
+    width: 44px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgb(29, 18, 11);
+    border-right-color: rgb(29, 18, 11);
+    border-top-color: rgb(29, 18, 11);
+    border-bottom-color: rgb(29, 18, 11);
+    left: -19px;
+    height: 54px;
+    color: rgb(255, 237, 202);
+    font-size: 32px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 0;
+}
+
+.build-menu-header {
+    flex-grow: 1;
+    position: absolute;
+    top: -51px;
+    left: 9px;
+    transition-delay: 0.15s;
+    transition-duration: 0.25s;
+    translate: 0 0;
+    transition-timing-function: ease-out-back;
+}
+
+.build-menu-header:disabled {
+    flex-grow: 1;
+    position: absolute;
+    top: -51px;
+    left: 9px;
+    transition-delay: 0.3s;
+    transition-duration: 0.2s;
+    translate: -50px 0;
+}
+
+.edit-tile-menu {
+    position: absolute;
+    width: 160px;
+    height: 275px;
+    justify-content: space-around;
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    align-items: center;
+    scale: 1 1;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-back;
+    background-color: rgba(29, 18, 11, 0.73);
+    border-top-width: 6px;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 6px;
+    border-left-color: rgb(29, 18, 11);
+    border-right-color: rgb(29, 18, 11);
+    border-top-color: rgb(29, 18, 11);
+    border-bottom-color: rgb(29, 18, 11);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    top: 15%;
+    left: 56%;
+}
+
+.edit-tile-menu:disabled {
+    scale: 0 0;
+    transition-timing-function: ease;
+    transition-duration: 0.1s;
+}
+
+.edit-mode-delete-tile {
+    position: absolute;
+    left: 25px;
+    bottom: 25px;
+    width: 150px;
+    height: 150px;
+    background-size: 70% 70%;
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+    border-bottom-right-radius: 17px;
+    border-bottom-left-radius: 17px;
+    background-color: rgb(255, 181, 181);
+    -unity-background-image-tint-color: rgb(255, 100, 108);
+    border-left-color: rgb(28, 0, 0);
+    border-right-color: rgb(28, 0, 0);
+    border-top-color: rgb(28, 0, 0);
+    border-bottom-color: rgb(28, 0, 0);
+    transition-duration: 0.15s, 0.3s, 0.15s;
+    transition-property: scale, translate, background-color;
+    transition-timing-function: ease, ease-out-back, ease;
+    scale: 1 1;
+    translate: 0 0;
+    transition-delay: 0s, 0.15s, 0s;
+}
+
+.edit-mode-delete-tile:hover {
+    scale: 1.02 1.02;
+    background-color: rgb(255, 200, 200);
+}
+
+.edit-mode-delete-tile:active {
+    scale: 0.98 0.98 0.98;
+    background-color: rgb(232, 157, 157);
+}
+
+.edit-mode-delete-tile:disabled {
+    translate: -300px 0;
+    transition-delay: 0s;
+}
+
+.selected-tile-mouse-element {
+    flex-grow: 0;
+    width: 100px;
+    height: 100px;
+    background-color: rgb(154, 95, 58);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-left-color: rgb(29, 18, 11);
+    border-right-color: rgb(29, 18, 11);
+    border-top-color: rgb(29, 18, 11);
+    border-bottom-color: rgb(29, 18, 11);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    background-image: none;
+    background-size: 80% 80%;
+    translate: -14px -14px;
+    scale: 1 1;
+    position: absolute;
+    top: auto;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-out-back;
+    transition-property: scale;
+}
+
+.selected-tile-mouse-element:disabled {
+    flex-grow: 0;
+    width: 100px;
+    height: 100px;
+    background-color: rgb(154, 95, 58);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-left-color: rgb(29, 18, 11);
+    border-right-color: rgb(29, 18, 11);
+    border-top-color: rgb(29, 18, 11);
+    border-bottom-color: rgb(29, 18, 11);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    background-image: none;
+    background-size: 80% 80%;
+    translate: -14px -14px;
+    scale: 0 0;
+    position: absolute;
+    top: auto;
+}
