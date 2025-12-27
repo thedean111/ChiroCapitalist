@@ -50,6 +50,7 @@ MonoBehaviour:
     rewardModifier: 1
     patientCapacity: 0
   patient: {fileID: 8104676005824110942}
+  adjustmentTime: 3
 --- !u!1 &4731113514354511992
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,6 +743,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5836225523061537150, guid: 80e7de5727fd624479622787fd0c3242, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694680734525590479, guid: 80e7de5727fd624479622787fd0c3242, type: 3}
+      propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

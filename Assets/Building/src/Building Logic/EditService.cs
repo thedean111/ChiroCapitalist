@@ -159,23 +159,36 @@ public class EditService : ServiceState
     /// When holding a payload, for every valid position simulate the new state of the grid.
     /// </summary>
     public void EditOnCellChange(Vector2Int coord) {
-        if (_payload == null) { return; }
+        if (!Active) { return; }
 
-        // Remove the payload information from the previously simulated cell
-        tilePlacer.RemoveCellFootprint(_lastCoordWhileMoving, tilePlacer.EffectiveSize);
-        wallBuilder.RebuildPerimeter(_lastCoordWhileMoving, tilePlacer.EffectiveSize, tilePlacer.GetCells());
+        // If there is no payload, highlight tiles that could be picked up
+        if (_payload == null) {
+            if (tilePlacer.HasCellData(_lastCoordWhileMoving)) {
+                tilePlacer.GetTileInstance(_lastCoordWhileMoving).instance.DisableOutlines();
+            }
 
-        // If the coord and tile wouldn't be valid, don't simulate anything
-        if (!tilePlacer.IsValidCoord) { return; }
+            if (tilePlacer.HasCellData(coord)) {
+                tilePlacer.GetTileInstance(coord).instance.EnableOutlines();
+            }
+        
+        // If there is a payload then simulate the walls instead
+        } else {
+            // Remove the payload information from the previously simulated cell
+            tilePlacer.RemoveCellFootprint(_lastCoordWhileMoving, tilePlacer.EffectiveSize);
+            wallBuilder.RebuildPerimeter(_lastCoordWhileMoving, tilePlacer.EffectiveSize, tilePlacer.GetCells());
 
-        // At the new coord update the instance and generate the new all placement
-        tilePlacer.UpdateInstance(coord, _payload);
-    
-        // Feedback to the user how this position affects islands.
-        // If this newly hovered coord DOES NOT create islands then simulate the walls
-        if (!tilePlacer.IdentifyIslands(baseHologramTint, islandColor)) {
-            wallBuilder.RebuildPerimeter(coord, tilePlacer.EffectiveSize, tilePlacer.GetCells());
-            tilePlacer.RemoveCellFootprint(coord, tilePlacer.EffectiveSize);
+            // If the coord and tile wouldn't be valid, don't simulate anything
+            if (!tilePlacer.IsValidCoord) { return; }
+
+            // At the new coord update the instance and generate the new all placement
+            tilePlacer.UpdateInstance(coord, _payload);
+        
+            // Feedback to the user how this position affects islands.
+            // If this newly hovered coord DOES NOT create islands then simulate the walls
+            if (!tilePlacer.IdentifyIslands(baseHologramTint, islandColor)) {
+                wallBuilder.RebuildPerimeter(coord, tilePlacer.EffectiveSize, tilePlacer.GetCells());
+                tilePlacer.RemoveCellFootprint(coord, tilePlacer.EffectiveSize);
+            }
         }
 
         _lastCoordWhileMoving = coord;

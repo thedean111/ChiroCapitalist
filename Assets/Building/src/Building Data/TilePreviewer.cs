@@ -50,6 +50,11 @@ public class TilePreviewer : MonoBehaviour
         SetTint(TilePreviewState.Valid);
 
         _previewInstance = Instantiate(prefab, transform);
+
+        // This just assures the preview has the base tile component and not any children with features
+        Destroy(_previewInstance.GetComponent<Tile>());
+        _previewInstance.AddComponent<Tile>();
+
         _previewInstance.name = $"{_currentPrefab.name}_PREVIEW";
         _renderers = _previewInstance.GetComponentsInChildren<Renderer>(true);
 

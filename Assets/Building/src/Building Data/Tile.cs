@@ -74,4 +74,26 @@ public class Tile : MonoBehaviour
             _renderers[i].gameObject.layer = 0;
         }
     }
+
+    /// <summary>
+    /// Disable the holographic overlay for the tile.
+    /// </summary>
+    public void EnableOutlines() {
+        for (int i = 0; i < _renderers.Length; i++) {
+            if (_renderers[i].TryGetComponent(out Outline o)) {
+                o.enabled = true;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Disable the holographic overlay for the tile.
+    /// </summary>
+    public void DisableOutlines() {
+        for (int i = 0; i < _renderers.Length; i++) {
+            if (_renderers[i].TryGetComponent(out Outline o)) {
+                o.enabled = false;
+            }
+        }
+    }
 }

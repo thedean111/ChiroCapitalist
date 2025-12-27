@@ -53,6 +53,7 @@ public class AutoAdjustingOffice : PatientSpawningTile
 
         patient.SetData(patientData);
         patient.gameObject.SetActive(true);
+        patient.PlayAnimationClip("build_up_technique");
         _patientSpawnTime = Time.time;
     }
 

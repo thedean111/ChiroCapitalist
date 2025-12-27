@@ -74,7 +74,7 @@ public class ConstructionManager : MonoBehaviour
         // Setup all the callback for hovered grid cell change
         if (grid == null || gridMarker == null) { Debug.LogWarning("Grid objects not set properly!"); }
         else { 
-            grid.OnHoveredCellChange += UpdateCellFeedback; 
+            grid.OnHoveredCellChange += UpdateCellFeedback;
             grid.OnMouseEnterGrid += () => editService.ToggleTileWorldPreview(true);
             grid.OnMouseExitGrid += () => editService.ToggleTileWorldPreview(false);
         }
