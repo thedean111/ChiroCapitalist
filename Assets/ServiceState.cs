@@ -50,7 +50,12 @@ public abstract class ServiceState : MonoBehaviour
     /// </summary>
     public virtual void Toggle(bool status) {
         Active = status;
-        if (Active) _hudButton.AddToClassList(buttonActiveClassName);
-        else _hudButton.RemoveFromClassList(buttonActiveClassName);
+        if (Active) {
+            if (_hudButton != null)
+                _hudButton.AddToClassList(buttonActiveClassName);
+        } else {
+            if (_hudButton != null)
+                _hudButton.RemoveFromClassList(buttonActiveClassName);
+        }
     }
 }

@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 /// <summary>
