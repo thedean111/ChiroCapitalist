@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Tile : MonoBehaviour
 {
@@ -7,6 +9,17 @@ public class Tile : MonoBehaviour
     //*********************************************************************
     // Public
     //---------------------------------------------------------------------
+    [HideInInspector] public int tileID;
+    public TileDetailsFlags detailFlags { get; private set; }
+
+    [Header("Detail Flags")]
+    public bool usesLevel;
+    public bool usesProgress;
+
+    // These details are available for all tiles but not all will use them
+    [Header("Details")]
+    public int Level { get; protected set; }
+    public event Action<float> OnProgressChange; // callback to be fired when the progress of the focused tile is changed
 
     //---------------------------------------------------------------------
     // Private
@@ -20,7 +33,13 @@ public class Tile : MonoBehaviour
     /// <summary>
     /// Initialization of this tile the first time its placed down
     /// </summary>
-    public virtual void Initialize() { PlaceTile(); }
+    public virtual void Initialize() { 
+        detailFlags = TileDetailsFlags.None;
+        if (usesLevel) detailFlags |= TileDetailsFlags.Level;
+        if (usesProgress) detailFlags |= TileDetailsFlags.Progress;
+
+        PlaceTile();
+    }
 
     /// <summary>
     /// Logic for placing down the tile..

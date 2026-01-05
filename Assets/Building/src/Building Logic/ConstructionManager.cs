@@ -22,6 +22,7 @@ public class ConstructionManager : MonoBehaviour
     public TilePreviewer previewer;
     public TilePreviewer movePreviewer;
     public WallBuilder wallBuilder;
+    public TilePlacementSystem _tilePlacer;
 
     [Header("Anchors")]
     public TileDefinition mainOffice;
@@ -32,7 +33,6 @@ public class ConstructionManager : MonoBehaviour
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
-    private TilePlacementSystem _tilePlacer;
     private int _rot = 0;
     //---------------------------------------------------------------------
 

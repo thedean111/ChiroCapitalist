@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4929782356961387507}
   - component: {fileID: 5353164216708573228}
   - component: {fileID: 4438001141707651772}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3422971280707860652}
   - component: {fileID: -2855217984212425184}
-  m_Layer: 0
+  - component: {fileID: 410712300633515102}
+  m_Layer: 7
   m_Name: testTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,3 +159,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3316f314ee0b5cf4a9b6ae87918a8043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
+  tileID: 0
+  usesLevel: 0
+  usesProgress: 0
+--- !u!65 &410712300633515102
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5968335074230735502}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 1.5, y: 2, z: 1.5}

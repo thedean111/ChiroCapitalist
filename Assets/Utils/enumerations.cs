@@ -23,3 +23,11 @@ public enum TilePreviewState {
     Invalid,
     Pending_Move
 }
+
+// Every tile will show the description portion so its not defined here
+public enum TileDetailsFlags
+{
+    None = 0,
+    Level = 1<<0,
+    Progress = 1 << 1
+}

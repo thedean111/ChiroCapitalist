@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1581628c727bec43aaffb90cc67f9cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoAdjustingOffice
+  tileID: 0
+  usesLevel: 0
+  usesProgress: 0
   levelDetails:
   - spawnTime: 5
     rewardModifier: 1
@@ -71,8 +74,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6, y: 4.16, z: 6}
-  m_Center: {x: 3, y: 1.8, z: 3}
+  m_Size: {x: 6, y: 4, z: 6}
+  m_Center: {x: 3, y: 2, z: 3}
 --- !u!1 &4731113514354511992
 GameObject:
   m_ObjectHideFlags: 0

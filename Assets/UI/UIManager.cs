@@ -22,7 +22,15 @@ public class UIManager : MonoBehaviour
     private Button _activateEditMode;
     private Button _deleteTileButton;
     private VisualElement _selectedTileMouseElement;
+
+    private VisualElement _tileDetailsPanel;
+    private Label _tileDescription;
+    private VisualElement _tileProgressContainer;
+    private VisualElement _tileLevelContainer;
+    private Label _tileLevel;
+
     private bool _followMouse = false;
+    private TileInstance _focusedTile;
     // -----
 
     void Awake()
@@ -69,6 +77,18 @@ public class UIManager : MonoBehaviour
 
         _selectedTileMouseElement = hud.rootVisualElement.Q<VisualElement>("selected-tile-mouse-element");
         _selectedTileMouseElement.SetEnabled(false);
+        //__________________________________________________________________________________________
+
+        //__________________________________________________________________________________________
+        // TILE DETAILS UI
+        //__________________________________________________________________________________________
+        _tileDetailsPanel = hud.rootVisualElement.Q<VisualElement>("tile-details-container");
+        _tileDescription = hud.rootVisualElement.Q<Label>("tile-details-description");
+        _tileLevel = hud.rootVisualElement.Q<Label>("tile-details-level-text");
+        _tileLevelContainer = hud.rootVisualElement.Q<VisualElement>("tile-details-level-container");
+        _tileProgressContainer = hud.rootVisualElement.Q<VisualElement>("tile-details-progress-container");
+
+        hud.rootVisualElement.Q<Button>("tile-details-minimize-button").clicked += () => ToggleTileDetailsPanel(false);
         //__________________________________________________________________________________________
 
     }
@@ -163,6 +183,55 @@ public class UIManager : MonoBehaviour
         // Convert Screen -> Panel coordinates
         Vector2 panel = RuntimePanelUtils.ScreenToPanel(hud.rootVisualElement.panel, screenPos);
         return panel;
+    }
+
+    /// <summary>
+    /// Turn the details panel on or off.
+    /// </summary>
+    public void ToggleTileDetailsPanel(bool status, int tileID = -1) {
+        if (_tileDetailsPanel.enabledSelf == status) { return; }
+
+        if (tileID != -1 && _focusedTile == ConstructionManager.Instance._tilePlacer.tiles[tileID]) { return; }
+
+        if (status) {
+            _focusedTile = ConstructionManager.Instance._tilePlacer.tiles[tileID];
+            _focusedTile.instance.OnProgressChange += UpdateProgressBar;
+
+            UpdateTileDetailsPanel();
+        } else {
+            _focusedTile.instance.OnProgressChange -= UpdateProgressBar;
+            _focusedTile = null;
+        }
+
+        _tileDetailsPanel.SetEnabled(status);
+    }
+
+    /// <summary>
+    /// Update the information in the panel with the current state of the focused tile.
+    /// </summary>
+    private void UpdateTileDetailsPanel() {
+        _tileDescription.text = _focusedTile.def.description;
+
+        // If the tile contains level-based information then show that section of the panel and update it
+        if ((_focusedTile.instance.detailFlags & TileDetailsFlags.Level) != 0) {
+            _tileLevelContainer.SetEnabled(true);
+        } else {
+            _tileLevelContainer.SetEnabled(false);
+        }
+
+        // If the tile contains logic that uses the progress bar then show that section of the panel and update it
+        if ((_focusedTile.instance.detailFlags & TileDetailsFlags.Progress) != 0) {
+            _tileProgressContainer.SetEnabled(true);
+        } else
+        {
+            _tileProgressContainer.SetEnabled(false);
+        }
+    }
+
+    /// <summary>
+    /// What to do when updating the progress bar.
+    /// </summary>
+    private void UpdateProgressBar(float progress) {
     }
 
 }

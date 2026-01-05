@@ -9,7 +9,6 @@ public abstract class PatientSpawningTile : Tile
     // Public
     //---------------------------------------------------------------------
     public List<PatientSpawnerLevelInfo> levelDetails = new();
-    public int Level {get; private set;}
     public bool IsPaused {get; private set;}
 
     //---------------------------------------------------------------------

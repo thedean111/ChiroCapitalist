@@ -41,9 +41,9 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="selected-tile-mouse-element" picking-mode="Ignore" enabled="false" class="selected-tile-mouse-element"/>
-    <ui:VisualElement name="tile-details-container" picking-mode="Position" enabled="true" class="tile-details-container" style="height: auto;">
+    <ui:VisualElement name="tile-details-container" picking-mode="Position" enabled="false" class="tile-details-container" style="height: auto;">
         <ui:VisualElement name="tile-details-header" picking-mode="Ignore" style="flex-grow: 0; flex-direction: row; justify-content: space-between; height: 60px; align-items: center; padding-left: 10px; padding-right: 10px; background-color: rgb(154, 95, 58); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-left-color: rgb(29, 18, 11); border-right-color: rgb(29, 18, 11); border-top-color: rgb(29, 18, 11); border-bottom-color: rgb(29, 18, 11); border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; position: absolute; width: 470px; align-self: center; top: -29px;">
-            <ui:Label text="Tile" name="tile-details-header-text" class="hud-text hud-menu-header" style="position: relative; left: 0; font-size: 34px;"/>
+            <ui:Label text="Tile" name="tile-details-header-text" class="hud-text hud-menu-header" style="position: relative; left: 0; font-size: 34px; flex-grow: 1;"/>
             <ui:Button name="tile-details-minimize-button" class="panel-minimize-button"/>
         </ui:VisualElement>
         <ui:VisualElement name="tile-details-content" style="flex-grow: 1; top: 0; margin-top: 30px; background-color: rgba(0, 0, 0, 0.33); border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; overflow: hidden; padding-bottom: 10px;">

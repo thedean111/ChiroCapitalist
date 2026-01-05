@@ -134,6 +134,7 @@ public class TilePlacementSystem {
             spawnPos + Vector3.up, // world position
             Quaternion.Euler(0, rot * -90, 0), // rotation
             root).GetComponent<Tile>(); // parent transform
+        instance.instance.tileID = uid;
         instance.instance.transform.DOMove(spawnPos, tweenTime).SetEase(Ease.InCubic);
         tiles.Add(uid, instance);
 

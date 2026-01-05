@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayspaceService : ServiceState
 {
+    public static PlayspaceService Instance { get; private set; }
     //*********************************************************************
     // Data Members
     //*********************************************************************
@@ -16,6 +17,10 @@ public class PlayspaceService : ServiceState
     private Tile _hoveredOfficeTile;
     private int _officeMask;
     //*********************************************************************
+    private void Awake()
+    {
+        if (Instance == null) { Instance = this; }
+    }
 
     /// <summary>
     /// Unity start method.
@@ -39,5 +44,21 @@ public class PlayspaceService : ServiceState
         } else {
             if (_hoveredOfficeTile != null) { _hoveredOfficeTile.DisableOutlines(); }
         }
+    }
+
+    /// <summary>
+    /// Unity update method.
+    /// </summary>
+    public void Interact() {
+        if (!Active) { return; }
+
+        if (_hoveredOfficeTile == null) {
+            UIManager.Instance.ToggleTileDetailsPanel(false);
+            return;
+
+        } else {
+            UIManager.Instance.ToggleTileDetailsPanel(true, _hoveredOfficeTile.tileID);
+        }
+
     }
 }
