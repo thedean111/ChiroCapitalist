@@ -25,6 +25,9 @@ public class NPCFactory : MonoBehaviour
     [Header("Race Details")]
     public NPCRaceData[] races; // Each NPCRaceData contains colors, meshes, stat distributions, etc.
 
+    [Header("Default Data")]
+    public Texture2D defaultDoctorIcon;
+
     //
     // PRIVATE DATA
     //
@@ -39,6 +42,7 @@ public class NPCFactory : MonoBehaviour
     void Awake()
     {
         if (instance == null) { instance = this; }
+        doctorData = new List<DoctorData>();
     }
 
     /// <summary>
@@ -102,7 +106,8 @@ public class NPCFactory : MonoBehaviour
         DoctorData dd = new DoctorData();
 
         // Pick a random race, and populate the patient data object with its details
-        races[UnityEngine.Random.Range(0, races.Length)].PopulateNPCData(dd);
+        races[Random.Range(0, races.Length)].PopulateNPCData(dd);
+        dd.icon = defaultDoctorIcon;
 
         // TODO: NEED GACHA LOGIC HERE FOR GENERATING THE STATS
         // -> NPC Rarity influences stat pool, multipliers, aesthetics, etc.

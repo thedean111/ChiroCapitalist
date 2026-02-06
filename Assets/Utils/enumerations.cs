@@ -28,6 +28,13 @@ public enum TilePreviewState {
 public enum TileDetailsFlags
 {
     None = 0,
-    Level = 1<<0,
-    Progress = 1 << 1
+    Level = 1 << 0,
+    Progress = 1 << 1,
+    Doctor = 1 << 2
+}
+
+public enum StatCategory {
+    Strength,
+    Technique,
+    Magic
 }

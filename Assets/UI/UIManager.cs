@@ -23,11 +23,19 @@ public class UIManager : MonoBehaviour
     private Button _deleteTileButton;
     private VisualElement _selectedTileMouseElement;
 
+    private Label _tileName;
     private VisualElement _tileDetailsPanel;
     private Label _tileDescription;
     private VisualElement _tileProgressContainer;
     private VisualElement _tileLevelContainer;
+    private VisualElement _tileDoctorContainer;
     private Label _tileLevel;
+    private ProgressBar _tileProgress;
+    private VisualElement _tileDoctorInfo;
+    private Button _tileAssignDoctorBtn;
+    private Label _tileDetailsDoctorName;
+    private Label _tileDetailsDoctorLevel;
+    private VisualElement _tileDetailsDoctorIcon;
 
     private bool _followMouse = false;
     private TileInstance _focusedTile;
@@ -82,13 +90,28 @@ public class UIManager : MonoBehaviour
         //__________________________________________________________________________________________
         // TILE DETAILS UI
         //__________________________________________________________________________________________
+        _tileName = hud.rootVisualElement.Q<Label>("tile-details-header-text");
         _tileDetailsPanel = hud.rootVisualElement.Q<VisualElement>("tile-details-container");
         _tileDescription = hud.rootVisualElement.Q<Label>("tile-details-description");
         _tileLevel = hud.rootVisualElement.Q<Label>("tile-details-level-text");
         _tileLevelContainer = hud.rootVisualElement.Q<VisualElement>("tile-details-level-container");
         _tileProgressContainer = hud.rootVisualElement.Q<VisualElement>("tile-details-progress-container");
-
+        _tileProgress = hud.rootVisualElement.Q<ProgressBar>("tile-details-progress-bar");
+        _tileDoctorContainer = hud.rootVisualElement.Q<VisualElement>("tile-details-doctor-container");
+        _tileDoctorInfo = hud.rootVisualElement.Q<VisualElement>("tile-details-doctor-info");
+        _tileAssignDoctorBtn = hud.rootVisualElement.Q<Button>("tile-details-assign-doctor");
+        _tileDetailsDoctorName = hud.rootVisualElement.Q<Label>("tile-details-doctor-name");
+        _tileDetailsDoctorLevel = hud.rootVisualElement.Q<Label>("tile-details-doctor-level");
+        _tileDetailsDoctorIcon = hud.rootVisualElement.Q<VisualElement>("tile-details-doctor-icon");
         hud.rootVisualElement.Q<Button>("tile-details-minimize-button").clicked += () => ToggleTileDetailsPanel(false);
+
+        // TODO: This should actually open a records menu/panel of currently owned doctors
+        _tileAssignDoctorBtn.clicked += () => _focusedTile.instance.UpdateDoctorAssignment(NPCFactory.Instance.GenerateDoctorData()); // TEMP
+
+        hud.rootVisualElement.Q<Button>("tile-details-remove-button").clicked += () => _focusedTile.instance.UpdateDoctorAssignment(null);
+        // hud.rootVisualElement.Q<Button>("tile-details-info-button").clicked +=
+
+        _tileDetailsPanel.SetEnabled(false);
         //__________________________________________________________________________________________
 
     }
@@ -189,18 +212,25 @@ public class UIManager : MonoBehaviour
     /// Turn the details panel on or off.
     /// </summary>
     public void ToggleTileDetailsPanel(bool status, int tileID = -1) {
-        if (_tileDetailsPanel.enabledSelf == status) { return; }
-
         if (tileID != -1 && _focusedTile == ConstructionManager.Instance._tilePlacer.tiles[tileID]) { return; }
+        
+        // Either focusing a new tile or closing the menu
+        if (_focusedTile != null) {
+            _focusedTile.instance.OnProgressChange -= UpdateProgressBarProgress;
+            _focusedTile.instance.OnProgressComplete -= UpdateProgressBarText;
+            _focusedTile = null;
 
+        }
+
+        // If we want to show the details (on a clicked tile), update the panel
         if (status) {
             _focusedTile = ConstructionManager.Instance._tilePlacer.tiles[tileID];
-            _focusedTile.instance.OnProgressChange += UpdateProgressBar;
+            _focusedTile.instance.OnProgressChange += UpdateProgressBarProgress;
+            _focusedTile.instance.OnProgressComplete += UpdateProgressBarText;
 
             UpdateTileDetailsPanel();
         } else {
-            _focusedTile.instance.OnProgressChange -= UpdateProgressBar;
-            _focusedTile = null;
+            PlayspaceService.Instance.ResetFocus();
         }
 
         _tileDetailsPanel.SetEnabled(status);
@@ -210,28 +240,67 @@ public class UIManager : MonoBehaviour
     /// Update the information in the panel with the current state of the focused tile.
     /// </summary>
     private void UpdateTileDetailsPanel() {
+        _tileName.text = _focusedTile.def.tileName;
         _tileDescription.text = _focusedTile.def.description;
 
         // If the tile contains level-based information then show that section of the panel and update it
-        if ((_focusedTile.instance.detailFlags & TileDetailsFlags.Level) != 0) {
+        if ((_focusedTile.def.detailFlags & TileDetailsFlags.Level) != 0) {
             _tileLevelContainer.SetEnabled(true);
+            _tileLevel.text = $"Lv. {_focusedTile.instance.Level}";
         } else {
             _tileLevelContainer.SetEnabled(false);
         }
 
         // If the tile contains logic that uses the progress bar then show that section of the panel and update it
-        if ((_focusedTile.instance.detailFlags & TileDetailsFlags.Progress) != 0) {
+        if ((_focusedTile.def.detailFlags & TileDetailsFlags.Progress) != 0) {
             _tileProgressContainer.SetEnabled(true);
         } else
         {
             _tileProgressContainer.SetEnabled(false);
         }
+
+        // If the tile contains logic that uses the progress bar then show that section of the panel and update it
+        if ((_focusedTile.def.detailFlags & TileDetailsFlags.Doctor) != 0) {
+            _tileDoctorContainer.SetEnabled(true);
+        } else
+        {
+            _tileDoctorContainer.SetEnabled(false);
+        }
     }
 
     /// <summary>
-    /// What to do when updating the progress bar.
+    /// What to do when updating the progress bar. Takes a float in the range [0,100].
     /// </summary>
-    private void UpdateProgressBar(float progress) {
+    public void UpdateProgressBarProgress(float progress) {
+        _tileProgress.value = progress;
     }
 
+    /// <summary>
+    /// How to update the progress bar when the selected tiles progress is completed
+    /// </summary>
+    public void UpdateProgressBarText(string text) {
+        _tileProgress.title = text;
+    }
+
+    public void UpdateProgressBarText() {
+        _focusedTile.instance.ProgressCompleted(_tileProgress);
+    }
+
+    /// <summary>
+    /// Given a doctor, update the details panel with the doctor information.
+    /// </summary>
+    public void UpdateDoctorDetails(DoctorData doctorData) {
+        if (doctorData == null) {
+            _tileAssignDoctorBtn.SetEnabled(true);
+            _tileDoctorInfo.SetEnabled(false);
+        } else {
+            _tileAssignDoctorBtn.SetEnabled(false);
+            _tileDoctorInfo.SetEnabled(true);
+
+            _tileDetailsDoctorName.text = doctorData.name;
+            _tileDetailsDoctorLevel.text = $"Lv. {doctorData.level}";
+            _tileDetailsDoctorIcon.style.backgroundImage = doctorData.icon;
+
+        }
+    }
 }

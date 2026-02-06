@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9603e72cf5a29742b830bb96f8f9768, type: 3}
   m_Name: Main Office
   m_EditorClassIdentifier: Assembly-CSharp::TileDefinition
-  tileName: Main Office
+  tileName: Front Office
   icon: {fileID: 0}
-  description: Starting office that the player works out of.
   cost: 0
+  description: Main space that allows for manual adjustments with patients and key
+    characters.
+  usesLevel: 1
+  usesProgress: 1
+  usesDoctor: 0
   size: {x: 2, y: 3}
   type: 2
   defaultFlag: 4

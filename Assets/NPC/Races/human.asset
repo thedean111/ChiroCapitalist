@@ -12,23 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b7061bb028dd9f489b472c691990ce9, type: 3}
   m_Name: human
   m_EditorClassIdentifier: Assembly-CSharp::NPCRaceData
-  head: {fileID: 6092411339190408124, guid: e60ce380825be15489c79969683df1db, type: 3}
+  raceName: Human
+  head: {fileID: -7070831255929112694, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
   torso:
-  - {fileID: -2195852612816333170, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
-  - {fileID: -6883677475781101447, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
-  - {fileID: -3497587910088944166, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
-  - {fileID: -231548412507684639, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
-  - {fileID: -4049913713292093516, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}
+  - {fileID: 8009139121881927405, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
   pants:
-  - {fileID: 4048251280407998355, guid: 83234a95e886e854dac9638bb1817b75, type: 3}
-  hair:
-  - {fileID: -8277263341493563837, guid: c13369609c76a0e44ae85955b689addb, type: 3}
-  - {fileID: -7470663090057097934, guid: c13369609c76a0e44ae85955b689addb, type: 3}
-  - {fileID: -4998668448728946383, guid: c13369609c76a0e44ae85955b689addb, type: 3}
-  - {fileID: -9129771704399641196, guid: c13369609c76a0e44ae85955b689addb, type: 3}
-  - {fileID: -6606111307903178311, guid: c13369609c76a0e44ae85955b689addb, type: 3}
+  - {fileID: 3245650446966182821, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+  hair: []
   shoes:
-  - {fileID: -2574739236619207097, guid: bcbe6844fb930094b82452993a682cef, type: 3}
+  - {fileID: 3419331401483677821, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
   skinColors:
   - serializedVersion: 2
     key0: {r: 0.82641506, g: 0.8020444, b: 0.6595728, a: 1}
@@ -124,3 +116,18 @@ MonoBehaviour:
   wStrength: 0.8
   wTechnique: 1
   wMagic: 1
+  strength:
+    buildup_patient: {fileID: 8062770139526534475, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+    buildup_doctor: {fileID: -6224553307486792086, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+    action_patient: {fileID: -3835288396878833785, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+    action_doctor: {fileID: -3601002918592283157, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+  technique:
+    buildup_patient: {fileID: 7183079336009997542, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+    buildup_doctor: {fileID: -1103778559484532771, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+    action_patient: {fileID: -6919905631559441909, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+    action_doctor: {fileID: -7289341785663443184, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+  magic:
+    buildup_patient: {fileID: -1410693526125928843, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+    buildup_doctor: {fileID: -6470244458936406864, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+    action_patient: {fileID: -9071443557652029358, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}
+    action_doctor: {fileID: -2131071306162210673, guid: dc50b0be03cb0aa4d8b427f482220d79, type: 3}

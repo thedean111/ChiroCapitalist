@@ -1,3 +1,4 @@
+using System.Reflection;
 using UnityEngine;
 
 public class NPCStats
@@ -30,5 +31,18 @@ public class NPCStats
     /// </summary>
     public float ComputeCompatibility(NPCStats other) {
         return 0;
+    }
+
+    /// <summary>
+    /// Evaluate the patient's greatest need. This will drive choices during the adjustment sequence.
+    /// </summary>
+    public StatCategory GetDominantStat() {
+        if (strength >= technique && strength >= magic) {
+            return StatCategory.Strength;
+        } else if (technique >= strength && technique >= magic) {
+            return StatCategory.Technique;
+        }
+        return StatCategory.Magic;
+
     }
 }

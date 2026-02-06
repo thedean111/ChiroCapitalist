@@ -1,0 +1,71 @@
+using UnityEngine;
+using UnityEditor;
+using System.Collections.Generic;
+
+public class Editor_PoseProcessor : EditorWindow
+{
+    private Transform poseableObjectRoot;
+    private Transform doctorPose;
+    private Transform patientPose;
+    private RoomPose targetPoseObject;
+
+    [MenuItem("MyTools/Office Pose Processor")]
+    public static void ShowWindow()
+    {
+        GetWindow<Editor_PoseProcessor>("Office Pose Processor");
+    }
+
+    void OnGUI()
+    {
+        GUILayout.Label("Process Transform Data to ScriptableObject", EditorStyles.boldLabel);
+        GUILayout.Space(25);
+
+        // Allow user to drag and drop or select the source Prefab
+        GUILayout.Label("Sources", EditorStyles.boldLabel);
+        poseableObjectRoot = (Transform)EditorGUILayout.ObjectField("Poseable Objects Parent", poseableObjectRoot, typeof(Transform), true);
+        doctorPose = (Transform)EditorGUILayout.ObjectField("Doctor Pose", doctorPose, typeof(Transform), true);
+        patientPose = (Transform)EditorGUILayout.ObjectField("Patient Pose", patientPose, typeof(Transform), true);
+
+        GUILayout.Space(15);
+        GUILayout.Label("Target", EditorStyles.boldLabel);
+        // Allow user to assign an existing SO or leave blank to create a new one
+        targetPoseObject = (RoomPose)EditorGUILayout.ObjectField("Target ScriptableObject", targetPoseObject, typeof(RoomPose), true);
+
+        GUILayout.Space(15);
+        if (GUILayout.Button("Process Data and Save"))
+        {
+            if (targetPoseObject != null)
+            {
+                ProcessAndSaveData();
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Error", "Please assign a target.", "OK");
+            }
+        }
+    }
+
+    private void ProcessAndSaveData() {
+        if (targetPoseObject.decorPose == null)
+            targetPoseObject.decorPose = new List<ObjectPose>();
+        else
+            targetPoseObject.decorPose.Clear();
+
+        if (doctorPose != null){
+            targetPoseObject.doctorPose.localPosition = doctorPose.localPosition;
+            targetPoseObject.doctorPose.localRotation = doctorPose.localRotation;
+        }
+
+        if (patientPose != null){
+            targetPoseObject.patientPose.localPosition = patientPose.localPosition;
+            targetPoseObject.patientPose.localRotation = patientPose.localRotation;
+        }
+
+        if (poseableObjectRoot != null) {
+            // NOTE: This will include the root itself...maybe this is confusing?
+            foreach (Transform t in poseableObjectRoot.GetComponentsInChildren<Transform>()) {
+                targetPoseObject.decorPose.Add(new ObjectPose(t.localPosition, t.localRotation));
+            }
+        }
+    }
+}

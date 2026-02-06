@@ -352,8 +352,8 @@
 .tile-details-container {
     flex-grow: 1;
     position: absolute;
-    left: 0;
-    bottom: 0;
+    left: auto;
+    bottom: auto;
     height: auto;
     width: 445px;
     background-color: rgba(29, 18, 11, 0.96);
@@ -374,26 +374,17 @@
     border-top-right-radius: 13px;
     border-bottom-right-radius: 13px;
     border-bottom-left-radius: 13px;
-    transform-origin: left bottom;
+    transform-origin: bottom;
     padding-right: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
-    transition-duration: 0.3s, 0.4s;
-    translate: 0 0;
-    transition-property: translate, max-height;
-    transition-delay: 0s, 0.3s;
-    transition-timing-function: ease-out-back, ease;
-    max-height: 500px;
+    scale: 1 1;
+    top: 475px;
 }
 
 .tile-details-container:disabled {
     opacity: 1;
-    translate: -600px 0;
-    transition-property: max-height, translate;
-    transition-duration: 0.15s, 0.15s;
-    transition-timing-function: ease, ease;
-    transition-delay: 0s, 0.15s;
-    max-height: 0;
+    scale: 0 0 0;
 }
 
 .tile-details-item-container {

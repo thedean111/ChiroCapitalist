@@ -1,9 +1,13 @@
 using UnityEngine;
 using ColorStudio;
+using UnityEditor;
 
 [CreateAssetMenu(fileName = "newRaceData", menuName = "Game Data/NPC Race", order =1)]
 public class NPCRaceData : ScriptableObject
 {
+    [Header("Race Details")]
+    public string raceName;
+
     [Header("Mesh Data")]
     public Mesh head;
     public Mesh[] torso;
@@ -23,6 +27,11 @@ public class NPCRaceData : ScriptableObject
     [Range(0f, 1f)] public float wTechnique;
     [Range(0f, 1f)] public float wMagic;
 
+    [Header("Animations")]
+    public AdjustmentAnimationSet strength;
+    public AdjustmentAnimationSet technique;
+    public AdjustmentAnimationSet magic;
+
 
     /// <summary>
     /// Randomly select data from all the contained data in this race and populate the provided container.
@@ -31,10 +40,14 @@ public class NPCRaceData : ScriptableObject
     {
         // Assign the meshes
         data.head = head;
-        data.torso = torso[Random.Range(0, torso.Length)];
-        data.pants = pants[Random.Range(0, pants.Length)];
-        data.hair = hair[Random.Range(0, hair.Length)];
-        data.shoes = shoes[Random.Range(0, shoes.Length)];
+        if (torso.Length > 0)
+            data.torso = torso[Random.Range(0, torso.Length)];
+        if (pants.Length > 0)
+            data.pants = pants[Random.Range(0, pants.Length)];
+        if (hair.Length > 0)
+            data.hair = hair[Random.Range(0, hair.Length)];
+        if (shoes.Length > 0)
+            data.shoes = shoes[Random.Range(0, shoes.Length)];
 
         // For the colors, first select the skin color that will be used for this NPC
         // ...this color should be the "accent" for all the meshes
@@ -71,5 +84,16 @@ public class NPCRaceData : ScriptableObject
         data.shoesColors.secondary = secondary[Random.Range(0, secondary.Length)];
         data.shoesColors.tertiary = tertiary[Random.Range(0, tertiary.Length)];
         data.shoesColors.accent = c_Skin;
+
+        data.name = $"{raceName} Name";
+        data.race = this;
     }
+}
+
+// Each of these four animations are used in one adjustment sequence between a doctor and patient
+[System.Serializable] public class AdjustmentAnimationSet {
+    public AnimationClip buildup_patient;
+    public AnimationClip buildup_doctor;
+    public AnimationClip action_patient;
+    public AnimationClip action_doctor;
 }

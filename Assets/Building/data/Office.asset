@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TileDefinition
   tileName: Office
   icon: {fileID: 2800000, guid: f237eb7ffa4bf4f109c33ca1b64986fd, type: 3}
-  description: Base office tile.
   cost: 1000
+  description: Working space for a hired Chiropractor that will automatically generate
+    rewards.
+  usesLevel: 1
+  usesProgress: 1
+  usesDoctor: 1
   size: {x: 2, y: 2}
   type: 2
+  defaultFlag: 0
   prefab: {fileID: 2382931409530266578, guid: bc9acc99430cd60458d8dbec1ee78d17, type: 3}
   specialCells:
   - localCoord: {x: 0, y: 0}

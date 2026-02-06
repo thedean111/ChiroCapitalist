@@ -3,12 +3,16 @@ using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "TileDefinition", menuName = "Scriptable Objects/TileDefinition")]
 public class TileDefinition : ScriptableObject
-{
+{    
+    public TileDetailsFlags detailFlags { get; private set; }
     [Header("UI Data")]
     public string tileName;
     public Texture2D icon;
-    public string description;
     public int cost;
+    public string description;
+    public bool usesLevel;
+    public bool usesProgress;
+    public bool usesDoctor;
 
     [Header("Tile Footprint")]
     public Vector2Int size;
@@ -20,6 +24,13 @@ public class TileDefinition : ScriptableObject
 
     [Header("Special Cells")]
     public List<SpecialCellData> specialCells = new();
+
+    void OnEnable() {
+        detailFlags = TileDetailsFlags.None;
+        if (usesLevel) detailFlags |= TileDetailsFlags.Level;
+        if (usesProgress) detailFlags |= TileDetailsFlags.Progress;
+        if (usesDoctor) detailFlags |= TileDetailsFlags.Doctor;
+    }
 
     public void GetFlags(Vector2Int localCell, out CellFlags flags) {
         flags = defaultFlag;

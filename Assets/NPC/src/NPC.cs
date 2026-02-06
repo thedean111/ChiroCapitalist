@@ -89,6 +89,7 @@ public class NPCData
     public Mesh hair, head, torso, pants, shoes;
     public ColorSet skinColors, hairColors, torsoColors, pantsColors, shoesColors;
     public string name;
+    public NPCRaceData race;
     public NPCStats stats; // x - Strength, y - Technique, z - Magic
 
     public NPCData() {

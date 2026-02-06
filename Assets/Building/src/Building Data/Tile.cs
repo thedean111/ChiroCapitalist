@@ -10,16 +10,12 @@ public class Tile : MonoBehaviour
     // Public
     //---------------------------------------------------------------------
     [HideInInspector] public int tileID;
-    public TileDetailsFlags detailFlags { get; private set; }
-
-    [Header("Detail Flags")]
-    public bool usesLevel;
-    public bool usesProgress;
 
     // These details are available for all tiles but not all will use them
     [Header("Details")]
     public int Level { get; protected set; }
     public event Action<float> OnProgressChange; // callback to be fired when the progress of the focused tile is changed
+    public event Action OnProgressComplete;
 
     //---------------------------------------------------------------------
     // Private
@@ -31,13 +27,28 @@ public class Tile : MonoBehaviour
     //---------------------------------------------------------------------
 
     /// <summary>
+    /// What to do when this tile is clicked.
+    /// </summary>
+    public virtual void OnFocus() {}
+
+    /// <summary>
+    /// Update the progress bar with the provided float, if the UI subscribed to this Tile's method.
+    /// </summary>
+    public void UpdateProgress(float f) {
+        OnProgressChange?.Invoke(f);
+    }
+
+    /// <summary>
+    /// Progress is completed
+    /// </summary>
+    public void CompleteProgress() {
+        OnProgressComplete?.Invoke();
+    }
+
+    /// <summary>
     /// Initialization of this tile the first time its placed down
     /// </summary>
     public virtual void Initialize() { 
-        detailFlags = TileDetailsFlags.None;
-        if (usesLevel) detailFlags |= TileDetailsFlags.Level;
-        if (usesProgress) detailFlags |= TileDetailsFlags.Progress;
-
         PlaceTile();
     }
 
@@ -94,6 +105,15 @@ public class Tile : MonoBehaviour
         }
     }
 
+    public void UpdateOutline(bool status, Color color) {
+        for (int i = 0; i < _renderers.Length; i++) {
+            if (_renderers[i].TryGetComponent(out Outline o)) {
+                o.OutlineColor = color;
+                o.enabled = status;
+            }
+        }
+    }
+
     /// <summary>
     /// Disable the holographic overlay for the tile.
     /// </summary>
@@ -101,6 +121,17 @@ public class Tile : MonoBehaviour
         for (int i = 0; i < _renderers.Length; i++) {
             if (_renderers[i].TryGetComponent(out Outline o)) {
                 o.enabled = true;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Change the color of all outline components on the game object.
+    /// </summary>
+    public void ChangeOutlineColor(Color color) {
+        for (int i = 0; i < _renderers.Length; i++) {
+            if (_renderers[i].TryGetComponent(out Outline o)) {
+                o.OutlineColor = color;
             }
         }
     }
@@ -115,4 +146,7 @@ public class Tile : MonoBehaviour
             }
         }
     }
+
+    public virtual void ProgressCompleted(ProgressBar bar) { }
+    public virtual void UpdateDoctorAssignment(DoctorData newDoctor) {}
 }

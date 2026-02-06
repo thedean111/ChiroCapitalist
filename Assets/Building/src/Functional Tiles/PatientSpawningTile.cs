@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public abstract class PatientSpawningTile : Tile
@@ -10,14 +11,17 @@ public abstract class PatientSpawningTile : Tile
     //---------------------------------------------------------------------
     public List<PatientSpawnerLevelInfo> levelDetails = new();
     public bool IsPaused {get; private set;}
-
+    public int updateSteps = 20;
+    public bool spawnOnInit = false;
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
     private float _lastSpawnTimestamp;
     private float _pauseTime;
+    private bool _spawningPatient;
     protected int _currentPatientCount;
     protected bool _spawnLock = false;
+    protected int _step = 0;
     //*********************************************************************
 
     /// <summary>
@@ -37,6 +41,9 @@ public abstract class PatientSpawningTile : Tile
         Level = 0;
         _lastSpawnTimestamp = Time.time;
         _currentPatientCount = 0;
+
+        if (spawnOnInit)
+            StartCoroutine(SpawnPatientCoroutine());
     }
 
     /// <summary>
@@ -64,24 +71,33 @@ public abstract class PatientSpawningTile : Tile
     /// Toggles the pause flag which will continue patient spawning and other functions of this tile.
     /// </summary>
     public void Resume() {
-        IsPaused = false;
+        IsPaused = false;   
         _lastSpawnTimestamp += _pauseTime;
     }
 
     /// <summary>
     /// Manages timestamps for spawning patients.
     /// </summary>
-    protected virtual void Update() {
-        if (IsPaused) { return; }
+    public IEnumerator SpawnPatientCoroutine() {
+        _step = 0;
+        float _stepSize = (float)levelDetails[Level].spawnTime / updateSteps;
+        _spawningPatient = true;
+        while (_step < updateSteps) {
+            UpdateProgress((float)_step / updateSteps * 100);
 
-        // The spawnLock is here for finer control over when the spawn should actually happen.
-        // For instance, spawning may be locked until an animation finishes.
-        if ((Time.time - _lastSpawnTimestamp >= levelDetails[Level].spawnTime) &&
-            (_currentPatientCount >= levelDetails[Level].patientCapacity) &&
-            !_spawnLock) {
-            _lastSpawnTimestamp = Time.time;
-            _currentPatientCount++;
-            HandleNewPatient(NPCFactory.Instance.GeneratePatientData());
+            yield return new WaitForSeconds(_stepSize);    
+            _step++;
+        }
+        
+        _currentPatientCount++;
+        _spawningPatient = false;
+        HandleNewPatient(NPCFactory.Instance.GeneratePatientData());
+
+        CompleteProgress();
+
+        // Spawn until capacity is reached
+        if (_currentPatientCount < levelDetails[Level].patientCapacity) {
+            StartCoroutine(SpawnPatientCoroutine());
         }
     }
 
@@ -90,6 +106,12 @@ public abstract class PatientSpawningTile : Tile
     /// </summary>
     protected void ReleasePatient() {
         _currentPatientCount--;
+
+        // Spawn until capacity is reached
+        if (!_spawningPatient &&
+            _currentPatientCount < levelDetails[Level].patientCapacity) {
+            StartCoroutine(SpawnPatientCoroutine());
+        }
         ReleasePatientBehavior();
     }
 

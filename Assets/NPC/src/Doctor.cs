@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Doctor : NPC
 {
-    private DoctorData data; // Doctor data contains various information about stats, levels, etc.
+    public DoctorData data; // Doctor data contains various information about stats, levels, etc.
 
     /// <summary>
     /// When giving this object new data, automatically set the meshes.
@@ -19,5 +19,6 @@ public class Doctor : NPC
 public class DoctorData : NPCData
 {
     public int level;
+    public Texture2D icon;
     // TODO: exp, etc.
 }
