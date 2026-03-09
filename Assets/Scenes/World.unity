@@ -2644,6 +2644,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be41b37f93e10344cb6ccaee0834c86a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCFactory
+  basePrefab: {fileID: 494294859918527640, guid: e4773a784ca707a4aa7838a455b98dd0, type: 3}
+  baseMaterial: {fileID: 2100000, guid: fe4f1baf6f88f224ea99dfb767cbb860, type: 2}
   races:
   - {fileID: 11400000, guid: 4627c14f27b281d4bb6f5cb886ec8bd3, type: 2}
   defaultDoctorIcon: {fileID: 2800000, guid: c92a01de951484d8ca4b8954ce31a61c, type: 3}

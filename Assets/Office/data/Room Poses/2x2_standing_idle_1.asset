@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2ce1b2a71955a48836f06ff4821276, type: 3}
+  m_Name: 2x2_standing_idle_1
+  m_EditorClassIdentifier: Assembly-CSharp::RoomPose
+  decorPose:
+  - localPosition: {x: -3, y: 0, z: -3}
+    localRotation: {x: -0, y: -0.008202923, z: -0, w: 0.9999664}
+  - localPosition: {x: 4.032272, y: 0.039998055, z: 1.9341096}
+    localRotation: {x: -0, y: 0.39299017, z: -0, w: 0.91954273}
+  - localPosition: {x: 1.702, y: 0.678, z: 4.431}
+    localRotation: {x: 0, y: -0.09063256, z: 0, w: 0.9958844}
+  - localPosition: {x: 5.1200004, y: 0.039997578, z: 5.08}
+    localRotation: {x: -0, y: -0.927718, z: -0, w: 0.37328202}
+  - localPosition: {x: 0.6600001, y: 1.158, z: 5.333}
+    localRotation: {x: -0, y: -0, z: -0, w: 1}
+  - localPosition: {x: 5.72, y: 1.582, z: 1.459}
+    localRotation: {x: 0.0147398235, y: -0.6619281, z: 0.038787507, w: 0.748418}
+  doctorPose:
+    localPosition: {x: -0.08, y: 0.058, z: -0.59}
+    localRotation: {x: 0, y: -0.91276294, z: 0, w: 0.40848976}
+  patientPose:
+    localPosition: {x: 0.95599985, y: 0, z: -1.02}
+    localRotation: {x: -0, y: 0.43105343, z: -0, w: 0.90232646}

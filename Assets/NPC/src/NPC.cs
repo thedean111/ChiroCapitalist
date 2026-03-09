@@ -3,29 +3,15 @@ using ColorStudio;
 
 public abstract class NPC : MonoBehaviour
 {
-    private SkinnedMeshRenderer hair, head, pants, shoes, torso;
+    private Vector3Int headIdx, legsIdx, feetIdx, torsoIdx;
+    private bool idxSet = false;
+    private Transform meshRoot;
     private Animator anim;
 
     void Awake()
     {
-        hair = transform.Find("hair").GetComponent<SkinnedMeshRenderer>();
-        head = transform.Find("head").GetComponent<SkinnedMeshRenderer>();
-        pants = transform.Find("pants").GetComponent<SkinnedMeshRenderer>();
-        shoes = transform.Find("shoes").GetComponent<SkinnedMeshRenderer>();
-        torso = transform.Find("torso").GetComponent<SkinnedMeshRenderer>();
-        anim = GetComponent<Animator>();
-    }
-
-    /// <summary>
-    /// Set the skinned meshes of the objects to that of the inputs.
-    /// </summary>
-    public virtual void SetSkinnedMeshes(Mesh mHair, Mesh mHead, Mesh mPants, Mesh mShoes, Mesh mTorso)
-    {
-        hair.sharedMesh = mHair;
-        head.sharedMesh = mHead;
-        pants.sharedMesh = mPants;
-        shoes.sharedMesh = mShoes;
-        torso.sharedMesh = mTorso;
+        meshRoot = transform.GetChild(0).Find("meshes");
+        anim = GetComponentInChildren<Animator>();
     }
 
     /// <summary>
@@ -33,12 +19,42 @@ public abstract class NPC : MonoBehaviour
     /// </summary>
     public void SetData(NPCData data)
     {
-        SetSkinnedMeshes(data.hair, data.head, data.pants, data.shoes, data.torso);
-        SetRendererColors(hair, data.hairColors);
+        // Turn off the existing models so they don't overlap with the new ones
+        if (idxSet) {
+            meshRoot.GetChild(headIdx.x).GetChild(headIdx.y).GetChild(headIdx.z).gameObject.SetActive(false);
+            meshRoot.GetChild(legsIdx.x).GetChild(legsIdx.y).GetChild(legsIdx.z).gameObject.SetActive(false);
+            meshRoot.GetChild(feetIdx.x).GetChild(feetIdx.y).GetChild(feetIdx.z).gameObject.SetActive(false);
+            meshRoot.GetChild(torsoIdx.x).GetChild(torsoIdx.y).GetChild(torsoIdx.z).gameObject.SetActive(false);
+        }
+
+        headIdx = data.head;
+        legsIdx = data.legs;
+        feetIdx = data.feet;
+        torsoIdx = data.torso;
+
+        // Set the colors on the material instances and activate the meshes
+        Debug.Log(data.head);
+        SkinnedMeshRenderer head = meshRoot.GetChild(data.head.x).GetChild(data.head.y).GetChild(data.head.z).GetComponent<SkinnedMeshRenderer>();
+        head.sharedMaterial = NPCFactory.Instance.baseMaterial;
         SetRendererColors(head, data.skinColors);
-        SetRendererColors(pants, data.pantsColors);
-        SetRendererColors(shoes, data.shoesColors);
+        head.gameObject.SetActive(true);
+
+        SkinnedMeshRenderer legs = meshRoot.GetChild(data.legs.x).GetChild(data.legs.y).GetChild(data.legs.z).GetComponent<SkinnedMeshRenderer>();
+        legs.sharedMaterial = NPCFactory.Instance.baseMaterial;
+        SetRendererColors(legs, data.legsColors);
+        legs.gameObject.SetActive(true);
+
+        SkinnedMeshRenderer feet = meshRoot.GetChild(data.feet.x).GetChild(data.feet.y).GetChild(data.feet.z).GetComponent<SkinnedMeshRenderer>();
+        feet.sharedMaterial = NPCFactory.Instance.baseMaterial;
+        SetRendererColors(feet, data.feetColors);
+        feet.gameObject.SetActive(true);
+
+        SkinnedMeshRenderer torso = meshRoot.GetChild(data.torso.x).GetChild(data.torso.y).GetChild(data.torso.z).GetComponent<SkinnedMeshRenderer>();
+        torso.sharedMaterial = NPCFactory.Instance.baseMaterial;
         SetRendererColors(torso, data.torsoColors);
+        torso.gameObject.SetActive(true);
+
+        idxSet = true;
     }
 
     /// <summary>
@@ -64,6 +80,7 @@ public abstract class NPC : MonoBehaviour
     {
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         smr.GetPropertyBlock(mpb);
+        mpb.SetColor("_Skin", colors.skin);
         mpb.SetColor("_Primary", colors.primary);
         mpb.SetColor("_Secondary", colors.secondary);
         mpb.SetColor("_Tertiary", colors.tertiary);
@@ -86,8 +103,9 @@ public abstract class NPC : MonoBehaviour
 
 public class NPCData
 {
-    public Mesh hair, head, torso, pants, shoes;
-    public ColorSet skinColors, hairColors, torsoColors, pantsColors, shoesColors;
+    // x - race, y - body part, z - mesh option
+    public Vector3Int hair, head, torso, legs, feet;
+    public ColorSet skinColors, hairColors, torsoColors, legsColors, feetColors;
     public string name;
     public NPCRaceData race;
     public NPCStats stats; // x - Strength, y - Technique, z - Magic
@@ -99,6 +117,7 @@ public class NPCData
 
     public struct ColorSet
     {
+        public Color skin;
         public Color primary;
         public Color secondary;
         public Color tertiary;

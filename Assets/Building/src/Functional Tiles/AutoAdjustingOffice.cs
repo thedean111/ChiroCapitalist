@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +14,10 @@ public class AutoAdjustingOffice : PatientSpawningTile
     public Doctor doctor;
     public float adjustmentTime = 3f;
     public Transform poseableObjects;
+
+    public OfficeSequence adjustmentPose;
+    public List<OfficeSequence> sittingIdles;
+    public List<OfficeSequence> standingIdles;
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
@@ -47,6 +52,7 @@ public class AutoAdjustingOffice : PatientSpawningTile
         }
 
         UIManager.Instance.UpdateDoctorDetails(doctor.data);
+        PlayIdle();
     }
 
     /// <summary>
@@ -74,25 +80,25 @@ public class AutoAdjustingOffice : PatientSpawningTile
         while (_step < updateSteps) {
             UpdateProgress((float)_step / updateSteps * 100);
 
-            yield return new WaitForSeconds(_stepSize);    
+            yield return new WaitForSeconds(_stepSize);
             _step++;
         }
 
         // Perform the action
         switch (_currentAdjustmentStat) {
             case StatCategory.Strength:
-                patient.PlayAnimationClip($"Strength.{doctor.data.race.strength.action_patient.name}");
-                doctor.PlayAnimationClip($"Strength.{doctor.data.race.strength.action_doctor.name}");
+                patient.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_action_patient", 0f);
+                doctor.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_action_doctor", 0f);
                 break;
 
             case StatCategory.Technique:
-                patient.PlayAnimationClip($"Technique.{doctor.data.race.technique.action_patient.name}");
-                doctor.PlayAnimationClip($"Technique.{doctor.data.race.technique.action_doctor.name}");
+                patient.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_action_patient", 0f);
+                doctor.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_action_doctor", 0f);
                 break;
 
             case StatCategory.Magic:
-                patient.PlayAnimationClip($"Magic.{doctor.data.race.magic.action_patient.name}");
-                doctor.PlayAnimationClip($"Magic.{doctor.data.race.magic.action_doctor.name}");
+                patient.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_action_patient", 0f);
+                doctor.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_action_doctor", 0f);
                 break;
 
             default:
@@ -107,9 +113,8 @@ public class AutoAdjustingOffice : PatientSpawningTile
         CompleteProgress();
         _spawnLock = false;
 
-        // TODO: Fire off a unique idle routine
-        // PlaySequence(PlayspaceService.Instance.idleSequences[Random.Range(0, PlayspaceService.Instance.idleSequences.Count)]);
-
+        // Play Idle
+        PlayIdle();
     }
 
     /// <summary>
@@ -127,18 +132,18 @@ public class AutoAdjustingOffice : PatientSpawningTile
         _currentAdjustmentStat = patientData.stats.GetDominantStat();
         switch (_currentAdjustmentStat) {
             case StatCategory.Strength:
-                patient.PlayAnimationClip($"Strength.{doctor.data.race.strength.buildup_patient.name}", 0f);
-                doctor.PlayAnimationClip($"Strength.{doctor.data.race.strength.buildup_doctor.name}", 0f);
+                patient.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_buildup_patient", 0f);
+                doctor.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_buildup_doctor", 0f);
                 break;
 
             case StatCategory.Technique:
-                patient.PlayAnimationClip($"Technique.{doctor.data.race.technique.buildup_patient.name}", 0f);
-                doctor.PlayAnimationClip($"Technique.{doctor.data.race.technique.buildup_doctor.name}", 0f);
+                patient.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_buildup_patient", 0f);
+                doctor.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_buildup_doctor", 0f);
                 break;
 
             case StatCategory.Magic:
-                patient.PlayAnimationClip($"Magic.{doctor.data.race.magic.buildup_patient.name}", 0f);
-                doctor.PlayAnimationClip($"Magic.{doctor.data.race.magic.buildup_doctor.name}", 0f);
+                patient.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_buildup_patient", 0f);
+                doctor.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_buildup_doctor", 0f);
                 break;
 
             default:
@@ -146,9 +151,7 @@ public class AutoAdjustingOffice : PatientSpawningTile
         }
         _stepSize = adjustmentTime / updateSteps;
         _adjustingPatient = true;
-
-        // TODO: Fire off an adjustment sequence based on the stats
-        // PlaySequence(PlayspaceService.Instance.idleSequences[Random.Range(0, PlayspaceService.Instance.idleSequences.Count)]);
+        PlaySequence(adjustmentPose);
 
         StartCoroutine(AdjustPatientRoutine());
     }
@@ -177,9 +180,33 @@ public class AutoAdjustingOffice : PatientSpawningTile
     }
 
     /// <summary>
-    /// How to translate the data in an office sequence to room behavior
+    /// Determine what idle sequence to play and fire it off
     /// </summary>
-    private void PlaySequence(OfficeSequence seq) {
+    private void PlayIdle() {
+        int idleType = Random.Range(0, 2);
+        OfficeSequence seq = null;
+
+        switch(idleType) {
+            // Sitting sequence
+            case 0:
+                seq = sittingIdles[Random.Range(0, sittingIdles.Count)];
+                break;
+
+            // Standing sequence
+            case 1:
+                seq = standingIdles[Random.Range(0, standingIdles.Count)];
+                break;
+        }
+
+        if (seq != null) {
+            PlaySequence(seq, true);
+        }
+    }
+
+    /// <summary>
+    /// How to translate the data in an office sequence to room behavior.
+    /// </summary>
+    private void PlaySequence(OfficeSequence seq, bool overrideAnimation=false) {
         // Position all of the objects by the provided data
         doctor.transform.localPosition = seq.objectPose.doctorPose.localPosition;
         doctor.transform.localRotation = seq.objectPose.doctorPose.localRotation;
@@ -192,6 +219,11 @@ public class AutoAdjustingOffice : PatientSpawningTile
 
             objects[i].localPosition = seq.objectPose.decorPose[i].localPosition;
             objects[i].localRotation = seq.objectPose.decorPose[i].localRotation;
+        }
+
+        if (overrideAnimation) {
+            patient.PlayAnimationClip(seq.patientAnimationName, 0f);
+            doctor.PlayAnimationClip(seq.doctorAnimationName, 0f);
         }
     }
 }

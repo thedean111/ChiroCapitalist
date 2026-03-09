@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8330ba8fbc50d8542aeb3dc580bfe826, type: 3}
-  m_Name: Idle 2
+  m_Name: adjustment_pose
   m_EditorClassIdentifier: Assembly-CSharp::OfficeSequence
-  objectPose: {fileID: 11400000, guid: 7f2ea816b5da09e478a11e56e926364a, type: 2}
-  doctorAnimation: {fileID: -203655887218126122, guid: ffdee934923c17b419d6e3fb924c93f8, type: 3}
-  patientAnimation: {fileID: -203655887218126122, guid: ffdc52cec34fb4d4a8bc06936a18d99c, type: 3}
-  useCrossfade: 0
+  objectPose: {fileID: 11400000, guid: 3660ee491cccf7845b6d1b9137be48dc, type: 2}
+  doctorAnimationName: 
+  patientAnimationName: 

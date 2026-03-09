@@ -4,7 +4,6 @@ using UnityEngine;
 public class OfficeSequence : ScriptableObject
 {
     public RoomPose objectPose;
-    public AnimationClip doctorAnimation;
-    public AnimationClip patientAnimation;
-    public bool useCrossfade;
+    public string doctorAnimationName;
+    public string patientAnimationName;
 }

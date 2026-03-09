@@ -46,10 +46,10 @@ public class Editor_PoseProcessor : EditorWindow
     }
 
     private void ProcessAndSaveData() {
-        if (targetPoseObject.decorPose == null)
-            targetPoseObject.decorPose = new List<ObjectPose>();
-        else
-            targetPoseObject.decorPose.Clear();
+        Undo.RecordObject(targetPoseObject, "Capture Room Pose");
+
+        targetPoseObject.decorPose ??= new List<ObjectPose>();
+        targetPoseObject.decorPose.Clear();
 
         if (doctorPose != null){
             targetPoseObject.doctorPose.localPosition = doctorPose.localPosition;
@@ -67,5 +67,8 @@ public class Editor_PoseProcessor : EditorWindow
                 targetPoseObject.decorPose.Add(new ObjectPose(t.localPosition, t.localRotation));
             }
         }
+
+        EditorUtility.SetDirty(targetPoseObject);
+        AssetDatabase.SaveAssets();
     }
 }

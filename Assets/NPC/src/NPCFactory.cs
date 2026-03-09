@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -22,6 +23,10 @@ public class NPCFactory : MonoBehaviour
     private static NPCFactory instance = null;
     public static NPCFactory Instance { get { return instance; } }
 
+    [Header("Baseline Info")]
+    public GameObject basePrefab;
+    public Material baseMaterial;
+
     [Header("Race Details")]
     public NPCRaceData[] races; // Each NPCRaceData contains colors, meshes, stat distributions, etc.
 
@@ -34,7 +39,8 @@ public class NPCFactory : MonoBehaviour
 
     // private Stack<Patient> patientObjects; // This collection of patients is designed such that created patients can be reused as needed
     private List<DoctorData> doctorData; // Collection of all the generated doctor data
-
+    private Dictionary<string, int> meshIdxMap = new Dictionary<string, int>();
+    Transform meshRoot;
     //
     //
     //
@@ -43,6 +49,57 @@ public class NPCFactory : MonoBehaviour
     {
         if (instance == null) { instance = this; }
         doctorData = new List<DoctorData>();
+        
+        MapCategoriesToIdx();
+    }
+
+    /// <summary>
+    /// This will map all race and body part categories to indices within the base prefab under the "meshes" transform
+    /// for easy access at run time. This is sort of hardcoded, but should be fine for this small game.
+    /// </summary>
+    private void MapCategoriesToIdx() {
+        meshRoot = basePrefab.transform.GetChild(0).Find("meshes");
+        for (int i = 0; i < meshRoot.childCount; i++) {
+            Transform child = meshRoot.GetChild(i);
+            if (child.name == "doctor") {
+                meshIdxMap["doctor"] = i;
+                MapCategoryPartToIdx("doctor", child);
+
+            } else if (child.name == "generic") {
+                meshIdxMap["generic"] = i;
+                MapCategoryPartToIdx("generic", child);
+
+            } else if (child.name == "elf") {
+                meshIdxMap["elf"] = i;
+                MapCategoryPartToIdx("elf", child);
+
+            } else if (child.name == "human") {
+                meshIdxMap["human"] = i;
+                MapCategoryPartToIdx("human", child);
+
+            } else if (child.name == "orc") {
+                meshIdxMap["orc"] = i;
+                MapCategoryPartToIdx("orc", child);
+
+            }
+        }
+    }
+
+    // Maybe there will be some weird hierarchy shuffling that will cause the order of body parts to be different in each race category.
+    private void MapCategoryPartToIdx(string category, Transform catRoot) {
+        for (int i = 0; i < catRoot.childCount; i++) {
+            Transform child = catRoot.GetChild(i);
+            string cName = child.name.Split('.')[0];
+            if (cName == "head") {
+                meshIdxMap[$"{category}_{cName}"] = i;
+            } else if (cName == "feet") {
+                meshIdxMap[$"{category}_{cName}"] = i;
+            } else if (cName == "legs") {
+                meshIdxMap[$"{category}_{cName}"] = i;
+            } else if (cName == "torso") {
+                meshIdxMap[$"{category}_{cName}"] = i;
+            }
+        }
     }
 
     /// <summary>
@@ -54,7 +111,15 @@ public class NPCFactory : MonoBehaviour
         PatientData pd = new PatientData();
 
         // Pick a random race, and populate the patient data object with its details
-        races[Random.Range(0, races.Length)].PopulateNPCData(pd);
+        NPCRaceData randomRace = races[Random.Range(0, races.Length)];
+        randomRace.PopulateNPCData(pd);
+
+        // Select a random mesh for each body part based on an child-index path 
+        pd.head = SelectPartMesh("head", randomRace.raceName, false);
+        pd.legs = SelectPartMesh("legs", randomRace.raceName);
+        pd.feet = SelectPartMesh("feet", randomRace.raceName);
+        pd.torso = SelectPartMesh("torso", randomRace.raceName);
+
 
         // The patient needs are separate from the race distribution, so generate the patient's needs here
         // Consult the progression manager for the current patient difficulty and a stat total for the patient
@@ -97,6 +162,19 @@ public class NPCFactory : MonoBehaviour
         return pd;
     }
 
+    private Vector3Int SelectPartMesh(string part, string raceName, bool randomGeneric = true) {
+        string raceCategory = (randomGeneric && Random.Range(0, 2) == 1) ? "generic" : raceName.ToLower(); // 50% chance to just use a generic mesh
+        int raceIdx = meshIdxMap[raceCategory];
+        int partIdx = meshIdxMap[$"{raceCategory}_{part}"];
+        if (randomGeneric && meshRoot.GetChild(raceIdx).GetChild(partIdx).childCount == 0) { // If the race has no meshes for the body part, use the generic set
+            raceIdx = meshIdxMap["generic"];
+            partIdx = meshIdxMap[$"generic_{part}"];
+        }
+        int meshIdx = Random.Range(0, meshRoot.GetChild(raceIdx).GetChild(partIdx).childCount);
+
+        return new Vector3Int(raceIdx, partIdx, meshIdx);
+    }
+
     /// <summary>
     /// This function will randomly generate information for a new doctor. It will be added to internal storage and be returned to the caller.
     /// </summary>
@@ -106,8 +184,16 @@ public class NPCFactory : MonoBehaviour
         DoctorData dd = new DoctorData();
 
         // Pick a random race, and populate the patient data object with its details
-        races[Random.Range(0, races.Length)].PopulateNPCData(dd);
+        NPCRaceData randomRace = races[Random.Range(0, races.Length)];
+        randomRace.PopulateNPCData(dd);
         dd.icon = defaultDoctorIcon;
+
+        // Make a random doctor
+        // Select a random mesh for each body part based on an child-index path 
+        dd.head = SelectPartMesh("head", randomRace.raceName, false);
+        dd.legs = SelectPartMesh("legs", "doctor");
+        dd.feet = SelectPartMesh("feet", "doctor");
+        dd.torso = SelectPartMesh("torso", "doctor");
 
         // TODO: NEED GACHA LOGIC HERE FOR GENERATING THE STATS
         // -> NPC Rarity influences stat pool, multipliers, aesthetics, etc.
