@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour
     public Vector2 zLimits;
     public float clickDragSpeed = 0.5f; // Units per second
     public float inputSpeed = 2f;
+    public float zoomSpeed = 1f;
+    public Vector2 zoomClamps = new Vector2(16, 26);
 
     public bool holding {get; private set;}
 
@@ -27,10 +29,13 @@ public class CameraController : MonoBehaviour
     private InputAction move;
     private InputAction mousePan;
     private InputAction pan;
+    private InputAction zoom;
+    private CinemachineFollow followCam;
 
     void Awake()
     {
         if (instance == null) { instance = this; }
+        followCam = cCam.GetComponent<CinemachineFollow>();
     }
 
     // Subscribe to input events
@@ -39,10 +44,12 @@ public class CameraController : MonoBehaviour
         gameActions = inputs.FindActionMap("Player");
         move = gameActions.FindAction("Move");
         mousePan = gameActions.FindAction("MousePan");
+        zoom = gameActions.FindAction("MouseZoom");
         pan = gameActions.FindAction("Pan");
 
         mousePan.performed += OnHoldStarted;
         mousePan.canceled += OnHoldCanceled;
+        zoom.performed += OnZoom;
         pan.performed += OnPan;
     }
 
@@ -68,6 +75,13 @@ public class CameraController : MonoBehaviour
 
     private void OnHoldCanceled(InputAction.CallbackContext ctx) => holding = false;
 
+    private void OnZoom(InputAction.CallbackContext ctx) {
+        // -1 -> zoom out
+        //  1 -> zoom in
+        float dir = ctx.ReadValue<Vector2>().y;
+        float target = Mathf.Clamp((-dir * zoomSpeed) + followCam.FollowOffset.y, zoomClamps.x, zoomClamps.y);
+        DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, target, 1).SetEase(Ease.OutQuart);
+    }
 
     void Update()
     {
