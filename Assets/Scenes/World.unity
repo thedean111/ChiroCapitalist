@@ -315,7 +315,7 @@ Transform:
   m_GameObject: {fileID: 244328947}
   serializedVersion: 2
   m_LocalRotation: {x: 0.46831393, y: 0.40942416, z: -0.2595619, w: 0.7387026}
-  m_LocalPosition: {x: -5, y: 20, z: 7}
+  m_LocalPosition: {x: -8.1, y: 20, z: 7.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -578,8 +578,8 @@ MonoBehaviour:
   cCam: {fileID: 244328951}
   camTarg: {fileID: 1275194046}
   inputs: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  xLimits: {x: -30, y: 30}
-  zLimits: {x: -30, y: 30}
+  xLimits: {x: -15, y: 35}
+  zLimits: {x: -15, y: 45}
   clickDragSpeed: 5
   inputSpeed: 10
   zoomSpeed: 1
@@ -736,7 +736,7 @@ Transform:
   m_GameObject: {fileID: 574230097}
   serializedVersion: 2
   m_LocalRotation: {x: 0.46831393, y: 0.40942416, z: -0.2595619, w: 0.7387026}
-  m_LocalPosition: {x: -5, y: 20, z: 7}
+  m_LocalPosition: {x: -8.1, y: 20, z: 7.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1406,7 +1406,7 @@ Terrain:
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 40
+  m_DetailObjectDistance: 60
   m_DetailObjectDensity: 0.5
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000
@@ -1599,7 +1599,7 @@ Transform:
   m_GameObject: {fileID: 1275194045}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: 12}
+  m_LocalPosition: {x: -0.1, y: 0, z: 12.3}
   m_LocalScale: {x: 0.32, y: 0.32, z: 0.32}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1781,7 +1781,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 3.72
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1843,13 +1843,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470752659}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: -0.21355209, y: 0.3230881, z: -0.19441152, w: -0.901229}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 30.7, y: -395.5, z: 14.303}
 --- !u!114 &1470752662
 MonoBehaviour:
   m_ObjectHideFlags: 0
