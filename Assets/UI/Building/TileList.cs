@@ -71,7 +71,7 @@ public class TileList : MonoBehaviour
 
     private void UpdateTileButtonStatus(VisualElement ve)
     {
-        bool canAfford = (ve.userData as TileDefinition).cost <= ProgressionManager.Instance.Money;
+        bool canAfford = (ve.userData as TileDefinition).cost <= ProgressionManager.Instance.Money();
         ve.SetEnabled(canAfford);
         ve.Q<VisualElement>("build-tile-icon").SetEnabled(canAfford);
     }

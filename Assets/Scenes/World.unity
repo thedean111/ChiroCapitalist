@@ -441,9 +441,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallBuilder
   grid: {fileID: 1716908050}
-  interiorWall: {fileID: 1382916865766497441, guid: 5592f6cb936881c489ae0b7ce82a40b9, type: 3}
-  exteriorWall: {fileID: 1549890850404684573, guid: 9b81cf221b614e14798034e4a68e980c, type: 3}
-  door: {fileID: 492286893422357718, guid: 22c41913d40d5cc4ab2a84eda2a4b381, type: 3}
+  baseWall_interior: {fileID: 5381092439576407562, guid: 6c248c71c4e698b4ba08bed069ceca4b, type: 3}
+  baseWall_exterior: {fileID: 4795118944347792936, guid: b7e8dba632fe70b49a4098b35484a754, type: 3}
+  windowWall: {fileID: 3697833084441611455, guid: 8599d3b2dbd56a142b1aed527bf8981a, type: 3}
+  door_exterior: {fileID: 7633561649850569716, guid: cd9ac5be5a12abf4f8e32a567bcd6260, type: 3}
+  door_interior: {fileID: 7027092723667491307, guid: 04ae9127e62ed984699816aed4d7408a, type: 3}
 --- !u!1 &467080443
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,7 +584,7 @@ MonoBehaviour:
   zLimits: {x: -15, y: 45}
   clickDragSpeed: 5
   inputSpeed: 10
-  zoomSpeed: 1
+  zoomSpeed: 3
   zoomClamps: {x: 15, y: 30}
 --- !u!114 &542676653
 MonoBehaviour:
@@ -641,6 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b28129cf417074e9928ecf98479bca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressionManager
+  activeSaveData: {fileID: 11400000, guid: fded7e7b469e8cb4aa3e993426d7b4e0, type: 2}
   basePatientStatPool: 10
   rankStatMultiplier: 0.2
   tierStatMultiplier: 0.5
@@ -1457,13 +1460,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173955091}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 980611030}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1624817820}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1173955093
 MonoBehaviour:
@@ -1781,7 +1784,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 3.72
+  m_Intensity: 2.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1843,13 +1846,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470752659}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.21355209, y: 0.3230881, z: -0.19441152, w: -0.901229}
+  m_LocalRotation: {x: 0.025091752, y: 0.39942348, z: -0.75917274, w: -0.51331097}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 30.7, y: -395.5, z: 14.303}
+  m_LocalEulerAnglesHint: {x: 144.5, y: 146.6, z: -79.1}
 --- !u!114 &1470752662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2109,6 +2112,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1173955092}
   - {fileID: 542676650}
   - {fileID: 545742894}
   - {fileID: 1801809004}
@@ -2659,7 +2663,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1470752661}
-  - {fileID: 1173955092}
   - {fileID: 900902690}
   - {fileID: 1624817820}
   - {fileID: 727527880}

@@ -3,6 +3,7 @@ using DG.Tweening;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem.Interactions;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Building service for the game. Helps route functionality between different objects and performs basic validation.
@@ -78,6 +79,7 @@ public class BuildingService : ServiceState
         // This is for placing a new tile
         if (tilePlacer.TrySpawn(grid.HoveredCoord, transform, 0.15f, out TileInstance newTile)) {
             newTile.instance.Initialize();
+            ProgressionManager.Instance.AdjustMoney(-newTile.def.cost);
             SoundManager.Instance.PlayBuildEffect(ConstructionManager.Instance.placementSound);
             wallBuilder.RebuildPerimeter(grid.HoveredCoord, tilePlacer.EffectiveSize, tilePlacer.GetCells());
             ConstructionManager.Instance.CheckMarkerValidity(grid.HoveredCoord);

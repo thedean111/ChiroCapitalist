@@ -175,7 +175,7 @@ public class EditService : ServiceState
         } else {
             // Remove the payload information from the previously simulated cell
             tilePlacer.RemoveCellFootprint(_lastCoordWhileMoving, tilePlacer.EffectiveSize);
-            wallBuilder.RebuildPerimeter(_lastCoordWhileMoving, tilePlacer.EffectiveSize, tilePlacer.GetCells());
+            wallBuilder.RebuildPerimeter(_lastCoordWhileMoving, tilePlacer.EffectiveSize, tilePlacer.GetCells(), -1);
 
             // If the coord and tile wouldn't be valid, don't simulate anything
             if (!tilePlacer.IsValidCoord) { return; }
@@ -227,7 +227,7 @@ public class EditService : ServiceState
 
         // Capture the initial state of the tile and then remove it from the grid
         tilePlacer.RemoveCellFootprint(_payload.origin, tilePlacer.EffectiveSize);
-        wallBuilder.RebuildPerimeter(_payload.origin, tilePlacer.EffectiveSize, tilePlacer.GetCells());
+        wallBuilder.RebuildPerimeter(_payload.origin, tilePlacer.EffectiveSize, tilePlacer.GetCells(), -1);
 
         // Immediately determine if any islands are formed by picking up the tile
         tilePlacer.IdentifyIslands(baseHologramTint, islandColor);

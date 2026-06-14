@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 public class ProgressionManager : MonoBehaviour
 {
     public static ProgressionManager Instance { get; private set; }
 
-    public int Money {get; private set;}
+    
+    public PracticeData activeSaveData;
 
     [Header("Stat Scaling")]
     [Range(1, 50f)] public float basePatientStatPool = 10f; // Base value to scale stat pool off of
@@ -23,6 +25,7 @@ public class ProgressionManager : MonoBehaviour
     //
     private uint rank = 0; // Rank will always increase, even when moving up a tier
     private uint tier = 0; // Tier increases have to be bought into
+    private Tweener moneyTween;
     //
     //
     //
@@ -30,7 +33,12 @@ public class ProgressionManager : MonoBehaviour
     void Awake()
     {
         if (Instance == null) { Instance = this; }
-        Money = 0;
+    }
+
+    void Start()
+    {
+        UIManager.Instance.ConfigureDataLabels(activeSaveData);
+        moneyTween = DOTween.To(() => activeSaveData.tweenMoney, x => activeSaveData.tweenMoney = x, activeSaveData.money, 1f).SetAutoKill(false);
     }
 
     /// <summary>
@@ -64,8 +72,15 @@ public class ProgressionManager : MonoBehaviour
     /// </summary>
     public void AdjustMoney(int val)
     {
-        Money = Math.Max(0, Money + val);
+        activeSaveData.money = Math.Max(0, activeSaveData.money + val);
+        moneyTween.ChangeEndValue(activeSaveData.money, true).Restart();
+
         UIManager.Instance.RefreshTileList();
     }
+
+    /// <summary>
+    /// Get the player's active money amount.
+    /// </summary>
+    public int Money() { return activeSaveData.money; }
 
 }

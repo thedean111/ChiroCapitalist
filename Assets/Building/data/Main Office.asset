@@ -31,3 +31,5 @@ MonoBehaviour:
     overrideType: 1
   - localCoord: {x: 1, y: 3}
     overrideType: 1
+  - localCoord: {x: 0, y: 1}
+    overrideType: 16

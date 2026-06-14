@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Net.Sockets;
 
 /// <summary>
 /// This object will spawn walls based on placement rules given groups of cells.
@@ -16,10 +17,11 @@ public class WallBuilder : MonoBehaviour
     public InteractableGrid grid;
     
     [Header("Prefabs")]
-    public GameObject interiorWall;
-    public GameObject exteriorWall;
-    public GameObject door;
-
+    public GameObject baseWall_interior;
+    public GameObject baseWall_exterior;
+    public GameObject windowWall;
+    public GameObject door_exterior;
+    public GameObject door_interior;
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
@@ -70,9 +72,10 @@ public class WallBuilder : MonoBehaviour
     }
 
     /// <summary>
-    /// Evaluates edges on the perimeter defined by the starting coordinate and the footprint size.
+    /// Evaluates edges on the perimeter defined by the starting coordinate and the footprint size. The perspective means if the perimeter should be 
+    /// evaluated from the outside or inside.
     /// </summary>
-    public void RebuildPerimeter(Vector2Int startCoord, Vector2Int footprint, Dictionary<Vector2Int, CellData> cells) {
+    public void RebuildPerimeter(Vector2Int startCoord, Vector2Int footprint, Dictionary<Vector2Int, CellData> cells, int perspective = 1) {
         // One loop in the X-direction that will evaluate the top and bottom border
         for (int x = 0; x < footprint.x; x++) {
             // Bottom edge
@@ -80,7 +83,7 @@ public class WallBuilder : MonoBehaviour
             Vector2Int outTileCoord = new Vector2Int(startCoord.x + x, startCoord.y - 1);
             WallType type = EvaluateEdge(inTileCoord, outTileCoord, cells);
             int flip = 1;
-            if (type == WallType.Exterior && cells.ContainsKey(outTileCoord)) { flip = -1; }
+            if (type == WallType.Exterior || type == WallType.DoorExterior) { flip = -1 * perspective; }
             ApplyEdge(
                 new AdjEdgeKey(inTileCoord, outTileCoord),
                 type,
@@ -93,7 +96,7 @@ public class WallBuilder : MonoBehaviour
             outTileCoord.y = startCoord.y + footprint.y;
             type = EvaluateEdge(inTileCoord, outTileCoord, cells);
             flip = 1;
-            if (type == WallType.Exterior && cells.ContainsKey(outTileCoord)) { flip = -1; }
+            if (type == WallType.Exterior || type == WallType.DoorExterior) { flip = -1 * perspective; }
             ApplyEdge(
                 new AdjEdgeKey(inTileCoord, outTileCoord),
                 type,
@@ -109,7 +112,7 @@ public class WallBuilder : MonoBehaviour
             Vector2Int outTileCoord = new Vector2Int(startCoord.x - 1, startCoord.y + y);
             WallType type = EvaluateEdge(inTileCoord, outTileCoord, cells);
             int flip = 1;
-            if (type == WallType.Exterior && cells.ContainsKey(outTileCoord)) { flip = -1; }
+            if (type == WallType.Exterior || type == WallType.DoorExterior) { flip = -1 * perspective; }
             ApplyEdge(
                 new AdjEdgeKey(inTileCoord, outTileCoord),
                 type,
@@ -122,7 +125,7 @@ public class WallBuilder : MonoBehaviour
             outTileCoord.x = startCoord.x + footprint.x;
             type = EvaluateEdge(inTileCoord, outTileCoord, cells);
             flip = 1;
-            if (type == WallType.Exterior && cells.ContainsKey(outTileCoord)) { flip = -1; }
+            if (type == WallType.Exterior || type == WallType.DoorExterior) { flip = -1 * perspective; }
             ApplyEdge(
                 new AdjEdgeKey(inTileCoord, outTileCoord),
                 type,
@@ -130,6 +133,8 @@ public class WallBuilder : MonoBehaviour
                 Vector3.up * -90 * flip
             );
         }
+    
+
     }
 
     /// <summary>
@@ -144,8 +149,10 @@ public class WallBuilder : MonoBehaviour
             return WallType.None;
         }
 
-        if ((hasInData && !hasOutdata) || (!hasInData && hasOutdata)) {
-            return WallType.Exterior;
+        if (hasInData && !hasOutdata) {
+            return (inData.flags & CellFlags.ExternalInterfaceOnly) != 0 ? WallType.DoorExterior : WallType.Exterior;
+        } else if (!hasInData && hasOutdata) {
+            return (outData.flags & CellFlags.ExternalInterfaceOnly) != 0 ? WallType.DoorExterior : WallType.Exterior;
         }
 
         // Two cells that are within the same tile should not be separated
@@ -153,18 +160,23 @@ public class WallBuilder : MonoBehaviour
             return WallType.None;
 
         // Two hallways will always merge
-        if (inData.type == CellType.Hallway && outData.type == CellType.Hallway)
+        if (inData.type == CellType.Hallway && outData.type == CellType.Hallway) {
             return WallType.None;
+        }
 
-        // Anything next to an anchor will spawn a door
-        if ((inData.flags & CellFlags.Anchor) != 0 || (outData.flags & CellFlags.Anchor) != 0)
-            return WallType.Door;
+        // If either cell doesn't allow interface then don't check for doors
+        if ((inData.flags & CellFlags.NoInterface) == 0 && (outData.flags & CellFlags.NoInterface)==0) {
+            // Anything next to an anchor will spawn a door
+            if ((inData.flags & CellFlags.Anchor) != 0 || (outData.flags & CellFlags.Anchor) != 0) {
+                return WallType.DoorInterior;
+            }
 
-        // Any interface cell next to a hallway will spawn a door
-        // TODO: How to prevent two doors from spawning on one cell?
-        if ((inData.flags == CellFlags.Interface && outData.type == CellType.Hallway) || 
-            (outData.flags == CellFlags.Interface && inData.type == CellType.Hallway))
-            return WallType.Door;
+            // Any interface cell next to a hallway will spawn a door
+            if ((inData.flags == CellFlags.Interface && outData.type == CellType.Hallway) || 
+                (outData.flags == CellFlags.Interface && inData.type == CellType.Hallway)) {
+                return WallType.DoorInterior;
+            }
+        }
 
         return WallType.Interior;
     }
@@ -181,9 +193,10 @@ public class WallBuilder : MonoBehaviour
 
         // Extract the desired prefab
         GameObject prefab = type switch {
-            WallType.Exterior => exteriorWall,
-            WallType.Interior => interiorWall,
-            WallType.Door => door,
+            WallType.Exterior => Random.Range(0f, 1f) < 0.2f ? windowWall : baseWall_exterior,
+            WallType.Interior => baseWall_interior,
+            WallType.DoorInterior => door_interior,
+            WallType.DoorExterior => door_exterior,
             _ => null
         };
 
@@ -199,7 +212,9 @@ public class WallBuilder : MonoBehaviour
 
         // Spawn the prefab and position it properly
         _edges[edge] = Instantiate(prefab, Vector3.zero, Quaternion.Euler(rotation), transform);
-        _edges[edge].transform.localPosition = position;
+        _edges[edge].transform.localPosition = position + Vector3.up * 0.5f;
+        _edges[edge].transform.DOLocalMove(position, 0.2f).SetEase(Ease.OutBack);
+        // _edges[edge].transform.localPosition = position;
     }
 
     /// <summary>

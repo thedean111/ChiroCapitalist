@@ -27,3 +27,9 @@ MonoBehaviour:
   specialCells:
   - localCoord: {x: 0, y: 0}
     overrideType: 1
+  - localCoord: {x: 1, y: 0}
+    overrideType: 8
+  - localCoord: {x: 0, y: 1}
+    overrideType: 8
+  - localCoord: {x: 1, y: 1}
+    overrideType: 8

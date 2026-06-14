@@ -37,6 +37,8 @@ public class UIManager : MonoBehaviour
     private Label _tileDetailsDoctorLevel;
     private VisualElement _tileDetailsDoctorIcon;
 
+    private Label _moneyDisplay;
+
     private bool _followMouse = false;
     private TileInstance _focusedTile;
     // -----
@@ -53,6 +55,17 @@ public class UIManager : MonoBehaviour
     void OnEnable()
     {
         buildingContainer = hud.rootVisualElement.Q<VisualElement>("building-container");
+    }
+
+    /// <summary>
+    /// Configure all UI that uses the practice data.
+    /// </summary>
+    public void ConfigureDataLabels(PracticeData data) {
+        _moneyDisplay = hud.rootVisualElement.Q<Label>("money-display");
+        _moneyDisplay.dataSource = data;
+        _moneyDisplay.SetBinding("text", new DataBinding {
+            dataSourcePath = new Unity.Properties.PropertyPath(nameof(data.tweenMoney))
+        });
     }
 
     void Start()

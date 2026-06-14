@@ -8,14 +8,17 @@ public enum CellFlags {
     None = 0,
     Interface = 1<<0,
     ConnectSameOrAnchor = 1<<1,
-    Anchor = 1<<2
+    Anchor = 1<<2,
+    NoInterface = 1<<3,
+    ExternalInterfaceOnly = 1<<4
 }
 
 public enum WallType {
     None,
     Exterior,
     Interior,
-    Door
+    DoorExterior,
+    DoorInterior
 }
 
 public enum TilePreviewState {
