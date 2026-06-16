@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
     private Label _tileDetailsDoctorName;
     private Label _tileDetailsDoctorLevel;
     private VisualElement _tileDetailsDoctorIcon;
+    private Button _tileDetailsLevelUpBtn;
 
     private Label _moneyDisplay;
 
@@ -116,10 +117,12 @@ public class UIManager : MonoBehaviour
         _tileDetailsDoctorName = hud.rootVisualElement.Q<Label>("tile-details-doctor-name");
         _tileDetailsDoctorLevel = hud.rootVisualElement.Q<Label>("tile-details-doctor-level");
         _tileDetailsDoctorIcon = hud.rootVisualElement.Q<VisualElement>("tile-details-doctor-icon");
+        _tileDetailsLevelUpBtn = hud.rootVisualElement.Q<Button>("tile-details-upgrade-button");
         hud.rootVisualElement.Q<Button>("tile-details-minimize-button").clicked += () => ToggleTileDetailsPanel(false);
 
         // TODO: This should actually open a records menu/panel of currently owned doctors
         _tileAssignDoctorBtn.clicked += () => _focusedTile.instance.UpdateDoctorAssignment(NPCFactory.Instance.GenerateDoctorData()); // TEMP
+        _tileDetailsLevelUpBtn.clicked += () => _focusedTile.instance.LevelUp();
 
         hud.rootVisualElement.Q<Button>("tile-details-remove-button").clicked += () => _focusedTile.instance.UpdateDoctorAssignment(null);
         // hud.rootVisualElement.Q<Button>("tile-details-info-button").clicked +=
@@ -279,6 +282,13 @@ public class UIManager : MonoBehaviour
         {
             _tileDoctorContainer.SetEnabled(false);
         }
+    }
+
+    /// <summary>
+    /// Just set the text to the passed in level. Could probably use data binding as well.
+    /// </summary>
+    public void UpdateLevelText(int Level) {
+        _tileLevel.text = $"Lv. {Level}";
     }
 
     /// <summary>

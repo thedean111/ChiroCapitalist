@@ -41,3 +41,9 @@ public enum StatCategory {
     Technique,
     Magic
 }
+
+public enum PropLevelAction {
+    Add,
+    Remove,
+    Replace
+}

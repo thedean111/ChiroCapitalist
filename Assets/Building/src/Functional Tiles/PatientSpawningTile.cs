@@ -37,8 +37,6 @@ public abstract class PatientSpawningTile : Tile
     /// </summary>
     public override void Initialize() {
         base.Initialize();
-
-        Level = 0;
         _lastSpawnTimestamp = Time.time;
         _currentPatientCount = 0;
 
@@ -46,18 +44,18 @@ public abstract class PatientSpawningTile : Tile
             StartCoroutine(SpawnPatientCoroutine());
     }
 
-    /// <summary>
-    /// Logic to execute when leveling up a tile that spawns patients.
-    /// </summary>
-    public void LevelUp() {
-        Level++;
-        LevelUpBehavior();
-    }
+    // /// <summary>
+    // /// Logic to execute when leveling up a tile that spawns patients.
+    // /// </summary>
+    // public override void LevelUp() {
+    //     base.LevelUp();
+    //     LevelUpBehavior();
+    // }
 
-    /// <summary>
-    /// Custom level up logic for children to implement.
-    /// </summary>
-    protected abstract void LevelUpBehavior();
+    // /// <summary>
+    // /// Custom level up logic for children to implement.
+    // /// </summary>
+    // protected abstract void LevelUpBehavior();
 
     /// <summary>
     /// Toggles the pause flag which will halt patient spawning and other functions of this tile.

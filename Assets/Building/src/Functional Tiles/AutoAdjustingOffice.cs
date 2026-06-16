@@ -14,7 +14,7 @@ public class AutoAdjustingOffice : PatientSpawningTile
     public Doctor doctor;
     public float adjustmentTime = 3f;
     public Transform poseableObjects;
-
+    
     public OfficeSequence adjustmentPose;
     public List<OfficeSequence> sittingIdles;
     public List<OfficeSequence> standingIdles;
@@ -87,18 +87,18 @@ public class AutoAdjustingOffice : PatientSpawningTile
         // Perform the action
         switch (_currentAdjustmentStat) {
             case StatCategory.Strength:
-                patient.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_action_patient", 0f);
-                doctor.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_action_doctor", 0f);
+                patient.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_action_patient", 0.2f);
+                doctor.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_action_doctor", 0.2f);
                 break;
 
             case StatCategory.Technique:
-                patient.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_action_patient", 0f);
-                doctor.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_action_doctor", 0f);
+                patient.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_action_patient", 0.2f);
+                doctor.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_action_doctor", 0.2f);
                 break;
 
             case StatCategory.Magic:
-                patient.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_action_patient", 0f);
-                doctor.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_action_doctor", 0f);
+                patient.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_action_patient", 0.2f);
+                doctor.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_action_doctor", 0.2f);
                 break;
 
             default:
@@ -156,13 +156,13 @@ public class AutoAdjustingOffice : PatientSpawningTile
         StartCoroutine(AdjustPatientRoutine());
     }
 
-    /// <summary>
-    /// On top of the default behavior, update the decorations.
-    /// </summary>
-    protected override void LevelUpBehavior()
-    {
-        throw new System.NotImplementedException();
-    }
+    // /// <summary>
+    // /// On top of the default behavior, update the decorations.
+    // /// </summary>
+    // protected override void LevelUpBehavior()
+    // {
+    //     throw new System.NotImplementedException();
+    // }
 
     /// <summary>
     /// Initialization logic for when this tile is spawned

@@ -23,7 +23,7 @@ MonoBehaviour:
   size: {x: 2, y: 2}
   type: 2
   defaultFlag: 0
-  prefab: {fileID: 2382931409530266578, guid: bc9acc99430cd60458d8dbec1ee78d17, type: 3}
+  prefab: {fileID: 2382931409530266578, guid: 0a228c1dc6a938c49bcdf89d683fef9c, type: 3}
   specialCells:
   - localCoord: {x: 0, y: 0}
     overrideType: 1

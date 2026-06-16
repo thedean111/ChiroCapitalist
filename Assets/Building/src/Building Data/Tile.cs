@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,12 +11,14 @@ public class Tile : MonoBehaviour
     // Public
     //---------------------------------------------------------------------
     [HideInInspector] public int tileID;
-
+    public List<PropRuleAssociation> propRules;
     // These details are available for all tiles but not all will use them
     [Header("Details")]
     public int Level { get; protected set; }
     public event Action<float> OnProgressChange; // callback to be fired when the progress of the focused tile is changed
     public event Action OnProgressComplete;
+
+
 
     //---------------------------------------------------------------------
     // Private
@@ -50,10 +53,14 @@ public class Tile : MonoBehaviour
     /// </summary>
     public virtual void Initialize() { 
         PlaceTile();
+        Level = 1;
+        foreach (PropRuleAssociation ra in propRules) {
+            ra.ruleSet.InitializeRules();
+        }
     }
 
     /// <summary>
-    /// Logic for placing down the tile..
+    /// Logic for placing down the tile.
     /// </summary>
     public virtual void PlaceTile() {}
 
@@ -64,6 +71,25 @@ public class Tile : MonoBehaviour
     {
         _renderers = GetComponentsInChildren<Renderer>();
         _mpb = new MaterialPropertyBlock();
+    }
+
+    /// <summary>
+    /// What every tile should do when leveling up.
+    /// </summary>
+    public virtual void LevelUp() {
+        if (Level >= ProgressionManager.Instance.maxTileLevel) {
+            return;
+        }
+
+        Level++;
+        UIManager.Instance.UpdateLevelText(Level);
+        foreach (PropRuleAssociation ra in propRules) {
+            if (ra.ruleSet.ruleDict.TryGetValue(Level, out PropUpgradeRule rule)) {
+                rule.Execute(ra.prop);
+            }
+        }
+
+        _renderers = GetComponentsInChildren<Renderer>();
     }
 
     /// <summary>

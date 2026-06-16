@@ -19,6 +19,7 @@ public class ProgressionManager : MonoBehaviour
     [Range(1, 10)] public int maxTiers = 5;
     [Range(1, 10)] public int ranksPerTier = 5;
     [Range(1, 10)] public int tiersPerDifficulty = 2;
+    [Range(5, 10)] public int maxTileLevel = 8;
 
     //
     // PRIVATE DATA

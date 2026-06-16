@@ -584,8 +584,8 @@ MonoBehaviour:
   zLimits: {x: -15, y: 45}
   clickDragSpeed: 5
   inputSpeed: 10
-  zoomSpeed: 3
-  zoomClamps: {x: 15, y: 30}
+  zoomSpeed: 5
+  zoomClamps: {x: 10, y: 20}
 --- !u!114 &542676653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,6 +651,7 @@ MonoBehaviour:
   maxTiers: 5
   ranksPerTier: 5
   tiersPerDifficulty: 2
+  maxTileLevel: 7
 --- !u!1 &574230097
 GameObject:
   m_ObjectHideFlags: 0

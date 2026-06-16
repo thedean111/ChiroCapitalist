@@ -469,3 +469,17 @@
     background-color: rgba(255, 237, 202, 0.74);
     margin-left: 6px;
 }
+
+.tile-details-button {
+    transition-duration: 0.1s;
+    background-color: rgba(255, 237, 202, 0.85);
+}
+
+.tile-details-button:hover {
+    scale: 1.05 1.05;
+}
+
+.tile-details-button:active {
+    scale: 0.97 0.97;
+    background-color: rgba(177, 163, 139, 0.44);
+}

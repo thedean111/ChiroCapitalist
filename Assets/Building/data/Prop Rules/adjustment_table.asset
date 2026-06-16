@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb24b041f32c9945a704f567045ee72, type: 3}
+  m_Name: adjustment_table
+  m_EditorClassIdentifier: Assembly-CSharp::PropUpgradeRules
+  ruleList:
+  - level: 2
+    action: 2
+    prefab: {fileID: 9146624998004993207, guid: de3629dc1757d5b48a6b81784299e1ae, type: 3}
+  - level: 3
+    action: 2
+    prefab: {fileID: 3530459075182725835, guid: f60948e1136a08a419cc64f293a3fcc1, type: 3}
+  - level: 4
+    action: 2
+    prefab: {fileID: 5671471115122972406, guid: 6dad205fa65723345abf5288d57c8351, type: 3}
+  - level: 5
+    action: 2
+    prefab: {fileID: 1915672959104624165, guid: 2d47993282e28ea44bd0e1e1d7e8ae86, type: 3}
+  - level: 6
+    action: 2
+    prefab: {fileID: 3257387930565623117, guid: b8b454716a0574e4db4b890f2620e41a, type: 3}
+  - level: 7
+    action: 2
+    prefab: {fileID: 1153489938723134566, guid: ae11b23400d21184997140cbd96e4500, type: 3}
