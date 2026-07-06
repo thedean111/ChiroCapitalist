@@ -23,8 +23,6 @@ public class Editor_PoseProcessor : EditorWindow
         // Allow user to drag and drop or select the source Prefab
         GUILayout.Label("Sources", EditorStyles.boldLabel);
         poseableObjectRoot = (Transform)EditorGUILayout.ObjectField("Poseable Objects Parent", poseableObjectRoot, typeof(Transform), true);
-        doctorPose = (Transform)EditorGUILayout.ObjectField("Doctor Pose", doctorPose, typeof(Transform), true);
-        patientPose = (Transform)EditorGUILayout.ObjectField("Patient Pose", patientPose, typeof(Transform), true);
 
         GUILayout.Space(15);
         GUILayout.Label("Target", EditorStyles.boldLabel);
@@ -51,19 +49,9 @@ public class Editor_PoseProcessor : EditorWindow
         targetPoseObject.decorPose ??= new List<ObjectPose>();
         targetPoseObject.decorPose.Clear();
 
-        if (doctorPose != null){
-            targetPoseObject.doctorPose.localPosition = doctorPose.localPosition;
-            targetPoseObject.doctorPose.localRotation = doctorPose.localRotation;
-        }
-
-        if (patientPose != null){
-            targetPoseObject.patientPose.localPosition = patientPose.localPosition;
-            targetPoseObject.patientPose.localRotation = patientPose.localRotation;
-        }
-
         if (poseableObjectRoot != null) {
-            // NOTE: This will include the root itself...maybe this is confusing?
-            foreach (Transform t in poseableObjectRoot.GetComponentsInChildren<Transform>()) {
+            for (int i = 0; i < poseableObjectRoot.childCount; i++) {
+                Transform t = poseableObjectRoot.GetChild(i);
                 targetPoseObject.decorPose.Add(new ObjectPose(t.localPosition, t.localRotation));
             }
         }

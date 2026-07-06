@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb24b041f32c9945a704f567045ee72, type: 3}
+  m_Name: bookshelf_corner_small_to_big_1
+  m_EditorClassIdentifier: Assembly-CSharp::PropUpgradeRules
+  ruleList:
+  - level: 2
+    action: 0
+    prefab: {fileID: 1542381302463963275, guid: d377502fd41a6914a9ef07573b944a00, type: 3}
+  - level: 4
+    action: 2
+    prefab: {fileID: 8860692179665906424, guid: 30c0b442d32760e4688bb5fe3e646e93, type: 3}
+  - level: 6
+    action: 2
+    prefab: {fileID: 8671394181323281424, guid: 6c1685cd6daf53d4eae157f281c46a75, type: 3}
+  - level: 8
+    action: 2
+    prefab: {fileID: 3369207611876364801, guid: 348bf98f7a390c7408a86d523bf1f757, type: 3}

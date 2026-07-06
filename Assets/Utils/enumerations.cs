@@ -10,12 +10,14 @@ public enum CellFlags {
     ConnectSameOrAnchor = 1<<1,
     Anchor = 1<<2,
     NoInterface = 1<<3,
-    ExternalInterfaceOnly = 1<<4
+    ExternalInterfaceOnly = 1<<4,
+    BaseWallOnly = 1<<5
 }
 
 public enum WallType {
     None,
     Exterior,
+    NoWindow,
     Interior,
     DoorExterior,
     DoorInterior

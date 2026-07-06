@@ -44,13 +44,18 @@ public abstract class PatientSpawningTile : Tile
             StartCoroutine(SpawnPatientCoroutine());
     }
 
-    // /// <summary>
-    // /// Logic to execute when leveling up a tile that spawns patients.
-    // /// </summary>
-    // public override void LevelUp() {
-    //     base.LevelUp();
-    //     LevelUpBehavior();
-    // }
+    /// <summary>
+    /// Logic to execute when leveling up a tile that spawns patients.
+    /// </summary>
+    public override bool LevelUp() {
+        if (base.LevelUp()) {
+            if (!_spawningPatient && !_spawnLock && _currentPatientCount < getLevelDetails().patientCapacity) {
+                StartCoroutine(SpawnPatientCoroutine());
+            }
+            return true;
+        }
+        return false;
+    }
 
     // /// <summary>
     // /// Custom level up logic for children to implement.
@@ -74,11 +79,18 @@ public abstract class PatientSpawningTile : Tile
     }
 
     /// <summary>
+    /// Gets the current level details with protected indexing
+    /// </summary>
+    public PatientSpawnerLevelInfo getLevelDetails() {
+        return levelDetails[Mathf.Min(Level-1, levelDetails.Count-1)];
+    }
+
+    /// <summary>
     /// Manages timestamps for spawning patients.
     /// </summary>
     public IEnumerator SpawnPatientCoroutine() {
         _step = 0;
-        float _stepSize = (float)levelDetails[Level].spawnTime / updateSteps;
+        float _stepSize = (float)getLevelDetails().spawnTime / updateSteps;
         _spawningPatient = true;
         while (_step < updateSteps) {
             UpdateProgress((float)_step / updateSteps * 100);
@@ -94,7 +106,7 @@ public abstract class PatientSpawningTile : Tile
         CompleteProgress();
 
         // Spawn until capacity is reached
-        if (_currentPatientCount < levelDetails[Level].patientCapacity) {
+        if (_currentPatientCount < getLevelDetails().patientCapacity) {
             StartCoroutine(SpawnPatientCoroutine());
         }
     }
@@ -106,8 +118,7 @@ public abstract class PatientSpawningTile : Tile
         _currentPatientCount--;
 
         // Spawn until capacity is reached
-        if (!_spawningPatient &&
-            _currentPatientCount < levelDetails[Level].patientCapacity) {
+        if (!_spawningPatient && _currentPatientCount < getLevelDetails().patientCapacity) {
             StartCoroutine(SpawnPatientCoroutine());
         }
         ReleasePatientBehavior();
@@ -129,5 +140,5 @@ public abstract class PatientSpawningTile : Tile
 public class PatientSpawnerLevelInfo {
     [Range(0, 30)] public int spawnTime;
     [Range(1f, 3f)] public float rewardModifier;
-    [Range(1,5)] public int patientCapacity;
+    [Range(1,6)] public int patientCapacity;
 }

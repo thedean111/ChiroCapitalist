@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -10,7 +11,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance {get; private set; }
 
     public UIDocument hud;
-
+    public VisualTreeAsset adjustmentButtonTemplate;
 
     // -----
     // PRIVATE
@@ -30,6 +31,7 @@ public class UIManager : MonoBehaviour
     private VisualElement _tileLevelContainer;
     private VisualElement _tileDoctorContainer;
     private Label _tileLevel;
+    private Label _tileLevelUpCost;
     private ProgressBar _tileProgress;
     private VisualElement _tileDoctorInfo;
     private Button _tileAssignDoctorBtn;
@@ -42,6 +44,7 @@ public class UIManager : MonoBehaviour
 
     private bool _followMouse = false;
     private TileInstance _focusedTile;
+    private int currentLevelUpCost;
     // -----
 
     void Awake()
@@ -118,11 +121,18 @@ public class UIManager : MonoBehaviour
         _tileDetailsDoctorLevel = hud.rootVisualElement.Q<Label>("tile-details-doctor-level");
         _tileDetailsDoctorIcon = hud.rootVisualElement.Q<VisualElement>("tile-details-doctor-icon");
         _tileDetailsLevelUpBtn = hud.rootVisualElement.Q<Button>("tile-details-upgrade-button");
+        _tileLevelUpCost = hud.rootVisualElement.Q<Label>("tile-level-up-cost");
         hud.rootVisualElement.Q<Button>("tile-details-minimize-button").clicked += () => ToggleTileDetailsPanel(false);
 
         // TODO: This should actually open a records menu/panel of currently owned doctors
         _tileAssignDoctorBtn.clicked += () => _focusedTile.instance.UpdateDoctorAssignment(NPCFactory.Instance.GenerateDoctorData()); // TEMP
-        _tileDetailsLevelUpBtn.clicked += () => _focusedTile.instance.LevelUp();
+        _tileDetailsLevelUpBtn.clicked += () => {
+            if (_focusedTile.instance.LevelUp()) {
+                ProgressionManager.Instance.AdjustMoney(-currentLevelUpCost);
+                UpdateTileDetailsPanel();
+            }
+        };
+            
 
         hud.rootVisualElement.Q<Button>("tile-details-remove-button").clicked += () => _focusedTile.instance.UpdateDoctorAssignment(null);
         // hud.rootVisualElement.Q<Button>("tile-details-info-button").clicked +=
@@ -130,6 +140,10 @@ public class UIManager : MonoBehaviour
         _tileDetailsPanel.SetEnabled(false);
         //__________________________________________________________________________________________
 
+    }
+
+    public TileInstance GetFocusedTile() {
+        return _focusedTile;
     }
 
     private void Update() {
@@ -255,7 +269,9 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// Update the information in the panel with the current state of the focused tile.
     /// </summary>
-    private void UpdateTileDetailsPanel() {
+    public void UpdateTileDetailsPanel() {
+        if (_focusedTile == null) { return; }
+
         _tileName.text = _focusedTile.def.tileName;
         _tileDescription.text = _focusedTile.def.description;
 
@@ -263,6 +279,14 @@ public class UIManager : MonoBehaviour
         if ((_focusedTile.def.detailFlags & TileDetailsFlags.Level) != 0) {
             _tileLevelContainer.SetEnabled(true);
             _tileLevel.text = $"Lv. {_focusedTile.instance.Level}";
+            currentLevelUpCost = ProgressionManager.Instance.GetTileLevelUpCost(_focusedTile.instance.Level);
+            if (currentLevelUpCost == -1) {
+                _tileDetailsLevelUpBtn.enabledSelf = false;
+                _tileLevelUpCost.text = $"MAX";
+            } else {
+                _tileDetailsLevelUpBtn.enabledSelf = ProgressionManager.Instance.CanAfford(currentLevelUpCost);
+                _tileLevelUpCost.text = $"{currentLevelUpCost}";
+            }
         } else {
             _tileLevelContainer.SetEnabled(false);
         }
@@ -326,4 +350,5 @@ public class UIManager : MonoBehaviour
 
         }
     }
+
 }

@@ -19,7 +19,11 @@ public class ProgressionManager : MonoBehaviour
     [Range(1, 10)] public int maxTiers = 5;
     [Range(1, 10)] public int ranksPerTier = 5;
     [Range(1, 10)] public int tiersPerDifficulty = 2;
+
+    [Header("Tile Scaling")]
     [Range(5, 10)] public int maxTileLevel = 8;
+    public AnimationCurve tileLevelScale;
+    public int baseTileCost;
 
     //
     // PRIVATE DATA
@@ -77,11 +81,32 @@ public class ProgressionManager : MonoBehaviour
         moneyTween.ChangeEndValue(activeSaveData.money, true).Restart();
 
         UIManager.Instance.RefreshTileList();
+        UIManager.Instance.UpdateTileDetailsPanel();
     }
 
     /// <summary>
     /// Get the player's active money amount.
     /// </summary>
     public int Money() { return activeSaveData.money; }
+
+    /// <summary>
+    /// Use the max level and the animation curve to determine how much a tile costs.
+    /// </summary>
+    public int GetTileLevelUpCost(int level) {
+        if (level == maxTileLevel) {
+            return -1;
+        }
+        
+        // Tile start at level 1, which is really 0
+        float t = level / (float)maxTileLevel;
+        return (int)Mathf.Round((float)(baseTileCost * tileLevelScale.Evaluate(t)) / 50f) * 50;
+    }
+
+    /// <summary>
+    /// Simple check to evaluate if the player can afford something based on the input and the current save value.
+    /// </summary>
+    public bool CanAfford(int value) {
+        return activeSaveData.money >= value;
+    }
 
 }

@@ -83,7 +83,7 @@ public class WallBuilder : MonoBehaviour
             Vector2Int outTileCoord = new Vector2Int(startCoord.x + x, startCoord.y - 1);
             WallType type = EvaluateEdge(inTileCoord, outTileCoord, cells);
             int flip = 1;
-            if (type == WallType.Exterior || type == WallType.DoorExterior) { flip = -1 * perspective; }
+            if (type == WallType.Exterior || type == WallType.DoorExterior || type == WallType.NoWindow) { flip = -1 * perspective; }
             ApplyEdge(
                 new AdjEdgeKey(inTileCoord, outTileCoord),
                 type,
@@ -96,7 +96,7 @@ public class WallBuilder : MonoBehaviour
             outTileCoord.y = startCoord.y + footprint.y;
             type = EvaluateEdge(inTileCoord, outTileCoord, cells);
             flip = 1;
-            if (type == WallType.Exterior || type == WallType.DoorExterior) { flip = -1 * perspective; }
+            if (type == WallType.Exterior || type == WallType.DoorExterior || type == WallType.NoWindow) { flip = -1 * perspective; }
             ApplyEdge(
                 new AdjEdgeKey(inTileCoord, outTileCoord),
                 type,
@@ -112,7 +112,7 @@ public class WallBuilder : MonoBehaviour
             Vector2Int outTileCoord = new Vector2Int(startCoord.x - 1, startCoord.y + y);
             WallType type = EvaluateEdge(inTileCoord, outTileCoord, cells);
             int flip = 1;
-            if (type == WallType.Exterior || type == WallType.DoorExterior) { flip = -1 * perspective; }
+            if (type == WallType.Exterior || type == WallType.DoorExterior || type == WallType.NoWindow) { flip = -1 * perspective; }
             ApplyEdge(
                 new AdjEdgeKey(inTileCoord, outTileCoord),
                 type,
@@ -125,7 +125,7 @@ public class WallBuilder : MonoBehaviour
             outTileCoord.x = startCoord.x + footprint.x;
             type = EvaluateEdge(inTileCoord, outTileCoord, cells);
             flip = 1;
-            if (type == WallType.Exterior || type == WallType.DoorExterior) { flip = -1 * perspective; }
+            if (type == WallType.Exterior || type == WallType.DoorExterior || type == WallType.NoWindow) { flip = -1 * perspective; }
             ApplyEdge(
                 new AdjEdgeKey(inTileCoord, outTileCoord),
                 type,
@@ -150,9 +150,9 @@ public class WallBuilder : MonoBehaviour
         }
 
         if (hasInData && !hasOutdata) {
-            return (inData.flags & CellFlags.ExternalInterfaceOnly) != 0 ? WallType.DoorExterior : WallType.Exterior;
+            return (inData.flags & CellFlags.ExternalInterfaceOnly) != 0 ? WallType.DoorExterior : (inData.flags & CellFlags.BaseWallOnly) != 0 ? WallType.NoWindow : WallType.Exterior;
         } else if (!hasInData && hasOutdata) {
-            return (outData.flags & CellFlags.ExternalInterfaceOnly) != 0 ? WallType.DoorExterior : WallType.Exterior;
+            return (outData.flags & CellFlags.ExternalInterfaceOnly) != 0 ? WallType.DoorExterior : (outData.flags & CellFlags.BaseWallOnly) != 0 ? WallType.NoWindow : WallType.Exterior;
         }
 
         // Two cells that are within the same tile should not be separated
@@ -193,6 +193,7 @@ public class WallBuilder : MonoBehaviour
 
         // Extract the desired prefab
         GameObject prefab = type switch {
+            WallType.NoWindow => baseWall_exterior,
             WallType.Exterior => Random.Range(0f, 1f) < 0.2f ? windowWall : baseWall_exterior,
             WallType.Interior => baseWall_interior,
             WallType.DoorInterior => door_interior,

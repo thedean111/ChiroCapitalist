@@ -475,11 +475,11 @@
     background-color: rgba(255, 237, 202, 0.85);
 }
 
-.tile-details-button:hover {
+.tile-details-button:hover:enabled {
     scale: 1.05 1.05;
 }
 
-.tile-details-button:active {
+.tile-details-button:active:enabled {
     scale: 0.97 0.97;
     background-color: rgba(177, 163, 139, 0.44);
 }

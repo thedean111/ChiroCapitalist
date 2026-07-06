@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using DG.Tweening;
 
 public class AutoAdjustingOffice : PatientSpawningTile
 {
@@ -18,12 +20,13 @@ public class AutoAdjustingOffice : PatientSpawningTile
     public OfficeSequence adjustmentPose;
     public List<OfficeSequence> sittingIdles;
     public List<OfficeSequence> standingIdles;
+    public ParticleSystem poseChangeEffect;
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
     private float _stepSize;
     private bool _adjustingPatient = false;
-    private Transform[] objects;
+    private List<Transform> objects = new();
     private StatCategory _currentAdjustmentStat;
     //*********************************************************************
 
@@ -44,6 +47,8 @@ public class AutoAdjustingOffice : PatientSpawningTile
         if (newDoctor == null) {
             doctor.data = null;
             doctor.gameObject.SetActive(false);
+            doctor.transform.position = Vector3.up * -15;
+            patient.transform.position = Vector3.up * -15;
 
         } else {
             doctor.SetData(newDoctor);
@@ -51,6 +56,7 @@ public class AutoAdjustingOffice : PatientSpawningTile
             StartCoroutine(SpawnPatientCoroutine());
         }
 
+        _spawnLock = false;
         UIManager.Instance.UpdateDoctorDetails(doctor.data);
         PlayIdle();
     }
@@ -64,10 +70,17 @@ public class AutoAdjustingOffice : PatientSpawningTile
             Debug.LogWarning("AutoAdjustingOffice: Requires a patient object to operate properly!");
             return;
         }
-        objects = poseableObjects.GetComponentsInChildren<Transform>();
+
+        objects.Clear();
+        for (int i = 0; i < poseableObjects.childCount; i++) {
+            objects.Add(poseableObjects.GetChild(i));
+        }
         doctor.data = null;
         doctor.gameObject.SetActive(false);
         patient.gameObject.SetActive(false);
+        doctor.transform.position = Vector3.up * -15;
+        patient.transform.position = Vector3.up * -15;
+        _spawnLock = true;
     }
 
     /// <summary>
@@ -126,32 +139,33 @@ public class AutoAdjustingOffice : PatientSpawningTile
             return;
         }
 
-        patient.SetData(patientData);
-        patient.gameObject.SetActive(true);
-
-        _currentAdjustmentStat = patientData.stats.GetDominantStat();
-        switch (_currentAdjustmentStat) {
-            case StatCategory.Strength:
-                patient.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_buildup_patient", 0f);
-                doctor.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_buildup_doctor", 0f);
-                break;
-
-            case StatCategory.Technique:
-                patient.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_buildup_patient", 0f);
-                doctor.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_buildup_doctor", 0f);
-                break;
-
-            case StatCategory.Magic:
-                patient.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_buildup_patient", 0f);
-                doctor.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_buildup_doctor", 0f);
-                break;
-
-            default:
-                break;
-        }
         _stepSize = adjustmentTime / updateSteps;
         _adjustingPatient = true;
-        PlaySequence(adjustmentPose);
+
+        PlaySequence(adjustmentPose, false, ()=>{
+            patient.SetData(patientData);
+            patient.gameObject.SetActive(true);
+            _currentAdjustmentStat = patientData.stats.GetDominantStat();
+            switch (_currentAdjustmentStat) {
+                case StatCategory.Strength:
+                    patient.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_buildup_patient", 0f);
+                    doctor.PlayAnimationClip($"Strength.{doctor.data.race.raceName.ToLower()}_strength_buildup_doctor", 0f);
+                    break;
+
+                case StatCategory.Technique:
+                    patient.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_buildup_patient", 0f);
+                    doctor.PlayAnimationClip($"Technique.{doctor.data.race.raceName.ToLower()}_technique_buildup_doctor", 0f);
+                    break;
+
+                case StatCategory.Magic:
+                    patient.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_buildup_patient", 0f);
+                    doctor.PlayAnimationClip($"Magic.{doctor.data.race.raceName.ToLower()}_magic_buildup_doctor", 0f);
+                    break;
+
+                default:
+                    break;
+            }
+        });
 
         StartCoroutine(AdjustPatientRoutine());
     }
@@ -183,18 +197,18 @@ public class AutoAdjustingOffice : PatientSpawningTile
     /// Determine what idle sequence to play and fire it off
     /// </summary>
     private void PlayIdle() {
-        int idleType = Random.Range(0, 2);
+        int idleType = UnityEngine.Random.Range(0, 2);
         OfficeSequence seq = null;
 
         switch(idleType) {
             // Sitting sequence
             case 0:
-                seq = sittingIdles[Random.Range(0, sittingIdles.Count)];
+                seq = sittingIdles[UnityEngine.Random.Range(0, sittingIdles.Count)];
                 break;
 
             // Standing sequence
             case 1:
-                seq = standingIdles[Random.Range(0, standingIdles.Count)];
+                seq = standingIdles[UnityEngine.Random.Range(0, standingIdles.Count)];
                 break;
         }
 
@@ -206,24 +220,28 @@ public class AutoAdjustingOffice : PatientSpawningTile
     /// <summary>
     /// How to translate the data in an office sequence to room behavior.
     /// </summary>
-    private void PlaySequence(OfficeSequence seq, bool overrideAnimation=false) {
-        // Position all of the objects by the provided data
-        doctor.transform.localPosition = seq.objectPose.doctorPose.localPosition;
-        doctor.transform.localRotation = seq.objectPose.doctorPose.localRotation;
-        patient.transform.localPosition = seq.objectPose.patientPose.localPosition;
-        patient.transform.localRotation = seq.objectPose.patientPose.localRotation;
+    private void PlaySequence(OfficeSequence seq, bool overrideAnimation=false, Action onFade=null, bool fadeInOnly = false) {        
         
-        for (int i = 0; i < objects.Length; i++) {
-            if (i >= seq.objectPose.decorPose.Count)
-                break;
+        // Fade everything off, move, then fade back in
+        PlayspaceService.DitherFadeObject(poseableObjects, 0f, 0.3f, () => {
+            for (int i = 0; i < objects.Count; i++) {
+                if (i >= seq.objectPose.decorPose.Count)
+                    break;
 
-            objects[i].localPosition = seq.objectPose.decorPose[i].localPosition;
-            objects[i].localRotation = seq.objectPose.decorPose[i].localRotation;
-        }
+                objects[i].localPosition = seq.objectPose.decorPose[i].localPosition;
+                objects[i].localRotation = seq.objectPose.decorPose[i].localRotation;
+            }
+            if (overrideAnimation) {
+                patient.PlayAnimationClip(seq.patientAnimationName, 0f);
+                doctor.PlayAnimationClip(seq.doctorAnimationName, 0f);
+            }
 
-        if (overrideAnimation) {
-            patient.PlayAnimationClip(seq.patientAnimationName, 0f);
-            doctor.PlayAnimationClip(seq.doctorAnimationName, 0f);
-        }
+            onFade?.Invoke();
+
+            PlayspaceService.DitherFadeObject(poseableObjects, 1f, 0.3f, () =>{});
+        });
+
+        // poseChangeEffect.transform.position = doctor.transform.position;
+        // poseChangeEffect.Play();
     }
 }

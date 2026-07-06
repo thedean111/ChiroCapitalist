@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 /*
 This scriptable object contains data that drives the behavior of Tile props on level up. For a given prop and tile level, these rules should be referenced so 
@@ -46,16 +47,22 @@ public class PropUpgradeRule {
     public void Execute(GameObject target) {
         switch (action) {
             case PropLevelAction.Add:
-                UnityEngine.Object.Instantiate(prefab, target.transform);
+                Transform t = UnityEngine.Object.Instantiate(prefab, target.transform).transform;
+                t.localScale = Vector3.zero;
+                t.DOScale(1, 0.2f).SetEase(Ease.OutBack);
                 break;
 
             case PropLevelAction.Remove:
-                UnityEngine.Object.DestroyImmediate(target);
+                target.transform.DOScale(0f, 0.2f).OnComplete(() => {
+                    target.transform.DOKill();
+                    UnityEngine.Object.DestroyImmediate(target);
+                });
                 break;
 
             
             case PropLevelAction.Replace:
                 UnityEngine.Object.DestroyImmediate(target.transform.GetChild(0).gameObject);
+                target.transform.DOShakeScale(0.2f, 0.3f);
                 UnityEngine.Object.Instantiate(prefab, target.transform);
                 break;
         }
@@ -65,5 +72,15 @@ public class PropUpgradeRule {
 [Serializable]
 public class PropRuleAssociation {
     public GameObject prop;
-    public PropUpgradeRules ruleSet;
+    public List<PropUpgradeRules> ruleSet;
+    private int setIdx;
+
+    public void Initialize(System.Random rng) {
+        setIdx = rng.Next(0, ruleSet.Count);
+        ruleSet[setIdx].InitializeRules();
+    }
+
+    public PropUpgradeRules GetRules() {
+        return ruleSet[setIdx];
+    }
 }

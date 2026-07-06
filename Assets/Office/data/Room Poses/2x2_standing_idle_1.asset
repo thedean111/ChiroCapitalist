@@ -13,21 +13,11 @@ MonoBehaviour:
   m_Name: 2x2_standing_idle_1
   m_EditorClassIdentifier: Assembly-CSharp::RoomPose
   decorPose:
-  - localPosition: {x: -3, y: 0, z: -3}
-    localRotation: {x: -0, y: -0.008202923, z: -0, w: 0.9999664}
-  - localPosition: {x: 4.032272, y: 0.039998055, z: 1.9341096}
-    localRotation: {x: -0, y: 0.39299017, z: -0, w: 0.91954273}
-  - localPosition: {x: 1.702, y: 0.678, z: 4.431}
-    localRotation: {x: 0, y: -0.09063256, z: 0, w: 0.9958844}
-  - localPosition: {x: 5.1200004, y: 0.039997578, z: 5.08}
-    localRotation: {x: -0, y: -0.927718, z: -0, w: 0.37328202}
-  - localPosition: {x: 0.6600001, y: 1.158, z: 5.333}
-    localRotation: {x: -0, y: -0, z: -0, w: 1}
-  - localPosition: {x: 5.72, y: 1.582, z: 1.459}
-    localRotation: {x: 0.0147398235, y: -0.6619281, z: 0.038787507, w: 0.748418}
-  doctorPose:
-    localPosition: {x: -0.08, y: 0.058, z: -0.59}
-    localRotation: {x: 0, y: -0.91276294, z: 0, w: 0.40848976}
-  patientPose:
-    localPosition: {x: 0.95599985, y: 0, z: -1.02}
-    localRotation: {x: -0, y: 0.43105343, z: -0, w: 0.90232646}
+  - localPosition: {x: 4.01, y: 0.039998055, z: 1.79}
+    localRotation: {x: -0, y: 0.49339932, z: -0, w: 0.86980295}
+  - localPosition: {x: 4.202, y: 0.039998055, z: 3.923}
+    localRotation: {x: -0, y: 0.9219741, z: -0, w: -0.38725153}
+  - localPosition: {x: 1.69, y: 0.056, z: 4.28}
+    localRotation: {x: -0, y: -0.9999211, z: -0, w: -0.0125653315}
+  - localPosition: {x: 4.01, y: 0.039998055, z: 1.79}
+    localRotation: {x: -0, y: 0.51286274, z: -0, w: 0.8584706}

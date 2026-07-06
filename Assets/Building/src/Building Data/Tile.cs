@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using DG.Tweening;
 
 public class Tile : MonoBehaviour
 {
@@ -15,9 +16,10 @@ public class Tile : MonoBehaviour
     // These details are available for all tiles but not all will use them
     [Header("Details")]
     public int Level { get; protected set; }
+    public int Seed { get; private set; }
     public event Action<float> OnProgressChange; // callback to be fired when the progress of the focused tile is changed
     public event Action OnProgressComplete;
-
+    public System.Random rng;
 
 
     //---------------------------------------------------------------------
@@ -26,7 +28,9 @@ public class Tile : MonoBehaviour
     private Renderer[] _renderers;
     private string _targetProperty;
     private MaterialPropertyBlock _mpb;
+    private Transform props;
     protected bool _firstPlace = true;
+    
     //---------------------------------------------------------------------
 
     /// <summary>
@@ -54,9 +58,14 @@ public class Tile : MonoBehaviour
     public virtual void Initialize() { 
         PlaceTile();
         Level = 1;
+        Seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        rng = new System.Random(Seed);
+
         foreach (PropRuleAssociation ra in propRules) {
-            ra.ruleSet.InitializeRules();
+            ra.Initialize(rng);
         }
+
+        props = transform.Find("props");
     }
 
     /// <summary>
@@ -76,20 +85,46 @@ public class Tile : MonoBehaviour
     /// <summary>
     /// What every tile should do when leveling up.
     /// </summary>
-    public virtual void LevelUp() {
+    public virtual bool LevelUp() {
         if (Level >= ProgressionManager.Instance.maxTileLevel) {
-            return;
+            return false;
         }
 
         Level++;
+        if (props != null) {
+            props.transform.DOShakeScale(0.2f, 0.15f);
+        }
+        TileInstance _focusedTile = UIManager.Instance.GetFocusedTile();
+        Vector2 tileCenter = ((Vector2)_focusedTile.def.size) / 2f * 3f;
+        Vector3 tilePos =_focusedTile.instance.transform.position;
+        Vector3 playPos = Vector3.zero;
+        switch(_focusedTile.rotation) {
+            case 0:
+                playPos = new Vector3( tileCenter.x + tilePos.x, 0f, tileCenter.y + tilePos.z);
+                break;
+            case 1:
+                playPos = new Vector3( tilePos.x - tileCenter.x, 0f, tileCenter.y + tilePos.z);
+                break;
+            case 2:
+                playPos = new Vector3( tilePos.x - tileCenter.x, 0f, tilePos.z - tileCenter.y);
+                break;
+            case 3:
+                playPos = new Vector3( tileCenter.x + tilePos.x, 0f, tilePos.z - tileCenter.y);
+                break;
+        }
+        
+        PlayspaceService.Instance.PlayLevelUpEffect(playPos);
+
         UIManager.Instance.UpdateLevelText(Level);
         foreach (PropRuleAssociation ra in propRules) {
-            if (ra.ruleSet.ruleDict.TryGetValue(Level, out PropUpgradeRule rule)) {
+            if (ra.GetRules().ruleDict.TryGetValue(Level, out PropUpgradeRule rule)) {
                 rule.Execute(ra.prop);
             }
         }
 
         _renderers = GetComponentsInChildren<Renderer>();
+
+        return true;
     }
 
     /// <summary>
@@ -147,6 +182,7 @@ public class Tile : MonoBehaviour
         for (int i = 0; i < _renderers.Length; i++) {
             if (_renderers[i].TryGetComponent(out Outline o)) {
                 o.enabled = true;
+                o.OutlineWidth = PlayspaceService.Instance.outlineThickness;
             }
         }
     }

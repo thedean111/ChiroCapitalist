@@ -33,3 +33,5 @@ MonoBehaviour:
     overrideType: 8
   - localCoord: {x: 1, y: 1}
     overrideType: 8
+  - localCoord: {x: 1, y: 0}
+    overrideType: 32

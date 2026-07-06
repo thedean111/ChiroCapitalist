@@ -6,8 +6,6 @@ using System;
 public class RoomPose : ScriptableObject
 {
     public List<ObjectPose> decorPose = new();
-    public ObjectPose doctorPose;
-    public ObjectPose patientPose;
 }
 
 [Serializable]

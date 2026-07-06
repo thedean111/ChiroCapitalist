@@ -85,7 +85,8 @@ public class ConstructionManager : MonoBehaviour
         if (mainOffice == null) { return; }
 
         Vector2Int mainOfficeCoord = new Vector2Int(-2, 3);
-        _tilePlacer.SpawnTile(mainOfficeCoord, mainOffice, 0, transform, 0);
+        TileInstance _mo = _tilePlacer.SpawnTile(mainOfficeCoord, mainOffice, 0, transform, 0);
+        _mo.instance.Initialize();
         _tilePlacer.AddAnchor(mainOfficeCoord);
         wallBuilder.RebuildPerimeter(mainOfficeCoord, mainOffice.size, _tilePlacer.GetCells());
     }
@@ -114,6 +115,10 @@ public class ConstructionManager : MonoBehaviour
         TileDefinition def = _tilePlacer.SelectedTileDef();
         if (def == null) { return; }
 
+        // 0 - 0deg
+        // 1 - -90deg
+        // 2 - -180deg
+        // 3 - -270deg
         _rot = (_rot + 1) % 4;
 
         previewer.SetLocalPositionRotation( _tilePlacer.UpdateRotation(_rot, def.size), Vector3.up * _rot * -90);
