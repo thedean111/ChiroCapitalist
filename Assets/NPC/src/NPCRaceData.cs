@@ -1,0 +1,100 @@
+using UnityEngine;
+using ColorStudio;
+using UnityEditor;
+
+[CreateAssetMenu(fileName = "newRaceData", menuName = "Game Data/NPC Race", order =1)]
+public class NPCRaceData : ScriptableObject
+{
+    [Header("Race Details")]
+    public string raceName;
+
+    // [Header("Mesh Data")]
+    // public Mesh head;
+    // public Mesh[] torso;
+    // public Mesh[] pants;
+    // public Mesh[] hair;
+    // public Mesh[] shoes;
+
+    [Header("Colors")]
+    public Gradient[] skinColors;
+    public Gradient[] hairColors;
+    public CSPalette primaryColors;
+    public CSPalette secondaryColors;
+    public CSPalette tertiaryColors;
+
+    [Header("Stat Distribution")]
+    [Range(0f, 1f)] public float wStrength;
+    [Range(0f, 1f)] public float wTechnique;
+    [Range(0f, 1f)] public float wMagic;
+
+    // [Header("Animations")]
+    // public AdjustmentAnimationSet strength;
+    // public AdjustmentAnimationSet technique;
+    // public AdjustmentAnimationSet magic;
+    public AnimationClip[] idles;
+
+
+    /// <summary>
+    /// Randomly select data from all the contained data in this race and populate the provided container.
+    /// </summary>
+    public void PopulateNPCData(NPCData data)
+    {
+        // // Assign the meshes
+        // data.head = head;
+        // if (torso.Length > 0)
+        //     data.torso = torso[Random.Range(0, torso.Length)];
+        // if (pants.Length > 0)
+        //     data.pants = pants[Random.Range(0, pants.Length)];
+        // if (hair.Length > 0)
+        //     data.hair = hair[Random.Range(0, hair.Length)];
+        // if (shoes.Length > 0)
+        //     data.shoes = shoes[Random.Range(0, shoes.Length)];
+
+        // For the colors, first select the skin color that will be used for this NPC
+        // ...this color should be the "accent" for all the meshes
+        Color c_Skin = skinColors[Random.Range(0, skinColors.Length)].Evaluate(Random.Range(0f, 1f));
+
+        primaryColors.BuildHueColors();
+        secondaryColors.BuildHueColors();
+        tertiaryColors.BuildHueColors();
+        Color[] primary = primaryColors.BuildPaletteColors();
+        Color[] secondary = primaryColors.BuildPaletteColors();
+        Color[] tertiary = primaryColors.BuildPaletteColors();
+
+        data.skinColors.primary = primary[Random.Range(0, primary.Length)];
+        data.skinColors.secondary = secondary[Random.Range(0, secondary.Length)];
+        data.skinColors.tertiary = tertiary[Random.Range(0, tertiary.Length)];
+        data.skinColors.skin = c_Skin;
+
+        data.hairColors.primary = hairColors[Random.Range(0, hairColors.Length)].Evaluate(Random.Range(0f,1f));
+        data.hairColors.secondary = secondary[Random.Range(0, secondary.Length)];
+        data.hairColors.tertiary = tertiary[Random.Range(0, tertiary.Length)];
+        data.hairColors.skin = c_Skin;
+
+        data.torsoColors.primary = primary[Random.Range(0, primary.Length)];
+        data.torsoColors.secondary = secondary[Random.Range(0, secondary.Length)];
+        data.torsoColors.tertiary = tertiary[Random.Range(0, tertiary.Length)];
+        data.torsoColors.skin = c_Skin;
+
+        data.legsColors.primary = primary[Random.Range(0, primary.Length)];
+        data.legsColors.secondary = secondary[Random.Range(0, secondary.Length)];
+        data.legsColors.tertiary = tertiary[Random.Range(0, tertiary.Length)];
+        data.legsColors.skin = c_Skin;
+
+        data.feetColors.primary = primary[Random.Range(0, primary.Length)];
+        data.feetColors.secondary = secondary[Random.Range(0, secondary.Length)];
+        data.feetColors.tertiary = tertiary[Random.Range(0, tertiary.Length)];
+        data.feetColors.skin = c_Skin;
+
+        data.name = $"{raceName} Name";
+        data.race = this;
+    }
+}
+
+// // Each of these four animations are used in one adjustment sequence between a doctor and patient
+// [System.Serializable] public class AdjustmentAnimationSet {
+//     public AnimationClip buildup_patient;
+//     public AnimationClip buildup_doctor;
+//     public AnimationClip action_patient;
+//     public AnimationClip action_doctor;
+// }

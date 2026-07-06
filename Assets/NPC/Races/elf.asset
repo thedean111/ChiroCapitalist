@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b7061bb028dd9f489b472c691990ce9, type: 3}
   m_Name: elf
   m_EditorClassIdentifier: Assembly-CSharp::NPCRaceData
+  raceName: Elf
   head: {fileID: 7852946361334303182, guid: e60ce380825be15489c79969683df1db, type: 3}
   torso:
   - {fileID: -2195852612816333170, guid: 8867d79f54e5d564ea97e364b85dc1f2, type: 3}

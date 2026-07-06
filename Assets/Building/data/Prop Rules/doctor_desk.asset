@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb24b041f32c9945a704f567045ee72, type: 3}
+  m_Name: doctor_desk
+  m_EditorClassIdentifier: Assembly-CSharp::PropUpgradeRules
+  ruleList:
+  - level: 3
+    action: 2
+    prefab: {fileID: 5004440398436261493, guid: 6a2c60e987624034789e89a42c1904fd, type: 3}
+  - level: 5
+    action: 2
+    prefab: {fileID: 5155549936000565568, guid: b3ce8b8b9996616499ed074590f18202, type: 3}
+  - level: 7
+    action: 2
+    prefab: {fileID: 5927363983753979157, guid: c80dd0dfb5feef642975d9ecfe9bae9e, type: 3}

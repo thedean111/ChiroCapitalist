@@ -329,7 +329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5836225523061537150}
   - component: {fileID: 7694680734525590479}
-  - component: {fileID: 6539294735772956637}
+  - component: {fileID: -7221596101772790652}
   m_Layer: 0
   m_Name: Doctor Prefab
   m_TagString: Untagged
@@ -380,7 +380,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6539294735772956637
+--- !u!114 &-7221596101772790652
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -389,9 +389,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1787709213756463824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f5e2ccf3588a264693d908c0aa46e30, type: 3}
+  m_Script: {fileID: 11500000, guid: 13af14a9064602a418a1f123c689e9a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Patient
+  m_EditorClassIdentifier: Assembly-CSharp::Doctor
 --- !u!1 &2104253929884820226
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +986,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1252,6 +1253,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1550,6 +1552,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -1944,6 +1947,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -2149,6 +2153,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0

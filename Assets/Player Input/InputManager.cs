@@ -36,6 +36,7 @@ public class InputManager : MonoBehaviour
         toggleEditMode.performed += ToggleEditMode;
         addMoney.performed += AddMoney;
         interactCell.performed += InteractCell;
+        interactCell.performed += InteractTile;
         rotateTile.performed += RotateTile;
         cancelEdit.performed += CancelEdit;
 
@@ -47,6 +48,7 @@ public class InputManager : MonoBehaviour
         buildMode.performed -= TogglePlacementMode;
         toggleEditMode.performed -= ToggleEditMode;
         interactCell.performed -= InteractCell;
+        interactCell.performed -= InteractTile;
         rotateTile.performed -= RotateTile;
         cancelEdit.performed -= CancelEdit;
     }
@@ -69,4 +71,5 @@ public class InputManager : MonoBehaviour
     
     private void RotateTile(InputAction.CallbackContext ctx) { ConstructionManager.Instance.RotateSelection(); }
     private void CancelEdit(InputAction.CallbackContext ctx) { EditService.Instance.CancelEdit(); }
+    private void InteractTile(InputAction.CallbackContext ctx) { PlayspaceService.Instance.Interact(); }
 }
