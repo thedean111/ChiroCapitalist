@@ -1,0 +1,27 @@
+:root {
+}
+
+.button-mash_progress {
+    transform-origin: bottom;
+    background-color: rgb(223, 209, 134);
+}
+
+.button-mash_target {
+    background-color: rgb(151, 204, 102);
+}
+
+.button-mash_background {
+    background-color: rgba(29, 18, 11, 0.74);
+}
+
+.game-container {
+    transition-duration: 0.3s;
+    opacity: 1;
+    position: relative;
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.game-container:disabled {
+    opacity: 0;
+}

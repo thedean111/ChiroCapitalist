@@ -10,6 +10,7 @@ public class ProgressionManager : MonoBehaviour
     public PracticeData activeSaveData;
 
     [Header("Stat Scaling")]
+    [Range(1, 999)] public int maxStatValue = 99; // The cap for each npc stat
     [Range(1, 50f)] public float basePatientStatPool = 10f; // Base value to scale stat pool off of
     [Range(0f, 2f)] public float rankStatMultiplier = 0.2f; // Multiplier that additively increases with rank
     [Range(0f, 5f)] public float tierStatMultiplier = 0.5f; // Multiplier that additively increases with tier
@@ -19,6 +20,10 @@ public class ProgressionManager : MonoBehaviour
     [Range(1, 10)] public int maxTiers = 5;
     [Range(1, 10)] public int ranksPerTier = 5;
     [Range(1, 10)] public int tiersPerDifficulty = 2;
+
+    [Header("Minigame Scaling")]
+    [Range(1, 100)] public int baseGoldReward = 20;
+    [Range(1, 100)] public int baseReputationReward = 5;
 
     [Header("Tile Scaling")]
     [Range(5, 10)] public int maxTileLevel = 8;
@@ -70,6 +75,14 @@ public class ProgressionManager : MonoBehaviour
         {
             return PatientDifficulty.HARD;
         }
+    }
+
+    /// <summary>
+    /// Adjust the player's reputation
+    /// </summary>
+    public void AdjustReputation(int val)
+    {
+        activeSaveData.reputation = Math.Max(0, activeSaveData.reputation + val);
     }
 
     /// <summary>

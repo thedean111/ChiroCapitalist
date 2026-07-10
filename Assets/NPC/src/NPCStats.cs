@@ -11,6 +11,9 @@ public class NPCStats
     public float strength;
     public float technique;
     public float magic;
+    public float n_strength;
+    public float n_technique;
+    public float n_magic;
 
     //---------------------------------------------------------------------
     // Private
@@ -24,6 +27,15 @@ public class NPCStats
         strength = str;
         technique = tec;
         magic = mag;
+    }
+
+    /// <summary>
+    /// Computes normalized values for the patient
+    /// </summary>
+    public void ComputeNormalValues(float max) {
+        n_strength = strength / max;
+        n_technique = technique / max;
+        n_magic = magic / max;  
     }
 
     /// <summary>

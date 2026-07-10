@@ -101,4 +101,8 @@ public class PatientSpawner : MonoBehaviour
     public void ToggleOutline(bool status) {
         PlayspaceService.Instance.UpdateOutline(patient.transform, status, Color.white);
     }
+
+    public NPCStats GetPatientStats() {
+        return patient.GetStats();
+    }
 }

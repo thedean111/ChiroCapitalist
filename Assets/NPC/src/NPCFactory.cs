@@ -155,10 +155,10 @@ public class NPCFactory : MonoBehaviour
         // Currently, the stats in 'pd' just contain the randomly generated weights...
         // convert them to stat totals here by normalizing the weights
         float total = pd.stats.strength + pd.stats.technique + pd.stats.magic;
-        pd.stats.strength = pd.stats.strength / total * pool;
-        pd.stats.technique = pd.stats.technique / total * pool;
-        pd.stats.magic = pd.stats.magic / total * pool;
-
+        pd.stats.strength = Math.Clamp(pd.stats.strength / total * pool, 1, ProgressionManager.Instance.maxStatValue);
+        pd.stats.technique = Math.Clamp(pd.stats.technique / total * pool, 1, ProgressionManager.Instance.maxStatValue);
+        pd.stats.magic = Math.Clamp(pd.stats.magic / total * pool, 1, ProgressionManager.Instance.maxStatValue);
+        pd.stats.ComputeNormalValues(ProgressionManager.Instance.maxStatValue);
         return pd;
     }
 

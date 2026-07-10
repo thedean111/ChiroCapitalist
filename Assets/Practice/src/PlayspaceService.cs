@@ -47,6 +47,8 @@ public class PlayspaceService : ServiceState
     public override void Toggle(bool status)
     {
         base.Toggle(status);
+        if (status)
+            InputManager.Instance.ToggleActionMap("Player");
         UIManager.Instance.ToggleTileDetailsPanel(false);
         if (_hoveredOfficeTile) {
             _hoveredOfficeTile.DisableOutlines();
@@ -119,9 +121,12 @@ public class PlayspaceService : ServiceState
     /// </summary>
     public void Interact() {
         if (!Active || UIManager.Instance.IsPointerOverUI()) { return; }
-
+        Debug.Log("Interacting!");
         if (_focusedSpawner != null) {
-            _focusedSpawner.TryRemovePatient("standing_idle_1");
+            ServiceManager.Instance.ToggleService<MinigameService>(true);
+            MinigameService.Instance.PlayMinigame(_focusedSpawner.GetPatientStats());
+            return;
+            // _focusedSpawner.TryRemovePatient("standing_idle_1");
         }
 
         if (_hoveredOfficeTile == null) {

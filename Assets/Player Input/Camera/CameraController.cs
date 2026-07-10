@@ -12,7 +12,6 @@ public class CameraController : MonoBehaviour
     [Header("References")]
     public CinemachineCamera cCam;
     public Transform camTarg;
-    public InputActionAsset inputs;
 
     [Space(15)][Header("Params")]
     public Vector2 xLimits;
@@ -22,14 +21,9 @@ public class CameraController : MonoBehaviour
     public float zoomSpeed = 1f;
     public Vector2 zoomClamps = new Vector2(16, 26);
 
-    public bool holding {get; private set;}
+    public bool holding;
+    public Vector2 discreteMoveInput;
 
-    // References to inputs and actions
-    private InputActionMap gameActions;
-    private InputAction move;
-    private InputAction mousePan;
-    private InputAction pan;
-    private InputAction zoom;
     private CinemachineFollow followCam;
 
     void Awake()
@@ -38,57 +32,26 @@ public class CameraController : MonoBehaviour
         followCam = cCam.GetComponent<CinemachineFollow>();
     }
 
-    // Subscribe to input events
-    void OnEnable()
-    {
-        gameActions = inputs.FindActionMap("Player");
-        move = gameActions.FindAction("Move");
-        mousePan = gameActions.FindAction("MousePan");
-        zoom = gameActions.FindAction("MouseZoom");
-        pan = gameActions.FindAction("Pan");
-
-        mousePan.performed += OnHoldStarted;
-        mousePan.canceled += OnHoldCanceled;
-        zoom.performed += OnZoom;
-        pan.performed += OnPan;
-    }
-
-    // Unsubscribe from input events
-    void OnDisable()
-    {
-        mousePan.performed -= OnHoldStarted;
-        mousePan.canceled -= OnHoldCanceled;
-        pan.performed -= OnPan;
-    }
-
-    void OnPan(InputAction.CallbackContext ctx)
+    public void OnPan(Vector2 mouseDelta)
     {
         if (!holding) { return; }
 
         // Inverting the value feels better here
-        MoveCameraTarget(-ctx.ReadValue<Vector2>(), clickDragSpeed);
+        MoveCameraTarget(-mouseDelta, clickDragSpeed);
     }
 
-    private void OnHoldStarted(InputAction.CallbackContext ctx) {
-        holding = true;
-    }
-
-    private void OnHoldCanceled(InputAction.CallbackContext ctx) => holding = false;
-
-    private void OnZoom(InputAction.CallbackContext ctx) {
+    public void OnZoom(float dir) {
         // -1 -> zoom out
         //  1 -> zoom in
-        float dir = ctx.ReadValue<Vector2>().y;
         float target = Mathf.Clamp((-dir * zoomSpeed) + followCam.FollowOffset.y, zoomClamps.x, zoomClamps.y);
         DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, target, 1).SetEase(Ease.OutQuart);
     }
 
     void Update()
     {
-        Vector2 moveInput = move.ReadValue<Vector2>();
-        if (moveInput != Vector2.zero)
+        if (discreteMoveInput != Vector2.zero)
         {
-            MoveCameraTarget(moveInput, inputSpeed);
+            MoveCameraTarget(discreteMoveInput, inputSpeed);
         }
     }
 

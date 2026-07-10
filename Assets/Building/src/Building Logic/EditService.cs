@@ -48,6 +48,7 @@ public class EditService : ServiceState
 
         // Ensure the grid is on and toggle the 
         if (Active) {
+            InputManager.Instance.ToggleActionMap("Player");
             UIManager.Instance.ToggleEditServiceUI(true);
             grid.ToggleGrid(true);
             ToggleOverlays(true);

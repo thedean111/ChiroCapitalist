@@ -56,6 +56,7 @@ public class BuildingService : ServiceState
 
         // Ensure the grid is on and toggle the 
         if (Active) {
+            InputManager.Instance.ToggleActionMap("Player");
             grid.ToggleGrid(true);
             UIManager.Instance.ToggleTileCatalog(true);
 

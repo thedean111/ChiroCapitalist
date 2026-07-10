@@ -33,7 +33,6 @@ public abstract class NPC : MonoBehaviour
         torsoIdx = data.torso;
 
         // Set the colors on the material instances and activate the meshes
-        Debug.Log(data.head);
         SkinnedMeshRenderer head = meshRoot.GetChild(data.head.x).GetChild(data.head.y).GetChild(data.head.z).GetComponent<SkinnedMeshRenderer>();
         head.sharedMaterial = NPCFactory.Instance.baseMaterial;
         SetRendererColors(head, data.skinColors);

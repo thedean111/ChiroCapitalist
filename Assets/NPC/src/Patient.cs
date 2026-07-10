@@ -13,6 +13,10 @@ public class Patient : NPC
         base.SetData(data);
         this.data = data;
     }
+
+    public NPCStats GetStats() {
+        return data.stats;
+    }
 }
 
 public class PatientData : NPCData

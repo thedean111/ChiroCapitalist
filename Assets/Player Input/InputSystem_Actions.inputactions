@@ -846,6 +846,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Minigame",
+            "id": "5da28fc4-50ef-4dcd-9374-f9b5873b7ce9",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": [

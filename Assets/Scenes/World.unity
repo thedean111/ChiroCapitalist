@@ -525,6 +525,55 @@ MonoBehaviour:
   wallBuilder: {fileID: 339892113}
   mainOffice: {fileID: 11400000, guid: 702ac00002e3ead4488dd146b2fc3552, type: 2}
   placementSound: {fileID: 11400000, guid: f094102cc9ecd9c448b561902a084904, type: 2}
+--- !u!1 &507435756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 507435757}
+  - component: {fileID: 507435758}
+  m_Layer: 0
+  m_Name: Minigames
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &507435757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507435756}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1408057559}
+  m_Father: {fileID: 1911356314}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &507435758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507435756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c89985814e1ca46a45be9a3ce69d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinigameService
+  hudButtonName: 
+  buttonActiveClassName: 
+  minigames:
+  - {fileID: 1408057561}
 --- !u!1 &542676649
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,7 +635,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: 
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &542676652
@@ -603,13 +652,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   cCam: {fileID: 244328951}
   camTarg: {fileID: 1275194046}
-  inputs: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   xLimits: {x: -15, y: 35}
   zLimits: {x: -15, y: 45}
   clickDragSpeed: 5
   inputSpeed: 10
   zoomSpeed: 5
   zoomClamps: {x: 10, y: 20}
+  holding: 0
+  discreteMoveInput: {x: 0, y: 0}
 --- !u!114 &542676653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,7 +672,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85871f595211884418ff5dd2c4a75d38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
-  inputs: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!1 &545742893
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,6 +717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressionManager
   activeSaveData: {fileID: 11400000, guid: fded7e7b469e8cb4aa3e993426d7b4e0, type: 2}
+  maxStatValue: 99
   basePatientStatPool: 10
   rankStatMultiplier: 0.2
   tierStatMultiplier: 0.5
@@ -675,6 +725,8 @@ MonoBehaviour:
   maxTiers: 5
   ranksPerTier: 5
   tiersPerDifficulty: 2
+  baseGoldReward: 20
+  baseReputationReward: 5
   maxTileLevel: 8
   tileLevelScale:
     serializedVersion: 2
@@ -6726,6 +6778,100 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1319413528}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1408057558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1408057559}
+  - component: {fileID: 1408057560}
+  - component: {fileID: 1408057561}
+  m_Layer: 0
+  m_Name: buttonMashGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1408057559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408057558}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 507435757}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1408057560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408057558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 6955e90ab86494a429f115919c7481a2, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 32a5e2e2aefdc08469d3d2db625c5629, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &1408057561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408057558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de0eac4589a662845a94b8bb461897c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonMashGame
+  mainStat: 0
+  buttonMashUI: {fileID: 1408057560}
+  statToSize:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.15
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.05
+      inSlope: -0.17202474
+      outSlope: -0.17202474
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.10420406
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1470752659
 GameObject:
   m_ObjectHideFlags: 0
@@ -7218,6 +7364,7 @@ MonoBehaviour:
   services:
   - {fileID: 579913062}
   - {fileID: 1482871481}
+  - {fileID: 507435758}
   defaultService: {fileID: 1494771807}
 --- !u!1 &1911356313
 GameObject:
@@ -7251,6 +7398,7 @@ Transform:
   - {fileID: 64887323}
   - {fileID: 1960014736}
   - {fileID: 199051628}
+  - {fileID: 507435757}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1936469800

@@ -1,75 +1,129 @@
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions 
 {
     public static InputManager Instance {get; private set;}
-    public InputActionAsset inputs;
-
-    // References to inputs and actions
-    private InputActionMap gameActions;
-    private InputAction buildMode;
-    private InputAction addMoney;
-    private InputAction interactCell;
-    private InputAction rotateTile;
-    private InputAction cancelEdit;
-    private InputAction toggleEditMode;
-
+    private InputSystem_Actions controls;
+    private InputActionMap  currentActionMap;
     void Awake()
     {
         if (Instance == null) { Instance = this; }
+        controls = new InputSystem_Actions();
+        controls.Player.SetCallbacks(this);
     }
 
     // Subscribe to input events
     void OnEnable()
     {
-        gameActions = inputs.FindActionMap("Player");
-        buildMode = gameActions.FindAction("BuildMode");
-        addMoney = gameActions.FindAction("AddMoney");
-        interactCell = gameActions.FindAction("AttemptCellInteraction");
-        rotateTile = gameActions.FindAction("RotateTile");
-        cancelEdit = gameActions.FindAction("CancelEdit");
-        toggleEditMode = gameActions.FindAction("ToggleEditMode");
+        foreach (var map in InputSystem.actions.actionMaps)
+        {
+            map.Disable();
+        }
 
-        buildMode.performed += TogglePlacementMode;
-        toggleEditMode.performed += ToggleEditMode;
-        addMoney.performed += AddMoney;
-        interactCell.performed += InteractCell;
-        interactCell.performed += InteractTile;
-        rotateTile.performed += RotateTile;
-        cancelEdit.performed += CancelEdit;
-
+        ToggleActionMap("Player");
     }
 
-    // Unsubscribe from input events
     void OnDisable()
     {
-        buildMode.performed -= TogglePlacementMode;
-        toggleEditMode.performed -= ToggleEditMode;
-        interactCell.performed -= InteractCell;
-        interactCell.performed -= InteractTile;
-        rotateTile.performed -= RotateTile;
-        cancelEdit.performed -= CancelEdit;
+        if (currentActionMap != null) currentActionMap.Disable();
+    }
+
+    public void ToggleActionMap(string mapName) {
+        var newMap = controls.asset.FindActionMap(mapName);
+        if (newMap == null || currentActionMap == newMap) return;
+
+        // Turn off whatever map is currently running, regardless of what it is
+        if (currentActionMap != null)
+        {
+            Debug.Log("Disabling action map");
+            currentActionMap.Disable();
+        }
+
+        // Enable the new map and track it
+        currentActionMap = newMap;
+        currentActionMap.Enable();
     }
 
     // ===================================================================================================
-    // WRAPPERS TO ALL THE UI INTERACTIONS
+    // C A M E R A   C O N T R O L S
     // ===================================================================================================
-    private void TogglePlacementMode(InputAction.CallbackContext ctx) { 
-        ServiceManager.Instance.ToggleService<BuildingService>(!BuildingService.Instance.Active);
+    public void OnMousePan(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            CameraController.Instance.holding = true;
+        } else if (context.canceled) {
+            CameraController.Instance.holding = false;
+        }
     }
-    private void ToggleEditMode(InputAction.CallbackContext ctx) { 
-        ServiceManager.Instance.ToggleService<EditService>(!EditService.Instance.Active);
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        if (context.canceled) {
+            CameraController.Instance.discreteMoveInput = Vector2.zero;
+        } else if (context.performed) {
+            CameraController.Instance.discreteMoveInput = context.ReadValue<Vector2>();
+        }
     }
-    
-    private void AddMoney(InputAction.CallbackContext ctx) { ProgressionManager.Instance.AdjustMoney(500); }
-    private void InteractCell(InputAction.CallbackContext ctx) { 
-        BuildingService.Instance.InteractCell();
-        EditService.Instance.InteractCell();
+
+    public void OnPan(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            CameraController.Instance.OnPan(context.ReadValue<Vector2>());
+        }
     }
-    
-    private void RotateTile(InputAction.CallbackContext ctx) { ConstructionManager.Instance.RotateSelection(); }
-    private void CancelEdit(InputAction.CallbackContext ctx) { EditService.Instance.CancelEdit(); }
-    private void InteractTile(InputAction.CallbackContext ctx) { PlayspaceService.Instance.Interact(); }
+
+    public void OnMouseZoom(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            CameraController.Instance.OnZoom(context.ReadValue<Vector2>().y);
+        }
+    }
+
+    // ===================================================================================================
+    // B U I L D I N G   C O N T R O L S
+    // ===================================================================================================
+    public void OnBuildMode(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            ServiceManager.Instance.ToggleService<BuildingService>(!BuildingService.Instance.Active);
+        }
+    }
+
+    public void OnAddMoney(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            ProgressionManager.Instance.AdjustMoney(500);
+    }
+
+    public void OnAttemptCellInteraction(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            BuildingService.Instance.InteractCell();
+            EditService.Instance.InteractCell();
+            PlayspaceService.Instance.Interact();
+        }
+    }
+
+    public void OnRotateTile(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            ConstructionManager.Instance.RotateSelection();
+        }
+    }
+
+    public void OnCancelEdit(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            EditService.Instance.CancelEdit();
+        }
+    }
+
+    public void OnToggleEditMode(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            ServiceManager.Instance.ToggleService<EditService>(!EditService.Instance.Active);
+        }
+    }
 }
