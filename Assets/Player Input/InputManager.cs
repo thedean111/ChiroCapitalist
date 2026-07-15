@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions 
+public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, InputSystem_Actions.IMinigameActions
 {
     public static InputManager Instance {get; private set;}
     private InputSystem_Actions controls;
@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         if (Instance == null) { Instance = this; }
         controls = new InputSystem_Actions();
         controls.Player.SetCallbacks(this);
+        controls.Minigame.SetCallbacks(this);
     }
 
     // Subscribe to input events
@@ -37,7 +38,6 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
         // Turn off whatever map is currently running, regardless of what it is
         if (currentActionMap != null)
         {
-            Debug.Log("Disabling action map");
             currentActionMap.Disable();
         }
 
@@ -124,6 +124,16 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         if (context.performed) {
             ServiceManager.Instance.ToggleService<EditService>(!EditService.Instance.Active);
+        }
+    }
+
+    // ===================================================================================================
+    // M I N I   G A M E S
+    // ===================================================================================================
+    public void OnClick_MG(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+            MinigameService.Instance.ClickLogic();
         }
     }
 }

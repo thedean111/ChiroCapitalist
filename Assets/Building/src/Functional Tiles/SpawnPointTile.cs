@@ -35,7 +35,6 @@ public class SpawnPointTile : PatientSpawningTile
     /// </summary>
     protected override void ReleasePatientBehavior()
     {
-        Debug.Log("Custom release patient logic");
     }
 
 

@@ -34,7 +34,7 @@ public class MinigameService : ServiceState
     /// </summary>
     public void PlayMinigame(NPCStats stats) {
         if (!Active) { return; }
-        
+
         StatCategory domStat = stats.GetDominantStat();
         _activeGameIndex = 0;
         for (int i = 0; i < minigames.Count; i++) {
@@ -64,7 +64,9 @@ public class MinigameService : ServiceState
     {
         base.Toggle(status);
 
-        InputManager.Instance.ToggleActionMap("Minigame");
+        if (Active) {
+            InputManager.Instance.ToggleActionMap("Minigame");
+        }
     }
 
     /// <summary>
@@ -73,6 +75,7 @@ public class MinigameService : ServiceState
     /// </summary>
     private void EndMinigameService() {
         AwardPlayer();
+        PlayspaceService.Instance.ResolveFocusedPatient();
         ServiceManager.Instance.ToggleService<MinigameService>(false);
     }
 
@@ -80,16 +83,18 @@ public class MinigameService : ServiceState
     /// Determines how much rewards to give the player and distributes the data properly.
     /// </summary>
     private void AwardPlayer() {
-        ProgressionManager.Instance.AdjustMoney(
-            (int)(minigames[_activeGameIndex].score * ProgressionManager.Instance.baseGoldReward)
-        );
+        int gold, reputation;
+        gold = (int)(minigames[_activeGameIndex].score * ProgressionManager.Instance.baseGoldReward);
+        reputation = (int)(minigames[_activeGameIndex].score * ProgressionManager.Instance.baseReputationReward);
+        Debug.Log("Awarding " + gold + " gold, and " + reputation + " reputation!");
+        ProgressionManager.Instance.AdjustMoney(gold);
 
-        ProgressionManager.Instance.AdjustReputation(
-            (int)(minigames[_activeGameIndex].score * ProgressionManager.Instance.baseReputationReward)
-        );
+        ProgressionManager.Instance.AdjustReputation(reputation);
 
         // TODO: Play visual effects for awarding the player money and reputation after a manual adjustment.
     }
 
-
+    public void ClickLogic() {
+        minigames[_activeGameIndex].OnClick();
+    }
 }

@@ -121,8 +121,9 @@ public class PlayspaceService : ServiceState
     /// </summary>
     public void Interact() {
         if (!Active || UIManager.Instance.IsPointerOverUI()) { return; }
-        Debug.Log("Interacting!");
         if (_focusedSpawner != null) {
+            // TODO: When clicking a patient in the spawner show the info
+            // for that patient instead of starting the game ShowPatientGameStats
             ServiceManager.Instance.ToggleService<MinigameService>(true);
             MinigameService.Instance.PlayMinigame(_focusedSpawner.GetPatientStats());
             return;
@@ -222,5 +223,11 @@ public class PlayspaceService : ServiceState
             o.OutlineWidth = outlineThickness;
             o.enabled = status;
         }
+    }
+
+    public void ResolveFocusedPatient() {
+        if (_focusedSpawner == null) { return; }
+
+        _focusedSpawner.TryRemovePatient("standing_idle_1");
     }
 }

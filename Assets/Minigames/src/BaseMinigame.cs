@@ -9,6 +9,7 @@ public class BaseMinigame : MonoBehaviour
     protected bool gameStarted = false; /* This flag identifies if the player has put in the first action for the game. When this happens the actual update loop
     for the game should start. */
     protected NPCStats stats; /* The stats of the current NPC being adjusted */
+    protected bool _active = false;
 
     private float _score;
     public float score {
@@ -19,9 +20,11 @@ public class BaseMinigame : MonoBehaviour
     /// <summary>
     /// Handles how a minigame should be started. Children of this class will likely have more logic for setting up custom components.
     /// </summary>
-    public virtual void OpenGame(NPCStats stats) {
+    public virtual void OpenGame(NPCStats _stats) {
+        _active = true;
         gameStarted = false;
-        Debug.Log("Opening base minigame");
+        stats = _stats;
+        score = 1;
     }
 
     /// <summary>
@@ -29,9 +32,10 @@ public class BaseMinigame : MonoBehaviour
     /// Children of this class will likely have custom logic for animations, effects, and other deconstruction.
     /// </summary>
     public virtual void CompleteGame() {
-        Debug.Log("Ending base minigame with a score of: " + score);
+        Debug.Log("Ending " + this.GetType() + " with a score of: " + score);
+        _active = false;
         onMinigameEnd?.Invoke();
     }
 
-
+    public virtual void OnClick() {}
 }

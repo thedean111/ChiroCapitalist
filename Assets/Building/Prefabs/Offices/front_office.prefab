@@ -364,7 +364,7 @@ MonoBehaviour:
     ruleSet:
     - {fileID: 11400000, guid: 8cede341faac87842965d0a019bc982a, type: 2}
   levelDetails:
-  - spawnTime: 5
+  - spawnTime: 2
     rewardModifier: 1
     patientCapacity: 2
   - spawnTime: 5

@@ -6957,8 +6957,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   worstCaseTime: 10
-  punchStrength: 1.025
-  punchTime: 0.3
+  punchStrength: 1.05
+  punchTime: 0.1
 --- !u!1 &1470752659
 GameObject:
   m_ObjectHideFlags: 0

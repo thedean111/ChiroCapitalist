@@ -44,6 +44,11 @@ public class PatientSpawner : MonoBehaviour
         onRelease = a;
     }
 
+    public void ShowPatientGameStats() {
+        // TODO: Turn the arrow above the patient into a UI popup that displays
+        // the minigame, difficulty, reject, and adjust button
+    }
+
     /// <summary>
     /// Attempt to spawn a patient at this spawn point. Returns the success of the spawn.
     /// </summary>

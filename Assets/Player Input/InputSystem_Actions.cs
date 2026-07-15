@@ -936,8 +936,96 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         {
             ""name"": ""Minigame"",
             ""id"": ""5da28fc4-50ef-4dcd-9374-f9b5873b7ce9"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Click_MG"",
+                    ""type"": ""Button"",
+                    ""id"": ""6c235efd-deb4-43a6-9905-ec87a8caefad"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6e872000-8a39-401e-a8a8-7a83057e0514"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Click_MG"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3a57b08-7f91-4528-a8ac-0d34bfdb8ea4"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Click_MG"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f39f618b-2e62-45e7-8442-21eeebb4f316"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Click_MG"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d337f869-bb6c-465f-832e-e4219272e5e7"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click_MG"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d0523df-63c0-40d5-8001-49e8006b4222"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click_MG"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4cda20a9-a392-4491-be23-bb380d4484b7"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click_MG"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7a63f47-632b-4e05-b4a3-b9b9271ff08d"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click_MG"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1029,6 +1117,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         // Minigame
         m_Minigame = asset.FindActionMap("Minigame", throwIfNotFound: true);
+        m_Minigame_Click_MG = m_Minigame.FindAction("Click_MG", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1501,6 +1590,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     // Minigame
     private readonly InputActionMap m_Minigame;
     private List<IMinigameActions> m_MinigameActionsCallbackInterfaces = new List<IMinigameActions>();
+    private readonly InputAction m_Minigame_Click_MG;
     /// <summary>
     /// Provides access to input actions defined in input action map "Minigame".
     /// </summary>
@@ -1512,6 +1602,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public MinigameActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Minigame/Click_MG".
+        /// </summary>
+        public InputAction @Click_MG => m_Wrapper.m_Minigame_Click_MG;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1538,6 +1632,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MinigameActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MinigameActionsCallbackInterfaces.Add(instance);
+            @Click_MG.started += instance.OnClick_MG;
+            @Click_MG.performed += instance.OnClick_MG;
+            @Click_MG.canceled += instance.OnClick_MG;
         }
 
         /// <summary>
@@ -1549,6 +1646,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="MinigameActions" />
         private void UnregisterCallbacks(IMinigameActions instance)
         {
+            @Click_MG.started -= instance.OnClick_MG;
+            @Click_MG.performed -= instance.OnClick_MG;
+            @Click_MG.canceled -= instance.OnClick_MG;
         }
 
         /// <summary>
@@ -1810,5 +1910,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     /// <seealso cref="MinigameActions.RemoveCallbacks(IMinigameActions)" />
     public interface IMinigameActions
     {
+        /// <summary>
+        /// Method invoked when associated input action "Click_MG" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnClick_MG(InputAction.CallbackContext context);
     }
 }

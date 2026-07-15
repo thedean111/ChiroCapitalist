@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,7 +13,7 @@ public partial class ButtonMashProgressBar : VisualElement
     public float progressMeter {
         get => _prog;
         set {
-            _prog = value;
+            _prog = Mathf.Clamp01(value);
             progress.style.scale = new Scale(new Vector3(1, _prog, 1));
         }
     }
@@ -70,5 +71,11 @@ public partial class ButtonMashProgressBar : VisualElement
         Add(background);
         background.Add(target);
         background.Add(progress);
+    }
+
+    public bool IsWithinThreshold() {
+        // _targetOffset < _prog < (_targetOffset + _targetHeight)
+        float p = 100f - (100f*_prog);
+        return (p <= (_targetOffset + _targetHeight)) && (p >= _targetOffset);
     }
 }
