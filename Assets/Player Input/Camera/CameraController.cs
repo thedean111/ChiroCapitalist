@@ -3,6 +3,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
+using System.Collections;
 
 public class CameraController : MonoBehaviour
 {
@@ -24,7 +25,11 @@ public class CameraController : MonoBehaviour
     public bool holding;
     public Vector2 discreteMoveInput;
 
+    [Header("Minigame Behavior")]
+    public float minigameZoomLevel = 24;
+
     private CinemachineFollow followCam;
+    private bool _forcingZoomLevel = false;
 
     void Awake()
     {
@@ -96,5 +101,45 @@ public class CameraController : MonoBehaviour
         camTarg.DOMove(pos, 0.5f);
     }
 
+    /// <summary>
+    /// Execute the coroutine that will enforce zoom
+    /// </summary>
+    public void StartMinigameCameraBehavior(Vector3 pos) {
+        ForceCameraPosition(pos);
+        DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, minigameZoomLevel, 1).SetEase(Ease.OutQuart);
+        StartCoroutine(ForceZoomRoutine(minigameZoomLevel));
+    }
 
+    public void EndMinigameCameraBehavior() {
+        _forcingZoomLevel = false;
+        DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, minigameZoomLevel, 1).SetEase(Ease.OutQuart);
+    }
+
+    /// <summary>
+    /// Slowly force the camera to the zoom level passed in. The flag should be toggled when
+    /// this forcing wants to be ended
+    /// </summary>
+    private IEnumerator ForceZoomRoutine(float zoomLevel) {
+        _forcingZoomLevel = true;
+        while (_forcingZoomLevel) {
+            float dir = zoomLevel - followCam.FollowOffset.y;
+            float dirMag = Mathf.Abs(dir);
+            if (!(dirMag <= 0.05f)) {
+                dir /= dirMag;
+                followCam.FollowOffset.y += dir * 0.05f;
+            }
+
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        yield return null;
+    }
+
+    /// <summary>
+    /// Simple zoom tween.
+    /// TODO: Save this off and reuse for better zoom state handling.
+    /// </summary>
+    public void PunchZoom(float delta, float t) {
+        DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, followCam.FollowOffset.y + delta, t).SetEase(Ease.OutQuart);
+    }
 }

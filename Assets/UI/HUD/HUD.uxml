@@ -18,7 +18,7 @@
                 </ui:Button>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="money-container" style="position: absolute; top: 25px; right: 4px; width: 325px; height: 75px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; align-items: stretch; flex-direction: row; scale: 0.8 0.8 0.7;">
+        <ui:VisualElement name="money-container" style="position: absolute; top: 25px; right: 4px; width: 325px; height: 75px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; align-items: stretch; flex-direction: row; scale: 0.8 0.8 0.8; transition-duration: 0.1s;">
             <ui:VisualElement style="flex-grow: 1; background-color: rgb(255, 237, 202); align-items: flex-end; justify-content: center; border-top-width: 6px; border-right-width: 6px; border-bottom-width: 6px; border-left-width: 6px; border-top-left-radius: 22px; border-top-right-radius: 22px; border-bottom-right-radius: 22px; border-bottom-left-radius: 22px; border-left-color: rgb(29, 18, 11); border-right-color: rgb(29, 18, 11); border-top-color: rgb(29, 18, 11); border-bottom-color: rgb(29, 18, 11); padding-top: 0; padding-right: 10px; padding-bottom: 0; padding-left: 0;">
                 <ui:Label text="123,456,789" name="money-display" class="hud-text" style="color: rgb(29, 18, 11); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
             </ui:VisualElement>
@@ -26,6 +26,7 @@
                 <ui:VisualElement name="VisualElement" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/UI/HUD/coin.png?fileID=2800000&amp;guid=d0fecc31b93b8e74da3eaaa59d08da9c&amp;type=3#coin&quot;); height: 85px; width: 75px; -unity-background-image-tint-color: rgb(255, 236, 133); -unity-material: url(&quot;&quot;); background-size: 100% 100%; position: relative;"/>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:VisualElement name="minigame-info-container" picking-mode="Ignore" enabled="true" class="minigame-info-container" style="align-items: flex-start; width: 100px; height: 100px; -unity-background-scale-mode: scale-to-fit; background-position-x: left 0; background-position-y: top 0;"/>
     </ui:VisualElement>
     <ui:VisualElement name="construction-root" picking-mode="Ignore" enabled="true" class="root-element" style="flex-grow: 1;">
         <ui:VisualElement name="placement-mode-container" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
@@ -38,11 +39,6 @@
                     <ui:Label text="Build Catalog" name="building-header-text" class="hud-menu-header" style="top: -3px;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
-        </ui:VisualElement>
-        <ui:VisualElement name="edit-mode-container" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
-            <ui:Button name="edit-mode-delete-button" enabled="false" class="edit-mode-delete-tile">
-                <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/HUD/trashCan.svg?fileID=7388822144124034973&amp;guid=d7aef0da184bf304491506710593b741&amp;type=3#trashCan&quot;); -unity-background-image-tint-color: rgb(255, 100, 108);"/>
-            </ui:Button>
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="selected-tile-mouse-element" picking-mode="Ignore" enabled="false" class="selected-tile-mouse-element"/>
@@ -69,7 +65,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="tile-details-progress-container" enabled="true" class="tile-details-item-container no-display-disabled" style="flex-grow: 1;">
                 <ui:VisualElement name="tile-details-progress-animation" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/UI/HUD/buildingButton.png?fileID=2800000&amp;guid=803493dace1c7a543b281fdd249a214a&amp;type=3#buildingButton&quot;); width: 50px; height: 50px; margin-right: 20px; -unity-background-image-tint-color: rgb(209, 190, 155);"/>
-                <ui:ProgressBar value="30.1" title="waiting..." name="tile-details-progress-bar" class="hud-text" style="font-size: 15px; color: rgb(209, 190, 155); flex-grow: 1; height: 37px;"/>
+                <ui:ProgressBar value="91" title="" name="tile-details-progress-bar" class="hud-text" style="font-size: 15px; color: rgb(209, 190, 155); flex-grow: 1; height: 37px; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; transition-duration: 0.2s;"/>
             </ui:VisualElement>
             <ui:VisualElement name="tile-details-level-container" enabled="true" class="no-display-disabled tile-details-item-container" style="height: 114px; margin-bottom: 10px;">
                 <ui:Label text="Lv.0" name="tile-details-level-text" class="hud-text-light" style="font-size: 34px;"/>
@@ -84,5 +80,10 @@
                 </ui:Button>
             </ui:VisualElement>
         </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="edit-mode-container" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+        <ui:Button name="edit-mode-delete-button" enabled="false" class="edit-mode-delete-tile">
+            <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/HUD/trashCan.svg?fileID=7388822144124034973&amp;guid=d7aef0da184bf304491506710593b741&amp;type=3#trashCan&quot;); -unity-background-image-tint-color: rgb(255, 100, 108);"/>
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

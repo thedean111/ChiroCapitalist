@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public abstract class PatientSpawningTile : Tile
 {
@@ -104,7 +105,7 @@ public abstract class PatientSpawningTile : Tile
         HandleNewPatient(NPCFactory.Instance.GeneratePatientData());
 
         // TODO: Check if the max amount of patients have spawned, if so adjust the UI to reflect we are at the
-        // maxj. Add a css class to the progress bar components?
+        // max. Add a css class to the progress bar components?
         CompleteProgress();
 
         // Spawn until capacity is reached
@@ -121,9 +122,42 @@ public abstract class PatientSpawningTile : Tile
 
         // Spawn until capacity is reached
         if (!_spawningPatient && _currentPatientCount < getLevelDetails().patientCapacity) {
+            // UIManager.Instance.UpdateProgressBarText("waiting...");
+            UIManager.Instance.GetProgressBar().RemoveFromClassList("tile-details-max-patients");
             StartCoroutine(SpawnPatientCoroutine());
         }
         ReleasePatientBehavior();
+    }
+
+    /// <summary>
+    /// Check if the max amount of patients have spawned. If so, update the progress bar to reflect
+    /// this.
+    /// </summary>
+    public override void ProgressCompleted(ProgressBar bar) {
+        if (_currentPatientCount >= getLevelDetails().patientCapacity) {
+            // bar.title = "MAX";
+            bar.AddToClassList("tile-details-max-patients");
+        }
+    }
+
+    /// <summary>
+    /// This logic should be ran when the tile is clicked.
+    /// </summary>
+    public override void UpdateProgressState(ProgressBar bar)
+    {
+        base.UpdateProgressState(bar);
+        if (_currentPatientCount >= getLevelDetails().patientCapacity) {
+            // bar.title = "MAX";
+            bar.value = 100;
+            bar.AddToClassList("tile-details-max-patients");
+        } else if (_spawningPatient) {
+            // bar.title = "waiting...";
+            bar.RemoveFromClassList("tile-details-max-patients");
+        } else {
+            bar.value = 0;
+            bar.RemoveFromClassList("tile-details-max-patients");
+        }
+
     }
 
     /// <summary>

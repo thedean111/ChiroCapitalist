@@ -484,10 +484,45 @@
     background-color: rgba(177, 163, 139, 0.44);
 }
 
+.minigame-info-container {
+    flex-grow: 1;
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0);
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+    border-bottom-left-radius: 13px;
+    transition-duration: 0.2s, 0.2s, 0.2s;
+    translate: 0 0;
+    scale: 1 1;
+    transition-property: opacity, translate, scale;
+}
 
+.minigame-info-container:disabled {
+    flex-grow: 1;
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    opacity: 0;
+    scale: 0.95 0.95;
+    transform-origin: center 70%;
+}
 
-
-
-
-
-
+.tile-details-max-patients {
+    scale: 0.95 0.95;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-left-color: rgb(222, 222, 222);
+    border-right-color: rgb(222, 222, 222);
+    border-top-color: rgb(222, 222, 222);
+    border-bottom-color: rgb(222, 222, 222);
+    opacity: 0.5;
+}

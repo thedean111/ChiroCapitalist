@@ -1,4 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/adjustmentButton.uss?fileID=7433441132597879392&amp;guid=70a1c89534539ea4d9b6a03adffce083&amp;type=3#adjustmentButton"/>
-    <ui:VisualElement name="adjustment-button" picking-mode="Ignore" class="adjustment-button"/>
+    <Style src="project://database/Assets/UI/HUD/hud.uss?fileID=7433441132597879392&amp;guid=fd5a90d896f1f0d44b4f9a4179014235&amp;type=3#hud"/>
+    <ui:VisualElement name="adjustment-button" picking-mode="Ignore" enabled="false" class="adjustment-button"/>
 </ui:UXML>

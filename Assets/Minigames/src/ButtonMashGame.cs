@@ -99,6 +99,8 @@ public class ButtonMashGame : BaseMinigame
             _firstClick = true;
             _startTime = Time.time;
         }
+        
+        CameraController.Instance.PunchZoom(-mingameInteractZoomStrength, 0.1f);
 
         // TODO: Eventually make this scale with stats?
         mashProgress.progressMeter += clickAmount;

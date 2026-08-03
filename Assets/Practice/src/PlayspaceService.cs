@@ -76,20 +76,29 @@ public class PlayspaceService : ServiceState
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         Debug.DrawRay(ray.origin, ray.direction * 50);
         if (Physics.Raycast(ray, out RaycastHit hit, 50, _spawnMask)) {
+            PatientSpawner _spwnr = hit.transform.GetComponent<PatientSpawner>();
             if (_focusedSpawner != null) {
-                _focusedSpawner.ToggleOutline(false);
+                if (_focusedSpawner != _spwnr) {
+                    _focusedSpawner.ToggleOutline(false);
+                    _focusedSpawner = _spwnr;
+                    _focusedSpawner.ToggleOutline(true);
+                    UIManager.Instance.ToggleMinigameInfo(true, _focusedSpawner.GetPatientStats());
+                }
+            } else {
+                _focusedSpawner = _spwnr;
+                _focusedSpawner.ToggleOutline(true);
+                UIManager.Instance.ToggleMinigameInfo(true, _focusedSpawner.GetPatientStats());
             }
+
             if (_hoveredOfficeTile != null) {
                 _hoveredOfficeTile.DisableOutlines();
                 _hoveredOfficeTile = null;
             }
-            _focusedSpawner = hit.transform.GetComponent<PatientSpawner>();
-            _focusedSpawner.ToggleOutline(true);
             return;
-        }
-        if (_focusedSpawner != null) {
+        } else if (_focusedSpawner != null) {
             _focusedSpawner.ToggleOutline(false);
             _focusedSpawner = null;
+            UIManager.Instance.ToggleMinigameInfo(false, null);
         }
 
         Tile checkTile = null;
@@ -121,19 +130,20 @@ public class PlayspaceService : ServiceState
     /// </summary>
     public void Interact() {
         if (!Active || UIManager.Instance.IsPointerOverUI()) { return; }
+
         if (_focusedSpawner != null) {
-            // TODO: When clicking a patient in the spawner show the info
-            // for that patient instead of starting the game ShowPatientGameStats
+            Debug.Log("Spawner Interact");
             ServiceManager.Instance.ToggleService<MinigameService>(true);
-            MinigameService.Instance.PlayMinigame(_focusedSpawner.GetPatientStats());
+            MinigameService.Instance.PlayMinigame(_focusedSpawner.GetPatientStats(), _focusedSpawner.transform.position);
+            CameraController.Instance.StartMinigameCameraBehavior(_focusedSpawner.transform.position);
             return;
-            // _focusedSpawner.TryRemovePatient("standing_idle_1");
         }
 
         if (_hoveredOfficeTile == null) {
             UIManager.Instance.ToggleTileDetailsPanel(false);
 
         } else {
+            Debug.Log("Tile Interact");
             if (_focusedTile != null && _focusedTile.tileID != _hoveredOfficeTile.tileID) {
                 _focusedTile.UpdateOutline(false, tileHoverColor);
             }

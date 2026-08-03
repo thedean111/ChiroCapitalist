@@ -17,6 +17,7 @@ public class PatientSpawner : MonoBehaviour
     private UIDocument adjustmentButtonPivot;
     private Action onRelease;
     private VisualElement adjustmentButton;
+    private Tweener upDownTween;
 
     private void OnEnable()
     {
@@ -27,7 +28,7 @@ public class PatientSpawner : MonoBehaviour
         if (adjustmentButton == null) {
             adjustmentButton = adjustmentButtonPivot.rootVisualElement.Q<VisualElement>("adjustment-button");
             adjustmentButton.SetEnabled(false);
-            adjustmentButtonPivot.transform.DOLocalMoveY(2.3f, 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+            upDownTween = adjustmentButtonPivot.transform.DOLocalMoveY(2.3f, 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
         }
 
         if (patient == null) {
@@ -99,8 +100,8 @@ public class PatientSpawner : MonoBehaviour
 
             // 3. Make the object look at this flattened target position
             // Note: If your UI canvas is backwards, swap the order: (transform.position * 2) - targetPosition
-            adjustmentButtonPivot.transform.LookAt(targetPosition);
-                    }
+            adjustmentButtonPivot.transform.LookAt((adjustmentButtonPivot.transform.position * 2) - targetPosition);
+        }
     }
 
     public void ToggleOutline(bool status) {

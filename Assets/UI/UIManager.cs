@@ -12,10 +12,16 @@ public class UIManager : MonoBehaviour
 
     public UIDocument hud;
     public VisualTreeAsset adjustmentButtonTemplate;
-
+    public Texture2D strengthIcon;
+    public Color strengthColor;
+    public Texture2D techniqueIcon;
+    public Color techniqueColor;
+    public Texture2D magicIcon;
+    public Color magicColor;
     // -----
     // PRIVATE
     // -----
+    private UIToolkitParticles _rewardParticles;
     public VisualElement buildingContainer;
     private TileList tileList;
     private Button _toggleBuildButton;
@@ -45,6 +51,8 @@ public class UIManager : MonoBehaviour
     private bool _followMouse = false;
     private TileInstance _focusedTile;
     private int currentLevelUpCost;
+    private VisualElement _mouseFollowElement;
+    private VisualElement _minigameInfoElement;
     // -----
 
     void Awake()
@@ -74,6 +82,8 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        _rewardParticles = GetComponent<UIToolkitParticles>();
+
         //__________________________________________________________________________________________
         // PLACEMENT MODE UI
         //__________________________________________________________________________________________
@@ -140,6 +150,14 @@ public class UIManager : MonoBehaviour
         _tileDetailsPanel.SetEnabled(false);
         //__________________________________________________________________________________________
 
+        _minigameInfoElement = hud.rootVisualElement.Q<VisualElement>("minigame-info-container");
+        _minigameInfoElement.SetEnabled(false);
+        _mouseFollowElement = _minigameInfoElement;
+    }
+
+    public void PlayRewardParticles(Vector3 pos, int moneyIncrement, int reputationIncrement) {
+        _rewardParticles.SetIncrementAmounts(moneyIncrement, reputationIncrement);
+        _rewardParticles.TriggerRewardParticles(pos);
     }
 
     public TileInstance GetFocusedTile() {
@@ -149,8 +167,8 @@ public class UIManager : MonoBehaviour
     private void Update() {
         if (_followMouse) {
             Vector2 panel = ScreenToPanel(Mouse.current.position.ReadValue());
-            _selectedTileMouseElement.style.left = panel.x;
-            _selectedTileMouseElement.style.top  = panel.y;
+            _mouseFollowElement.style.left = panel.x + 15;
+            _mouseFollowElement.style.top  = panel.y + 15;
         }
     }
 
@@ -187,6 +205,33 @@ public class UIManager : MonoBehaviour
         return hud.rootVisualElement.Q(name);
     }
 
+    /// <summary>
+    /// Turn on the tile info panel and populate it with the data from the patient.
+    /// TODO: Create minigame info struct that is stored for each patient on query.
+    /// </summary>
+    public void ToggleMinigameInfo(bool status, NPCStats stats) {
+        _minigameInfoElement.SetEnabled(status);
+        _followMouse = status;
+        if (status) {
+            _mouseFollowElement = _minigameInfoElement;
+
+            StatCategory dom = stats.GetDominantStat();
+            switch (dom) {
+                case StatCategory.Strength:
+                    _minigameInfoElement.style.backgroundImage = strengthIcon;
+                    _minigameInfoElement.style.unityBackgroundImageTintColor = strengthColor;
+                    break;
+                case StatCategory.Technique:
+                    _minigameInfoElement.style.backgroundImage = techniqueIcon;
+                    _minigameInfoElement.style.unityBackgroundImageTintColor = techniqueColor;
+                    break;
+                case StatCategory.Magic:
+                    _minigameInfoElement.style.backgroundImage = magicIcon;
+                    _minigameInfoElement.style.unityBackgroundImageTintColor = magicColor;
+                    break;
+            }
+        }
+    }
 
     /// <summary>
     /// Toggle relevant UI elements for the edit service.
@@ -218,9 +263,12 @@ public class UIManager : MonoBehaviour
     public void ToggleSelectedTileElement(bool status) {
         _selectedTileMouseElement.SetEnabled(status);
         _followMouse = status;
+        if (status) {
+            _mouseFollowElement = _selectedTileMouseElement;
+        }
         Vector2 panel = ScreenToPanel(Mouse.current.position.ReadValue());
-        _selectedTileMouseElement.style.left = panel.x;
-        _selectedTileMouseElement.style.top  = panel.y;
+        _mouseFollowElement.style.left = panel.x;
+        _mouseFollowElement.style.top  = panel.y;
     }
 
     /// <summary>
@@ -294,6 +342,7 @@ public class UIManager : MonoBehaviour
         // If the tile contains logic that uses the progress bar then show that section of the panel and update it
         if ((_focusedTile.def.detailFlags & TileDetailsFlags.Progress) != 0) {
             _tileProgressContainer.SetEnabled(true);
+            _focusedTile.instance.UpdateProgressState(_tileProgress);
         } else
         {
             _tileProgressContainer.SetEnabled(false);
@@ -331,6 +380,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateProgressBarText() {
         _focusedTile.instance.ProgressCompleted(_tileProgress);
+    }
+
+    public ProgressBar GetProgressBar() {
+        return _tileProgress;
     }
 
     /// <summary>

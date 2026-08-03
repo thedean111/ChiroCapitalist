@@ -43,7 +43,7 @@ public partial class ButtonMashProgressBar : VisualElement
         VisualElement background = new VisualElement { name = "button-mash_background" };
         background.style.width = new StyleLength(new Length(100, LengthUnit.Percent));
         background.style.height = new StyleLength(new Length(100, LengthUnit.Percent));
-        // background.style.backgroundColor = new StyleColor(new Color(0.0f, 0.0f, 0.0f, 0.2f));
+        background.pickingMode = PickingMode.Ignore;
         background.AddToClassList("button-mash_background");
 
         progress = new VisualElement { name = "button-mash_progress" };
@@ -53,8 +53,8 @@ public partial class ButtonMashProgressBar : VisualElement
         progress.style.left = 0;
         progress.style.right = 0;
         progress.style.scale = new StyleScale(new Vector2(1, progressMeter));
-        // progress.style.backgroundColor = new StyleColor(new Color(0.2f, 0.2f, 0.2f));
         progress.style.transformOrigin = new TransformOrigin(new Length(50f, LengthUnit.Percent), new Length(100f, LengthUnit.Percent));
+        progress.pickingMode = PickingMode.Ignore;
         progress.AddToClassList("button-mash_progress");
 
         target = new VisualElement { name = "button-mash_target" };
@@ -62,7 +62,7 @@ public partial class ButtonMashProgressBar : VisualElement
         target.style.top = new StyleLength(new Length(_targetOffset, LengthUnit.Percent));
         target.style.left = 0;
         target.style.right = 0;
-        // target.style.backgroundColor = new StyleColor(new Color(0.6f, 0.6f, 0.6f));
+        target.pickingMode = PickingMode.Ignore;
         target.AddToClassList("button-mash_target");
 
         // -------------------------------------------

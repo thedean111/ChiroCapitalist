@@ -35,7 +35,7 @@ public class AutoAdjustingOffice : PatientSpawningTile
     /// </summary>
     public override void OnFocus() {
         UIManager.Instance.UpdateProgressBarProgress((float)_step / updateSteps * 100);
-        UIManager.Instance.UpdateProgressBarText(_adjustingPatient ? "Adjusting patient..." : "waiting...");
+        // UIManager.Instance.UpdateProgressBarText(_adjustingPatient ? "Adjusting patient..." : "waiting...");
         UIManager.Instance.UpdateDoctorDetails(doctor.data);
 
     }
@@ -190,7 +190,7 @@ public class AutoAdjustingOffice : PatientSpawningTile
     public override void ProgressCompleted(ProgressBar bar)
     {
         base.ProgressCompleted(bar);
-        bar.title = _adjustingPatient ? "Adjusting patient..." : "waiting...";
+        // bar.title = _adjustingPatient ? "Adjusting patient..." : "waiting...";
     }
 
     /// <summary>

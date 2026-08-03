@@ -5,6 +5,7 @@ public class BaseMinigame : MonoBehaviour
 {
     public Action onMinigameEnd;
     public StatCategory mainStat;
+    public float mingameInteractZoomStrength = 0.5f;
 
     protected bool gameStarted = false; /* This flag identifies if the player has put in the first action for the game. When this happens the actual update loop
     for the game should start. */
@@ -23,8 +24,8 @@ public class BaseMinigame : MonoBehaviour
     public virtual void OpenGame(NPCStats _stats) {
         _active = true;
         gameStarted = false;
-        stats = _stats;
         score = 1;
+        stats = _stats;
     }
 
     /// <summary>

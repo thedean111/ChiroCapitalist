@@ -210,5 +210,6 @@ public class Tile : MonoBehaviour
     }
 
     public virtual void ProgressCompleted(ProgressBar bar) { }
+    public virtual void UpdateProgressState(ProgressBar bar) {}
     public virtual void UpdateDoctorAssignment(DoctorData newDoctor) {}
 }

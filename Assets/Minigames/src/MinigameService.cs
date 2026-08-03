@@ -21,6 +21,7 @@ public class MinigameService : ServiceState
     // Private
     //---------------------------------------------------------------------
     private int _activeGameIndex = 0;
+    private Vector3 _patientPosition;
     //*********************************************************************
 
 
@@ -32,7 +33,7 @@ public class MinigameService : ServiceState
     /// <summary>
     /// Determine what game to play based on the stats of the selected patient.
     /// </summary>
-    public void PlayMinigame(NPCStats stats) {
+    public void PlayMinigame(NPCStats stats, Vector3 position) {
         if (!Active) { return; }
 
         StatCategory domStat = stats.GetDominantStat();
@@ -43,6 +44,7 @@ public class MinigameService : ServiceState
                 break;
             }
         }
+        _patientPosition = position;
         minigames[_activeGameIndex].OpenGame(stats);
     }
 
@@ -66,6 +68,7 @@ public class MinigameService : ServiceState
 
         if (Active) {
             InputManager.Instance.ToggleActionMap("Minigame");
+            UIManager.Instance.ToggleMinigameInfo(false, null);
         }
     }
 
@@ -76,6 +79,7 @@ public class MinigameService : ServiceState
     private void EndMinigameService() {
         AwardPlayer();
         PlayspaceService.Instance.ResolveFocusedPatient();
+        CameraController.Instance.EndMinigameCameraBehavior();
         ServiceManager.Instance.ToggleService<MinigameService>(false);
     }
 
@@ -87,9 +91,9 @@ public class MinigameService : ServiceState
         gold = (int)(minigames[_activeGameIndex].score * ProgressionManager.Instance.baseGoldReward);
         reputation = (int)(minigames[_activeGameIndex].score * ProgressionManager.Instance.baseReputationReward);
         Debug.Log("Awarding " + gold + " gold, and " + reputation + " reputation!");
-        ProgressionManager.Instance.AdjustMoney(gold);
 
-        ProgressionManager.Instance.AdjustReputation(reputation);
+        // TODO: Based on performance, determine how many particles to spawn
+        UIManager.Instance.PlayRewardParticles(_patientPosition, (int)(gold / 10f), (int)(reputation / 10f));
 
         // TODO: Play visual effects for awarding the player money and reputation after a manual adjustment.
     }

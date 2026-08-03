@@ -5,42 +5,24 @@
     position: absolute;
     height: 100px;
     width: 75px;
-    background-color: rgba(188, 188, 188, 0);
-    -unity-background-image-tint-color: rgb(255, 255, 255);
     background-image: resource("Color Studio/Icons/cmd_disp_down");
-    transform-origin: center 80%;
+    opacity: 1;
     transition-duration: 0.2s;
 }
 
-.adjustment-button:hover:enabled {
+.adjustment-button:enabled {
     position: absolute;
-    height: 149px;
-    width: 111px;
-    background-color: rgba(188, 188, 188, 0);
-    -unity-background-image-tint-color: rgb(255, 255, 255);
-    background-image: resource("Color Studio/Icons/cmd_disp_down");
-    scale: 1.05 1.05 1.05;
-}
-
-.adjustment-button:active:enabled {
-    position: absolute;
-    height: 149px;
-    width: 111px;
-    background-color: rgba(188, 188, 188, 0);
-    -unity-background-image-tint-color: rgb(211, 211, 211);
-    background-image: resource("Color Studio/Icons/cmd_disp_down");
-    scale: 1 1;
+    opacity: 1;
 }
 
 .adjustment-button:disabled {
     position: absolute;
-    height: 149px;
-    width: 111px;
-    background-color: rgba(188, 188, 188, 0);
-    -unity-background-image-tint-color: rgb(255, 255, 255);
-    background-image: resource("Color Studio/Icons/cmd_disp_down");
-    transform-origin: center 80%;
-    transition-duration: 0.2s;
+    scale: 0.95 0.95;
     opacity: 0;
-    scale: 0 0 0;
 }
+
+
+
+
+
+
