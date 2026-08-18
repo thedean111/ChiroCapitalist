@@ -19,7 +19,7 @@ public class PatientSpawner : MonoBehaviour
     private VisualElement adjustmentButton;
     private Tweener upDownTween;
 
-    private void OnEnable()
+    private void Start()
     {
         spawnPivot = transform.Find("patient_pivot");
         adjustmentButtonPivot = transform.Find("button_pivot").GetComponent<UIDocument>();

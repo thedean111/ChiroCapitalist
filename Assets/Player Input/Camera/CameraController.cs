@@ -107,7 +107,7 @@ public class CameraController : MonoBehaviour
     /// Execute the coroutine that will enforce zoom
     /// </summary>
     public void StartMinigameCameraBehavior(Vector3 pos) {
-        ForceCameraPosition(pos, 4f);
+        // ForceCameraPosition(pos, 4f);
         DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, minigameZoomLevel, 1).SetEase(Ease.OutQuart);
         StartCoroutine(ForceZoomRoutine(minigameZoomLevel));
     }

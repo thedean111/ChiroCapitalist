@@ -34,15 +34,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "BuildMode",
-                    "type": "Button",
-                    "id": "5e262d84-b163-4f71-8030-82f63613afb2",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "AddMoney",
                     "type": "Button",
                     "id": "d0bbee76-9a8f-40a5-9aae-138e4ed94dd1",
@@ -55,33 +46,6 @@
                     "name": "AttemptCellInteraction",
                     "type": "Button",
                     "id": "b33492a9-ac7c-4be1-905b-4604096f6e2b",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "RotateTile",
-                    "type": "Button",
-                    "id": "ab8517a8-2f88-478c-8961-24166613acbf",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "CancelEdit",
-                    "type": "Button",
-                    "id": "3edc3244-46ac-4aec-b439-745dc9c7f5d4",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ToggleEditMode",
-                    "type": "Button",
-                    "id": "1a8d534d-6bcc-4f13-ae2b-e21dcf5cd715",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -254,17 +218,6 @@
                 },
                 {
                     "name": "",
-                    "id": "afa27c60-8687-40ee-adbe-df5fd78576c3",
-                    "path": "<Keyboard>/b",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "BuildMode",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "62551710-e9f4-4cab-b1a8-79cd9c0e8e23",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -282,39 +235,6 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "AttemptCellInteraction",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3c2ea087-9d3e-4bc1-97b9-053dadb764c2",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "RotateTile",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9f2a03b3-0a05-4800-80ae-f88708ea34ac",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "CancelEdit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3f93c4db-c2c2-45ec-bbca-67845cfb290b",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "ToggleEditMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

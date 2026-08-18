@@ -91,7 +91,7 @@ public class ButtonMashGame : BaseMinigame
 
         _weight = 0;
         _gameComplete = true;
-        animator.SetBool("enabled", false);
+        // animator.SetBool("enabled", false);
         CameraController.Instance.SetCameraNoiseAmplitude(0);
     }
 

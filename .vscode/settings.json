@@ -66,5 +66,9 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "ChiroCapitalist.slnx"
+    "dotnet.defaultSolution": "ChiroCapitalist.slnx",
+    "cSpell.words": [
+        "minigame",
+        "Playspace"
+    ]
 }

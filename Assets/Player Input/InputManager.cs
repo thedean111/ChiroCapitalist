@@ -84,12 +84,12 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     // ===================================================================================================
     // B U I L D I N G   C O N T R O L S
     // ===================================================================================================
-    public void OnBuildMode(InputAction.CallbackContext context)
-    {
-        if (context.performed) {
-            ServiceManager.Instance.ToggleService<BuildingService>(!BuildingService.Instance.Active);
-        }
-    }
+    // public void OnBuildMode(InputAction.CallbackContext context)
+    // {
+    //     if (context.performed) {
+    //         ServiceManager.Instance.ToggleService<BuildingService>(!BuildingService.Instance.Active);
+    //     }
+    // }
 
     public void OnAddMoney(InputAction.CallbackContext context)
     {
@@ -100,32 +100,32 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     public void OnAttemptCellInteraction(InputAction.CallbackContext context)
     {
         if (context.performed) {
-            BuildingService.Instance.InteractCell();
-            EditService.Instance.InteractCell();
             PlayspaceService.Instance.Interact();
+            // BuildingService.Instance.InteractCell();
+            // EditService.Instance.InteractCell();
         }
     }
 
-    public void OnRotateTile(InputAction.CallbackContext context)
-    {
-        if (context.performed) {
-            ConstructionManager.Instance.RotateSelection();
-        }
-    }
+    // public void OnRotateTile(InputAction.CallbackContext context)
+    // {
+    //     if (context.performed) {
+    //         ConstructionManager.Instance.RotateSelection();
+    //     }
+    // }
 
-    public void OnCancelEdit(InputAction.CallbackContext context)
-    {
-        if (context.performed) {
-            EditService.Instance.CancelEdit();
-        }
-    }
+    // public void OnCancelEdit(InputAction.CallbackContext context)
+    // {
+    //     if (context.performed) {
+    //         EditService.Instance.CancelEdit();
+    //     }
+    // }
 
-    public void OnToggleEditMode(InputAction.CallbackContext context)
-    {
-        if (context.performed) {
-            ServiceManager.Instance.ToggleService<EditService>(!EditService.Instance.Active);
-        }
-    }
+    // public void OnToggleEditMode(InputAction.CallbackContext context)
+    // {
+    //     if (context.performed) {
+    //         ServiceManager.Instance.ToggleService<EditService>(!EditService.Instance.Active);
+    //     }
+    // }
 
     // ===================================================================================================
     // M I N I   G A M E S

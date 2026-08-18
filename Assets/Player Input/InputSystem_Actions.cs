@@ -120,15 +120,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""BuildMode"",
-                    ""type"": ""Button"",
-                    ""id"": ""5e262d84-b163-4f71-8030-82f63613afb2"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""AddMoney"",
                     ""type"": ""Button"",
                     ""id"": ""d0bbee76-9a8f-40a5-9aae-138e4ed94dd1"",
@@ -141,33 +132,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""AttemptCellInteraction"",
                     ""type"": ""Button"",
                     ""id"": ""b33492a9-ac7c-4be1-905b-4604096f6e2b"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RotateTile"",
-                    ""type"": ""Button"",
-                    ""id"": ""ab8517a8-2f88-478c-8961-24166613acbf"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""CancelEdit"",
-                    ""type"": ""Button"",
-                    ""id"": ""3edc3244-46ac-4aec-b439-745dc9c7f5d4"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ToggleEditMode"",
-                    ""type"": ""Button"",
-                    ""id"": ""1a8d534d-6bcc-4f13-ae2b-e21dcf5cd715"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -340,17 +304,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""afa27c60-8687-40ee-adbe-df5fd78576c3"",
-                    ""path"": ""<Keyboard>/b"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""BuildMode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""62551710-e9f4-4cab-b1a8-79cd9c0e8e23"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -368,39 +321,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""AttemptCellInteraction"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3c2ea087-9d3e-4bc1-97b9-053dadb764c2"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""RotateTile"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9f2a03b3-0a05-4800-80ae-f88708ea34ac"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CancelEdit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3f93c4db-c2c2-45ec-bbca-67845cfb290b"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ToggleEditMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1096,12 +1016,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_MousePan = m_Player.FindAction("MousePan", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Pan = m_Player.FindAction("Pan", throwIfNotFound: true);
-        m_Player_BuildMode = m_Player.FindAction("BuildMode", throwIfNotFound: true);
         m_Player_AddMoney = m_Player.FindAction("AddMoney", throwIfNotFound: true);
         m_Player_AttemptCellInteraction = m_Player.FindAction("AttemptCellInteraction", throwIfNotFound: true);
-        m_Player_RotateTile = m_Player.FindAction("RotateTile", throwIfNotFound: true);
-        m_Player_CancelEdit = m_Player.FindAction("CancelEdit", throwIfNotFound: true);
-        m_Player_ToggleEditMode = m_Player.FindAction("ToggleEditMode", throwIfNotFound: true);
         m_Player_MouseZoom = m_Player.FindAction("MouseZoom", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1203,12 +1119,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MousePan;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Pan;
-    private readonly InputAction m_Player_BuildMode;
     private readonly InputAction m_Player_AddMoney;
     private readonly InputAction m_Player_AttemptCellInteraction;
-    private readonly InputAction m_Player_RotateTile;
-    private readonly InputAction m_Player_CancelEdit;
-    private readonly InputAction m_Player_ToggleEditMode;
     private readonly InputAction m_Player_MouseZoom;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -1234,10 +1146,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Pan => m_Wrapper.m_Player_Pan;
         /// <summary>
-        /// Provides access to the underlying input action "Player/BuildMode".
-        /// </summary>
-        public InputAction @BuildMode => m_Wrapper.m_Player_BuildMode;
-        /// <summary>
         /// Provides access to the underlying input action "Player/AddMoney".
         /// </summary>
         public InputAction @AddMoney => m_Wrapper.m_Player_AddMoney;
@@ -1245,18 +1153,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/AttemptCellInteraction".
         /// </summary>
         public InputAction @AttemptCellInteraction => m_Wrapper.m_Player_AttemptCellInteraction;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/RotateTile".
-        /// </summary>
-        public InputAction @RotateTile => m_Wrapper.m_Player_RotateTile;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/CancelEdit".
-        /// </summary>
-        public InputAction @CancelEdit => m_Wrapper.m_Player_CancelEdit;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/ToggleEditMode".
-        /// </summary>
-        public InputAction @ToggleEditMode => m_Wrapper.m_Player_ToggleEditMode;
         /// <summary>
         /// Provides access to the underlying input action "Player/MouseZoom".
         /// </summary>
@@ -1296,24 +1192,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Pan.started += instance.OnPan;
             @Pan.performed += instance.OnPan;
             @Pan.canceled += instance.OnPan;
-            @BuildMode.started += instance.OnBuildMode;
-            @BuildMode.performed += instance.OnBuildMode;
-            @BuildMode.canceled += instance.OnBuildMode;
             @AddMoney.started += instance.OnAddMoney;
             @AddMoney.performed += instance.OnAddMoney;
             @AddMoney.canceled += instance.OnAddMoney;
             @AttemptCellInteraction.started += instance.OnAttemptCellInteraction;
             @AttemptCellInteraction.performed += instance.OnAttemptCellInteraction;
             @AttemptCellInteraction.canceled += instance.OnAttemptCellInteraction;
-            @RotateTile.started += instance.OnRotateTile;
-            @RotateTile.performed += instance.OnRotateTile;
-            @RotateTile.canceled += instance.OnRotateTile;
-            @CancelEdit.started += instance.OnCancelEdit;
-            @CancelEdit.performed += instance.OnCancelEdit;
-            @CancelEdit.canceled += instance.OnCancelEdit;
-            @ToggleEditMode.started += instance.OnToggleEditMode;
-            @ToggleEditMode.performed += instance.OnToggleEditMode;
-            @ToggleEditMode.canceled += instance.OnToggleEditMode;
             @MouseZoom.started += instance.OnMouseZoom;
             @MouseZoom.performed += instance.OnMouseZoom;
             @MouseZoom.canceled += instance.OnMouseZoom;
@@ -1337,24 +1221,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Pan.started -= instance.OnPan;
             @Pan.performed -= instance.OnPan;
             @Pan.canceled -= instance.OnPan;
-            @BuildMode.started -= instance.OnBuildMode;
-            @BuildMode.performed -= instance.OnBuildMode;
-            @BuildMode.canceled -= instance.OnBuildMode;
             @AddMoney.started -= instance.OnAddMoney;
             @AddMoney.performed -= instance.OnAddMoney;
             @AddMoney.canceled -= instance.OnAddMoney;
             @AttemptCellInteraction.started -= instance.OnAttemptCellInteraction;
             @AttemptCellInteraction.performed -= instance.OnAttemptCellInteraction;
             @AttemptCellInteraction.canceled -= instance.OnAttemptCellInteraction;
-            @RotateTile.started -= instance.OnRotateTile;
-            @RotateTile.performed -= instance.OnRotateTile;
-            @RotateTile.canceled -= instance.OnRotateTile;
-            @CancelEdit.started -= instance.OnCancelEdit;
-            @CancelEdit.performed -= instance.OnCancelEdit;
-            @CancelEdit.canceled -= instance.OnCancelEdit;
-            @ToggleEditMode.started -= instance.OnToggleEditMode;
-            @ToggleEditMode.performed -= instance.OnToggleEditMode;
-            @ToggleEditMode.canceled -= instance.OnToggleEditMode;
             @MouseZoom.started -= instance.OnMouseZoom;
             @MouseZoom.performed -= instance.OnMouseZoom;
             @MouseZoom.canceled -= instance.OnMouseZoom;
@@ -1776,13 +1648,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPan(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "BuildMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnBuildMode(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "AddMoney" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -1796,27 +1661,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAttemptCellInteraction(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "RotateTile" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRotateTile(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "CancelEdit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCancelEdit(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "ToggleEditMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnToggleEditMode(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "MouseZoom" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
