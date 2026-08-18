@@ -104,8 +104,6 @@ public abstract class PatientSpawningTile : Tile
         _spawningPatient = false;
         HandleNewPatient(NPCFactory.Instance.GeneratePatientData());
 
-        // TODO: Check if the max amount of patients have spawned, if so adjust the UI to reflect we are at the
-        // max. Add a css class to the progress bar components?
         CompleteProgress();
 
         // Spawn until capacity is reached
@@ -135,7 +133,6 @@ public abstract class PatientSpawningTile : Tile
     /// </summary>
     public override void ProgressCompleted(ProgressBar bar) {
         if (_currentPatientCount >= getLevelDetails().patientCapacity) {
-            // bar.title = "MAX";
             bar.AddToClassList("tile-details-max-patients");
         }
     }

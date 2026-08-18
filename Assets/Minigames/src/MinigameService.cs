@@ -17,6 +17,10 @@ public class MinigameService : ServiceState
     [Header("Minigame List")]
     public List<BaseMinigame> minigames = new();
 
+    [Header("References")]
+    public Animator doctorAnim;
+    public Animator patientAnim;
+
     //*********************************************************************
     // Private
     //---------------------------------------------------------------------
@@ -33,10 +37,14 @@ public class MinigameService : ServiceState
     /// <summary>
     /// Determine what game to play based on the stats of the selected patient.
     /// </summary>
-    public void PlayMinigame(NPCStats stats, Vector3 position) {
+    public void PlayMinigame(Patient patient, Vector3 position) {
         if (!Active) { return; }
 
-        StatCategory domStat = stats.GetDominantStat();
+
+        doctorAnim.SetTrigger("isDoctor");
+        patientAnim.SetTrigger("isPatient");
+
+        StatCategory domStat = patient.GetStats().GetDominantStat();
         _activeGameIndex = 0;
         for (int i = 0; i < minigames.Count; i++) {
             if (minigames[i].mainStat == domStat) {
@@ -45,7 +53,8 @@ public class MinigameService : ServiceState
             }
         }
         _patientPosition = position;
-        minigames[_activeGameIndex].OpenGame(stats);
+        minigames[_activeGameIndex].OpenGame(patient);
+        CameraController.Instance.StartMinigameCameraBehavior(doctorAnim.transform.parent.position);
     }
 
     /// <summary>
@@ -56,6 +65,7 @@ public class MinigameService : ServiceState
 
         foreach (BaseMinigame game in minigames) {
             game.onMinigameEnd += EndMinigameService;
+            game.Init(doctorAnim, patientAnim);
         }
     }
 
@@ -69,6 +79,7 @@ public class MinigameService : ServiceState
         if (Active) {
             InputManager.Instance.ToggleActionMap("Minigame");
             UIManager.Instance.ToggleMinigameInfo(false, null);
+            UIManager.Instance.ToggleHud(false);
         }
     }
 
@@ -81,6 +92,7 @@ public class MinigameService : ServiceState
         PlayspaceService.Instance.ResolveFocusedPatient();
         CameraController.Instance.EndMinigameCameraBehavior();
         ServiceManager.Instance.ToggleService<MinigameService>(false);
+        UIManager.Instance.ToggleHud(true);
     }
 
     /// <summary>
@@ -93,7 +105,7 @@ public class MinigameService : ServiceState
         Debug.Log("Awarding " + gold + " gold, and " + reputation + " reputation!");
 
         // TODO: Based on performance, determine how many particles to spawn
-        UIManager.Instance.PlayRewardParticles(_patientPosition, (int)(gold / 10f), (int)(reputation / 10f));
+        UIManager.Instance.PlayRewardParticles(_patientPosition, gold, reputation);
 
         // TODO: Play visual effects for awarding the player money and reputation after a manual adjustment.
     }

@@ -121,6 +121,10 @@ public class AutoAdjustingOffice : PatientSpawningTile
         // Let the action animation play for a moment before doing anything
         yield return new WaitForSeconds(1f);
 
+        // Reward the player
+        // TODO: potential consider skill bonuses here?
+        ProgressionManager.Instance.AwardNpcAdjustment(1);
+
         // Then spawn a patient
         ReleasePatient();
         CompleteProgress();

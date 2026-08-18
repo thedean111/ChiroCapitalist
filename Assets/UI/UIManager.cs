@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class UIManager : MonoBehaviour
     public Color techniqueColor;
     public Texture2D magicIcon;
     public Color magicColor;
+    public int countPerParticle = 5;
     // -----
     // PRIVATE
     // -----
@@ -155,8 +157,11 @@ public class UIManager : MonoBehaviour
         _mouseFollowElement = _minigameInfoElement;
     }
 
-    public void PlayRewardParticles(Vector3 pos, int moneyIncrement, int reputationIncrement) {
-        _rewardParticles.SetIncrementAmounts(moneyIncrement, reputationIncrement);
+    public void PlayRewardParticles(Vector3 pos, int money, int reputation) {
+        int moneyParticleNum = money / countPerParticle;
+        int reputationParticleNum = reputation / countPerParticle;
+        _rewardParticles.SetParticleNums(moneyParticleNum, reputationParticleNum);
+        _rewardParticles.SetIncrementAmounts(countPerParticle * moneyParticleNum, countPerParticle * reputationParticleNum);
         _rewardParticles.TriggerRewardParticles(pos);
     }
 
@@ -231,6 +236,13 @@ public class UIManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// Turn the HUD on or off
+    /// </summary>
+    public void ToggleHud(bool status) {
+        hud.rootVisualElement.SetEnabled(status);
     }
 
     /// <summary>

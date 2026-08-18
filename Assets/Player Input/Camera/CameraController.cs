@@ -29,12 +29,14 @@ public class CameraController : MonoBehaviour
     public float minigameZoomLevel = 24;
 
     private CinemachineFollow followCam;
+    private CinemachineBasicMultiChannelPerlin cameraNoise;
     private bool _forcingZoomLevel = false;
 
     void Awake()
     {
         if (instance == null) { instance = this; }
         followCam = cCam.GetComponent<CinemachineFollow>();
+        cameraNoise = cCam.GetComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     public void OnPan(Vector2 mouseDelta)
@@ -96,16 +98,16 @@ public class CameraController : MonoBehaviour
     /// Force the camera target to the input position.
     /// </summary>
     /// <param name="pos">Position to set the camera target to.</param>
-    public void ForceCameraPosition(Vector3 pos)
+    public void ForceCameraPosition(Vector3 pos, float t)
     {
-        camTarg.DOMove(pos, 0.5f);
+        camTarg.DOMove(pos, t).SetEase(Ease.OutQuart);
     }
 
     /// <summary>
     /// Execute the coroutine that will enforce zoom
     /// </summary>
     public void StartMinigameCameraBehavior(Vector3 pos) {
-        ForceCameraPosition(pos);
+        ForceCameraPosition(pos, 4f);
         DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, minigameZoomLevel, 1).SetEase(Ease.OutQuart);
         StartCoroutine(ForceZoomRoutine(minigameZoomLevel));
     }
@@ -113,6 +115,10 @@ public class CameraController : MonoBehaviour
     public void EndMinigameCameraBehavior() {
         _forcingZoomLevel = false;
         DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, minigameZoomLevel, 1).SetEase(Ease.OutQuart);
+    }
+
+    public void SetCameraNoiseAmplitude(float val) {
+        cameraNoise.AmplitudeGain = val;
     }
 
     /// <summary>
@@ -129,7 +135,7 @@ public class CameraController : MonoBehaviour
                 followCam.FollowOffset.y += dir * 0.05f;
             }
 
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.025f);
         }
 
         yield return null;
@@ -141,5 +147,8 @@ public class CameraController : MonoBehaviour
     /// </summary>
     public void PunchZoom(float delta, float t) {
         DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, followCam.FollowOffset.y + delta, t).SetEase(Ease.OutQuart);
+    }
+    public void SetZoom(float val, float t) {
+        DOTween.To(() => followCam.FollowOffset.y, x => followCam.FollowOffset.y = x, val, t);
     }
 }

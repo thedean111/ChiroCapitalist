@@ -7,12 +7,15 @@ public abstract class NPC : MonoBehaviour
     private bool idxSet = false;
     private Transform meshRoot;
     private Animator anim;
+    private bool isMale;
 
     void Awake()
     {
         meshRoot = transform.GetChild(0).Find("meshes");
         anim = GetComponentInChildren<Animator>();
     }
+
+    public bool IsMale() { return isMale; }
 
     /// <summary>
     /// The generic functionality for giving an NPC its data will be to assign the meshes and their colors.
@@ -31,6 +34,7 @@ public abstract class NPC : MonoBehaviour
         legsIdx = data.legs;
         feetIdx = data.feet;
         torsoIdx = data.torso;
+        isMale = data.isMale;
 
         // Set the colors on the material instances and activate the meshes
         SkinnedMeshRenderer head = meshRoot.GetChild(data.head.x).GetChild(data.head.y).GetChild(data.head.z).GetComponent<SkinnedMeshRenderer>();
@@ -108,9 +112,11 @@ public class NPCData
     public string name;
     public NPCRaceData race;
     public NPCStats stats; // x - Strength, y - Technique, z - Magic
+    public bool isMale;
 
     public NPCData() {
         stats = new NPCStats();
+        isMale = Random.Range(0, 1f) < 0.5f; // 50% chance of being male/female
     }
 
 

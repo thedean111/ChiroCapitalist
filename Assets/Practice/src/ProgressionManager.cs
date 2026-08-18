@@ -20,6 +20,8 @@ public class ProgressionManager : MonoBehaviour
     [Range(1, 10)] public int maxTiers = 5;
     [Range(1, 10)] public int ranksPerTier = 5;
     [Range(1, 10)] public int tiersPerDifficulty = 2;
+    [Range(1, 100)] public int baseNpcGoldReward = 20;
+    [Range(1, 100)] public int baseNpcReputationReward = 5;
 
     [Header("Minigame Scaling")]
     [Range(1, 100)] public int baseGoldReward = 20;
@@ -75,6 +77,15 @@ public class ProgressionManager : MonoBehaviour
         {
             return PatientDifficulty.HARD;
         }
+    }
+
+    /// <summary>
+    /// The score of the NPC's adjustment is the compatibility of the doctor with the patient based 
+    /// on their stats.
+    /// </summary>
+    public void AwardNpcAdjustment(float score) {
+        AdjustReputation((int)(baseNpcReputationReward * score));
+        AdjustMoney((int)(baseNpcGoldReward * score));
     }
 
     /// <summary>

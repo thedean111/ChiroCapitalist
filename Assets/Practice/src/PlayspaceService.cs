@@ -133,9 +133,9 @@ public class PlayspaceService : ServiceState
 
         if (_focusedSpawner != null) {
             Debug.Log("Spawner Interact");
+            UIManager.Instance.ToggleTileDetailsPanel(false);
             ServiceManager.Instance.ToggleService<MinigameService>(true);
-            MinigameService.Instance.PlayMinigame(_focusedSpawner.GetPatientStats(), _focusedSpawner.transform.position);
-            CameraController.Instance.StartMinigameCameraBehavior(_focusedSpawner.transform.position);
+            MinigameService.Instance.PlayMinigame(_focusedSpawner.GetPatient(), _focusedSpawner.transform.position);
             return;
         }
 

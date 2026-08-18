@@ -33,6 +33,16 @@ public class UIToolkitParticles : MonoBehaviour
         reputationElement = root.Q<VisualElement>("practice-license-button");
     }
 
+    public void SetParticleNums(int moneyNum, int reputationNum) {
+        ParticleSystem.Burst mB = moneyParticles.emission.GetBurst(0);
+        mB.count = moneyNum;
+        moneyParticles.emission.SetBurst(0, mB);
+        
+        ParticleSystem.Burst rB = reputationParticles.emission.GetBurst(0);
+        rB.count = reputationNum;
+        reputationParticles.emission.SetBurst(0, rB);
+    }
+
     public void SetIncrementAmounts(int money, int reputation) {
         moneyIncrementAmount = money;
         reputationIncrementAmount = reputation;
@@ -93,6 +103,9 @@ public class UIToolkitParticles : MonoBehaviour
             uint particleSeed = particles[i].randomSeed;
             DOVirtual.Float(0f, 1f, flightDuration, t =>
             {
+                // Recalculate target position in case it moves
+                Vector3 targetWorldPos =UIToolkitToCameraPlane(target);
+
                 // Evaluate Quadratic Bezier Formula along path (0 to 1)
                 float oneMinusT = 1f - t;
                 Vector3 currentPos = (oneMinusT * oneMinusT * particleStartPos) +

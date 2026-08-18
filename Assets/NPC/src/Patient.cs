@@ -17,6 +17,10 @@ public class Patient : NPC
     public NPCStats GetStats() {
         return data.stats;
     }
+
+    public NPCData GetData() {
+        return data;
+    }
 }
 
 public class PatientData : NPCData

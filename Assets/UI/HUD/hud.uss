@@ -104,6 +104,15 @@
     top: 0;
     bottom: 0;
     position: absolute;
+    scale: 1 1;
+    transition-property: all, scale;
+    transition-duration: 0s, 0.2s;
+    transition-timing-function: ease, ease-out-back;
+    transition-delay: 0s, 0s;
+}
+
+.root-element:disabled {
+    opacity: 1;
 }
 
 .hud-menu-header {
@@ -350,10 +359,8 @@
 }
 
 .tile-details-container {
-    flex-grow: 1;
-    position: absolute;
-    left: auto;
-    bottom: auto;
+    flex-grow: 0;
+    position: relative;
     height: auto;
     width: 445px;
     background-color: rgba(29, 18, 11, 0.96);
@@ -378,8 +385,10 @@
     padding-right: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
-    scale: 1 1;
-    top: 475px;
+    scale: 0.95 0.95;
+    transition-property: height;
+    transition-duration: 0.15s;
+    top: 30%;
 }
 
 .tile-details-container:disabled {
@@ -525,4 +534,73 @@
     border-top-color: rgb(222, 222, 222);
     border-bottom-color: rgb(222, 222, 222);
     opacity: 0.5;
+}
+
+.practice-license-button {
+    height: 178px;
+    width: 167px;
+    top: 0;
+    left: 0;
+    margin-top: 30px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    position: absolute;
+    background-color: rgb(209, 190, 155);
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-back;
+}
+
+.practice-license-button:disabled {
+    top: -250px;
+    position: absolute;
+}
+
+.hud-buttons-container {
+    flex-grow: 1;
+    flex-direction: row;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    margin-left: 20px;
+    justify-content: space-between;
+    width: 213px;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-back;
+}
+
+.hud-buttons-container:disabled {
+    position: absolute;
+    bottom: -151px;
+}
+
+.money-container {
+    position: absolute;
+    top: 25px;
+    right: 4px;
+    width: 325px;
+    height: 75px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    align-items: stretch;
+    flex-direction: row;
+    scale: 0.8 0.8 0.8;
+    transition-duration: 0.1s, 0.2s;
+    transition-timing-function: ease, ease-out-back;
+    transition-property: all, top;
+}
+
+.money-container:disabled {
+    top: -108px;
 }

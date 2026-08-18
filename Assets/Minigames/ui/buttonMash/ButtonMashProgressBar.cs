@@ -8,6 +8,7 @@ public partial class ButtonMashProgressBar : VisualElement
     private float _prog = 0.4f;
     private float _targetOffset = 0.0f;
     private float _targetHeight = 0.0f;
+    private Texture2D _inputIcon;
 
     [UxmlAttribute] [Range(0f,1f)] 
     public float progressMeter {
@@ -34,12 +35,28 @@ public partial class ButtonMashProgressBar : VisualElement
         }
     }
 
+    [UxmlAttribute]
+    public Texture2D inputIcon {
+        get => _inputIcon;
+        set {
+            inputIconElement.style.backgroundImage = value;
+            _inputIcon = value;
+        }
+    }
+
     private VisualElement progress;
     private VisualElement target;
+    private VisualElement inputIconElement;
     public ButtonMashProgressBar() {
         // -------------------------------------------
         // S E T U P    E L E M E N T S
         // -------------------------------------------
+        VisualElement barContainer = new VisualElement { name = "button-mash_bar-container" };
+        barContainer.style.width = new StyleLength(new Length(100, LengthUnit.Percent));
+        barContainer.style.height = new StyleLength(new Length(100, LengthUnit.Percent));
+        barContainer.style.overflow = Overflow.Hidden;
+        barContainer.AddToClassList("button-mash_bar-container");
+
         VisualElement background = new VisualElement { name = "button-mash_background" };
         background.style.width = new StyleLength(new Length(100, LengthUnit.Percent));
         background.style.height = new StyleLength(new Length(100, LengthUnit.Percent));
@@ -65,10 +82,17 @@ public partial class ButtonMashProgressBar : VisualElement
         target.pickingMode = PickingMode.Ignore;
         target.AddToClassList("button-mash_target");
 
+        inputIconElement = new VisualElement { name = "button-mash_input-icon" };
+        // inputIconElement.style.width = 100;
+        // inputIconElement.style.height = 100;
+        inputIconElement.AddToClassList("button-mash_input-icon");
+
         // -------------------------------------------
         // C O N F I G U R E    S T R U C T U R E
         // -------------------------------------------
-        Add(background);
+        Add(barContainer);
+        Add(inputIconElement);
+        barContainer.Add(background);
         background.Add(target);
         background.Add(progress);
     }

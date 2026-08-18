@@ -111,4 +111,8 @@ public class PatientSpawner : MonoBehaviour
     public NPCStats GetPatientStats() {
         return patient.GetStats();
     }
+    
+    public Patient GetPatient() {
+        return patient;
+    }
 }
