@@ -137,12 +137,12 @@ public class UIManager : MonoBehaviour
         _mouseFollowElement = _minigameInfoElement;
     }
 
-    public void PlayRewardParticles(Vector3 pos, int money, int reputation) {
+    public void PlayRewardParticles(int money, int reputation) {
         int moneyParticleNum = money / countPerParticle;
         int reputationParticleNum = reputation / countPerParticle;
         _rewardParticles.SetParticleNums(moneyParticleNum, reputationParticleNum);
         _rewardParticles.SetIncrementAmounts(countPerParticle * moneyParticleNum, countPerParticle * reputationParticleNum);
-        _rewardParticles.TriggerRewardParticles(pos);
+        _rewardParticles.TriggerRewardParticles();
     }
 
     // public TileInstance GetFocusedTile() {

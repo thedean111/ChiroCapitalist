@@ -21,7 +21,6 @@ public class Tile : MonoBehaviour
     public event Action OnProgressComplete;
     public System.Random rng;
 
-
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
@@ -32,7 +31,6 @@ public class Tile : MonoBehaviour
     protected bool _firstPlace = true;
     
     //---------------------------------------------------------------------
-
     /// <summary>
     /// What to do when this tile is clicked.
     /// </summary>
@@ -78,7 +76,7 @@ public class Tile : MonoBehaviour
     /// </summary>
     void OnEnable()
     {
-        _renderers = GetComponentsInChildren<Renderer>();
+        _renderers = GetComponentsInChildren<Renderer>(true);
         _mpb = new MaterialPropertyBlock();
     }
 
@@ -122,7 +120,7 @@ public class Tile : MonoBehaviour
             }
         }
 
-        _renderers = GetComponentsInChildren<Renderer>();
+        // _renderers = GetComponentsInChildren<Renderer>();
 
         return true;
     }
@@ -154,6 +152,22 @@ public class Tile : MonoBehaviour
             _mpb.SetColor(_targetProperty, color);
             r.SetPropertyBlock(_mpb);
         }
+    }
+
+    /// <summary>
+    /// Fade the already stored renderers of this object.
+    /// </summary>
+    public virtual void FadeTile(float start, float target) {
+        float progress = start;
+        int alphaPropId = Shader.PropertyToID("_EffectiveAlpha");
+        DOTween.To(() => progress, x => {
+            progress = x;
+            for (int i = 0; i < _renderers.Length; i++) {
+                _renderers[i].GetPropertyBlock(_mpb);
+                _mpb.SetFloat(alphaPropId, progress);
+                _renderers[i].SetPropertyBlock(_mpb);
+            }
+        }, target, PlayspaceService.Instance.transitionDuration);
     }
 
     /// <summary>

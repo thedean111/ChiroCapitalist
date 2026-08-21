@@ -12,13 +12,15 @@ public class PlayspaceService : ServiceState
     //*********************************************************************
     // Public
     //---------------------------------------------------------------------
+    [Header("References")]
+    public SpawnPointTile frontRoomTile;
+    public Tile backRoomTile;
+
     [Header("Tile Interactivity")]
-    public string officeTileLayer;
-    public Color tileHoverColor;
-    public Color tileFocusColor;
     public ParticleSystem levelUpEffect;
     [Range(0f, 10f)]
     public float outlineThickness = 2f;
+    [Range(0f, 2f)] public float transitionDuration = 0.3f;
 
     [Header("Office Sequences")]
     public List<OfficeSequence> idleSequences = new();
@@ -29,16 +31,33 @@ public class PlayspaceService : ServiceState
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
-    // private Tile _hoveredOfficeTile;
-    // private Tile _focusedTile;
+
     private PatientSpawner _focusedSpawner;
 
     private int _officeMask;
     private int _spawnMask;
+    private Renderer[] _frontRoomRenderers;
+    private Renderer[] _backRoomRenderers;
+    private MaterialPropertyBlock _mpb;
+    private int _effectiveAlphaID;
+
     //*********************************************************************
     private void Awake()
     {
         if (Instance == null) { Instance = this; }
+        _mpb = new MaterialPropertyBlock();
+        _frontRoomRenderers = frontRoomTile.GetComponentsInChildren<Renderer>(true);
+        _backRoomRenderers = backRoomTile.GetComponentsInChildren<Renderer>(true);
+        _effectiveAlphaID = Shader.PropertyToID("_EffectiveAlpha");
+    }
+
+    void OnEnable()
+    {
+        MinigameService.Instance.onRoomTransition += FadeRooms;
+    }
+    void OnDisable()
+    {
+        MinigameService.Instance.onRoomTransition -= FadeRooms;
     }
 
     /// <summary>
@@ -49,11 +68,6 @@ public class PlayspaceService : ServiceState
         base.Toggle(status);
         if (status)
             InputManager.Instance.ToggleActionMap("Player");
-        // if (_hoveredOfficeTile) {
-        //     _hoveredOfficeTile.DisableOutlines();
-        //     _hoveredOfficeTile = null;
-
-        // }
     }
 
     /// <summary>
@@ -61,8 +75,10 @@ public class PlayspaceService : ServiceState
     /// </summary>
     protected override void Start() {
         base.Start();
-        _officeMask = LayerMask.GetMask(officeTileLayer);
         _spawnMask = LayerMask.GetMask("SpawnPoint");
+        // FadeRooms(RoomType.Front);
+        frontRoomTile.FadeTile(.5f, 1f);
+        backRoomTile.FadeTile(.5f, 0f);
     }
 
     /// <summary>
@@ -88,40 +104,12 @@ public class PlayspaceService : ServiceState
                 _focusedSpawner.ToggleOutline(true);
                 UIManager.Instance.ToggleMinigameInfo(true, _focusedSpawner.GetPatientStats());
             }
-
-            // if (_hoveredOfficeTile != null) {
-            //     _hoveredOfficeTile.DisableOutlines();
-            //     _hoveredOfficeTile = null;
-            // }
             return;
         } else if (_focusedSpawner != null) {
             _focusedSpawner.ToggleOutline(false);
             _focusedSpawner = null;
             UIManager.Instance.ToggleMinigameInfo(false, null);
         }
-
-        // Tile checkTile = null;
-        // if (Physics.Raycast(ray, out hit, 50, _officeMask)) {
-        //     checkTile = hit.transform.GetComponent<Tile>();
-        // }
-
-        // If previously hovering a tile, disable its outline if hovering over nothing or a new tile
-        // if (_hoveredOfficeTile != null && _hoveredOfficeTile != _focusedTile) {
-        //     if (checkTile == null) {
-        //         _hoveredOfficeTile.DisableOutlines();
-        //         _hoveredOfficeTile = null;
-
-        //     } else if (checkTile != _hoveredOfficeTile) {
-        //         _hoveredOfficeTile.DisableOutlines();
-        //         _hoveredOfficeTile = checkTile;
-        //         _hoveredOfficeTile.EnableOutlines();
-
-        //     }
-        // } else if (checkTile != null && checkTile != _focusedTile) {
-        //     _hoveredOfficeTile = checkTile;
-        //     _hoveredOfficeTile.EnableOutlines();
-
-        // }
     }
 
     /// <summary>
@@ -131,8 +119,7 @@ public class PlayspaceService : ServiceState
         if (!Active || UIManager.Instance.IsPointerOverUI()) { return; }
 
         if (_focusedSpawner != null) {
-            Debug.Log("Spawner Interact");
-            // UIManager.Instance.ToggleTileDetailsPanel(false);
+            _focusedSpawner.ToggleOutline(false);
             ServiceManager.Instance.ToggleService<MinigameService>(true);
             MinigameService.Instance.PlayMinigame(_focusedSpawner.GetPatient(), _focusedSpawner.transform.position);
             return;
@@ -140,14 +127,21 @@ public class PlayspaceService : ServiceState
     }
 
     /// <summary>
-    /// If there is a focused tile then unfocus it.
+    /// The input is the room that should be visible, others should be invisible
     /// </summary>
-    // public void ResetFocus() {
-    //     if (_focusedTile != null) {
-    //         _focusedTile.UpdateOutline(false, tileHoverColor);
-    //         _focusedTile = null;
-    //     }
-    // }
+    public void FadeRooms(RoomType type) {
+        switch (type) {
+            case RoomType.Front:
+            frontRoomTile.FadeTile(0f, 1f);
+            backRoomTile.FadeTile(1f, 0f);
+            break;
+
+            case RoomType.Adjustment:
+            frontRoomTile.FadeTile(1f, 0f);
+            backRoomTile.FadeTile(0f, 1f);
+            break;
+        }
+    }
 
     /// <summary>
     /// Place the particle system at a position and play it.

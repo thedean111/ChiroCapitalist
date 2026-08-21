@@ -5,12 +5,6 @@ using UnityEngine.UIElements;
 
 public class ButtonMashGame : BaseMinigame
 {   
-    [Header("Game-Specific References")]
-    public Transform femaleSprite;
-    public Transform maleSprite;
-    public Transform leftHand;
-    public Transform rightHand;
-
     [Header("Game Scaling")]
     [Range(1, 50)] public int updateSteps = 10;
     [Range(0.1f, 10)] public float requiredTimeInRegion = 2;
@@ -27,9 +21,6 @@ public class ButtonMashGame : BaseMinigame
     public AnimationCurve cameraShakeCurve;
     public Vector2 cameraZoomLimits;
     public AnimationCurve cameraZoomCurve;
-
-    [Header("Design")]
-    public Gradient handSkinTone;
 
     protected ButtonMashProgressBar mashProgress;
     private bool _gameComplete = true;
@@ -51,32 +42,13 @@ public class ButtonMashGame : BaseMinigame
 
         _doctorAnim.SetFloat("strengthValue", 0);
         _patientAnim.SetFloat("strengthValue", 0);
-        // Show the 2D graphics
-        // animator.SetFloat("NormalizedTime", 0f);
-        // animator.SetBool("enabled", true);
-        // NPCData pd = patient.GetData();
-        // if (patient.IsMale()) {
-        //     maleSprite.gameObject.SetActive(true);
-        //     femaleSprite.gameObject.SetActive(false);
 
-        //     maleSprite.GetComponent<SpriteRenderer>().sharedMaterial.SetColor("_Primary_Color", pd.torsoColors.primary);
-        //     maleSprite.GetComponent<SpriteRenderer>().sharedMaterial.SetColor("_Secondary_Color", pd.skinColors.skin);
-        // } else {
-        //     femaleSprite.gameObject.SetActive(true);
-        //     maleSprite.gameObject.SetActive(false);
-
-        //     femaleSprite.GetComponent<SpriteRenderer>().sharedMaterial.SetColor("_Primary_Color", pd.torsoColors.primary);
-        //     femaleSprite.GetComponent<SpriteRenderer>().sharedMaterial.SetColor("_Secondary_Color", pd.skinColors.skin);
-        // }
-        // Color handColor = handSkinTone.Evaluate(Random.Range(0f, 1f));
-        // leftHand.GetComponent<SpriteRenderer>().sharedMaterial.SetColor("_Primary_Color", handColor);
-        // rightHand.GetComponent<SpriteRenderer>().sharedMaterial.SetColor("_Primary_Color", handColor);
 
         // Configure the initial state of the meter based on difficulty and skills
         mashProgress.progressMeter = 0;
         mashProgress.targetOffset = 0;
         mashProgress.targetHeight = statToSize.Evaluate(stats.n_strength) * 100f; // [0,1] -> [low strength, max strength]
-        CameraController.Instance.minigameZoomLevel = cameraZoomLimits.y;
+        CameraController.Instance.SetMgZoomWeight(0);
 
         // When this flag is set to true the coroutine will finish
         _gameComplete = false;
@@ -132,12 +104,13 @@ public class ButtonMashGame : BaseMinigame
         }
         
         // TODO: Eventually make this scale with stats?
-        CameraController.Instance.PunchZoom(-punchStrength, punchTime);
+        // CameraController.Instance.PunchZoomToTable(punchStrength, punchTime);
         float start = mashProgress.progressMeter;
-        float targ = start + clickAmount;
-        mashProgress.progressMeter += clickAmount;
+        float targ = Mathf.Clamp01(start + clickAmount);
+        // mashProgress.progressMeter += clickAmount;
         DOVirtual.Float(start, targ, 0.5f, (x) => {
             mashProgress.progressMeter = x;
+            CameraController.Instance.SetMgZoomWeight(cameraZoomCurve.Evaluate(mashProgress.progressMeter));
         });
 
     }
@@ -146,13 +119,10 @@ public class ButtonMashGame : BaseMinigame
         while (!_gameComplete) {
             mashProgress.progressMeter -= deductionAmount.Evaluate(stats.n_strength) / updateSteps;
 
-            // animator.SetFloat("NormalizedTime", mashProgress.progressMeter);
             // TODO: We need to break the normalized time into blocks and only update the float when
             // the value enters the next block!
-            CameraController.Instance.SetZoom(
-                cameraZoomLimits.y - cameraZoomCurve.Evaluate(mashProgress.progressMeter) * (cameraZoomLimits.y - cameraZoomLimits.x),
-                0.1f
-            );
+            // TODO: This should affect the weight of the camera zoom!!
+            CameraController.Instance.SetMgZoomWeight(cameraZoomCurve.Evaluate(mashProgress.progressMeter));
             _doctorAnim.SetFloat("strengthValue", mashProgress.progressMeter);
             _patientAnim.SetFloat("strengthValue", mashProgress.progressMeter);
             yield return new WaitForSeconds(deductionSpeed.Evaluate(stats.n_strength) / updateSteps);

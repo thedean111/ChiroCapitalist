@@ -13,6 +13,7 @@ public abstract class NPC : MonoBehaviour
     {
         meshRoot = transform.GetChild(0).Find("meshes");
         anim = GetComponentInChildren<Animator>();
+        anim.Update(0f);
     }
 
     public bool IsMale() { return isMale; }

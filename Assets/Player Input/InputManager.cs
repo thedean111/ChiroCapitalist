@@ -51,34 +51,34 @@ public class InputManager : MonoBehaviour, InputSystem_Actions.IPlayerActions, I
     // ===================================================================================================
     public void OnMousePan(InputAction.CallbackContext context)
     {
-        if (context.performed) {
-            CameraController.Instance.holding = true;
-        } else if (context.canceled) {
-            CameraController.Instance.holding = false;
-        }
+        // if (context.performed) {
+        //     CameraController.Instance.holding = true;
+        // } else if (context.canceled) {
+        //     CameraController.Instance.holding = false;
+        // }
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.canceled) {
-            CameraController.Instance.discreteMoveInput = Vector2.zero;
-        } else if (context.performed) {
-            CameraController.Instance.discreteMoveInput = context.ReadValue<Vector2>();
-        }
+        // if (context.canceled) {
+        //     CameraController.Instance.discreteMoveInput = Vector2.zero;
+        // } else if (context.performed) {
+        //     CameraController.Instance.discreteMoveInput = context.ReadValue<Vector2>();
+        // }
     }
 
     public void OnPan(InputAction.CallbackContext context)
     {
-        if (context.performed) {
-            CameraController.Instance.OnPan(context.ReadValue<Vector2>());
-        }
+        // if (context.performed) {
+        //     CameraController.Instance.OnPan(context.ReadValue<Vector2>());
+        // }
     }
 
     public void OnMouseZoom(InputAction.CallbackContext context)
     {
-        if (context.performed) {
-            CameraController.Instance.OnZoom(context.ReadValue<Vector2>().y);
-        }
+        // if (context.performed) {
+        //     CameraController.Instance.OnZoom(context.ReadValue<Vector2>().y);
+        // }
     }
 
     // ===================================================================================================

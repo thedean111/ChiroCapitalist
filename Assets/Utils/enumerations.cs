@@ -49,3 +49,8 @@ public enum PropLevelAction {
     Remove,
     Replace
 }
+
+public enum RoomType {
+    Front,
+    Adjustment
+}

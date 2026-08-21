@@ -51,14 +51,8 @@ public class UIToolkitParticles : MonoBehaviour
     /// <summary>
     /// Call this from your minigame when complete.
     /// </summary>
-    public void TriggerRewardParticles(Vector3 startWorldPos)
+    public void TriggerRewardParticles()
     {
-        // 1. Position the emitter over the minigame source element
-        // Vector3 startPos = WorldToCameraPlane(startWorldPos);
-        Vector3 startPos = startWorldPos + (Vector3.up * 3);
-        moneyParticles.transform.position = startPos;
-        reputationParticles.transform.position = startPos;
-
         // 2. Play particle burst
         moneyParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         moneyParticles.Play();

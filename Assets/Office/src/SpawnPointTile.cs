@@ -5,10 +5,12 @@ public class SpawnPointTile : PatientSpawningTile
 {
     public List<PatientSpawner> spawnPoints = new();
     public string spawnAnimationName;
+    private float _actualAlpha;
 
     void Start()
     {
         Initialize();
+        _actualAlpha = 1;
     }
 
     public override void Initialize() {
@@ -30,10 +32,16 @@ public class SpawnPointTile : PatientSpawningTile
         // NOTE: The patient should always be spawned on one of the visible chairs. So the patient cap should match the
         // prop rules with levels
         for (int i = 0; i < getLevelDetails().patientCapacity; i++) {
-            if (spawnPoints[i].TrySpawnPatient(spawnAnimationName)) {
+            if (spawnPoints[i].TrySpawnPatient(spawnAnimationName, _actualAlpha)) {
                 return;
             }
         }
+    }
+
+    public override void FadeTile(float start, float target)
+    {
+        _actualAlpha = target;
+        base.FadeTile(start, target);
     }
 
     /// <summary>

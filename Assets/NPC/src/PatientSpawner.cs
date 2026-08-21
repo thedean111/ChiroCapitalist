@@ -33,7 +33,8 @@ public class PatientSpawner : MonoBehaviour
 
         if (patient == null) {
             activePatient = false;
-            patient = Instantiate(patientPrefab, Vector3.down * 10, Quaternion.identity, spawnPivot).GetComponent<Patient>();
+            patient = GetComponentInChildren<Patient>();
+            // patient = Instantiate(patientPrefab, Vector3.down * 10, Quaternion.identity, spawnPivot).GetComponent<Patient>();
             patient.transform.localRotation = Quaternion.identity;
             patient.transform.localScale = Vector3.one;
             patient.SetData(NPCFactory.Instance.GeneratePatientData());
@@ -53,7 +54,7 @@ public class PatientSpawner : MonoBehaviour
     /// <summary>
     /// Attempt to spawn a patient at this spawn point. Returns the success of the spawn.
     /// </summary>
-    public bool TrySpawnPatient(string animationName) {
+    public bool TrySpawnPatient(string animationName, float target) {
         if (activePatient) { return false; }
 
         coll.enabled = true;
@@ -62,7 +63,7 @@ public class PatientSpawner : MonoBehaviour
         patient.SetData(NPCFactory.Instance.GeneratePatientData());
         patient.gameObject.SetActive(true);
         patient.PlayAnimationClip(animationName, 0f);
-        PlayspaceService.DitherFadeObject(patient.transform, 1f, fadeTime, () => {
+        PlayspaceService.DitherFadeObject(patient.transform, target, fadeTime, () => {
             adjustmentButton.SetEnabled(true);
         });
 

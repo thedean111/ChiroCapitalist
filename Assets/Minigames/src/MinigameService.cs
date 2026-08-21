@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +22,8 @@ public class MinigameService : ServiceState
     [Header("References")]
     public Animator doctorAnim;
     public Animator patientAnim;
+    [Range(0f, 2f)] public float transitionDuration;
+    public event Action<RoomType> onRoomTransition;
 
     //*********************************************************************
     // Private
@@ -32,6 +36,11 @@ public class MinigameService : ServiceState
     private void Awake()
     {
         if (Instance == null) { Instance = this; }
+    }
+
+    protected override void Start()
+    {
+        base.Start();
     }
 
     /// <summary>
@@ -54,7 +63,12 @@ public class MinigameService : ServiceState
         }
         _patientPosition = position;
         minigames[_activeGameIndex].OpenGame(patient);
-        CameraController.Instance.StartMinigameCameraBehavior(doctorAnim.transform.parent.position);
+
+        // Transition to the back room
+        onRoomTransition?.Invoke(RoomType.Adjustment);
+
+        // TODO: Move camera to back room
+        // CameraController.Instance.StartMinigameCameraBehavior();
     }
 
     /// <summary>
@@ -93,6 +107,9 @@ public class MinigameService : ServiceState
         CameraController.Instance.EndMinigameCameraBehavior();
         ServiceManager.Instance.ToggleService<MinigameService>(false);
         UIManager.Instance.ToggleHud(true);
+        // Transition to the front room
+        onRoomTransition?.Invoke(RoomType.Front);
+        // TransitionRooms(0);
     }
 
     /// <summary>
@@ -105,7 +122,7 @@ public class MinigameService : ServiceState
         Debug.Log("Awarding " + gold + " gold, and " + reputation + " reputation!");
 
         // TODO: Based on performance, determine how many particles to spawn
-        UIManager.Instance.PlayRewardParticles(_patientPosition, gold, reputation);
+        UIManager.Instance.PlayRewardParticles(gold, reputation);
 
         // TODO: Play visual effects for awarding the player money and reputation after a manual adjustment.
     }

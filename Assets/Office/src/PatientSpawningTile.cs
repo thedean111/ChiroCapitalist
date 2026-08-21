@@ -103,7 +103,6 @@ public abstract class PatientSpawningTile : Tile
         _currentPatientCount++;
         _spawningPatient = false;
         HandleNewPatient(NPCFactory.Instance.GeneratePatientData());
-
         CompleteProgress();
 
         // Spawn until capacity is reached
