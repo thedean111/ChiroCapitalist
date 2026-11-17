@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
     public Vector2 swayAnchor; // x - horizontal; y - vertical
     public float swaySpeed;
     public Vector2 swayStrength; // x - horizontal; y - vertical
-    public float zoomOrthoSize = 2;
+    public float tableFocusOrthoOffset = 2;
     // public Vector2 xLimits;
     // public Vector2 zLimits;
     // public float clickDragSpeed = 0.5f; // Units per second
@@ -142,23 +142,16 @@ public class CameraController : MonoBehaviour
     public void StartMinigameCameraBehavior() {
         _mgZoomWeight = 0;
         _mgZoomEnforced = true;
-        // DOVirtual.Float(cCam.Lens.OrthographicSize, orthoSizeLimits.y, 1.5f, (x) => {
-        //     cCam.Lens.OrthographicSize = x;
-        // })
-        // .OnComplete(() => StartCoroutine(ForceZoomRoutine()))
-        // .SetEase(Ease.OutQuart);
-        // StartCoroutine(ForceZoomRoutine());
+        StartCoroutine(ForceZoomRoutine());
     }
 
     public void EndMinigameCameraBehavior() {
         _mgZoomEnforced = false;
-        // Vector3 lookOffset = lookCam.LookAtOffset;
-        // float orthoSize = cCam.Lens.OrthographicSize;
-        // DOVirtual.Float(0, 1, 1.5f, (x) => {
-        //     lookCam.LookAtOffset = Vector3.Lerp(lookOffset, Vector3.zero, x);
-        //     cCam.Lens.OrthographicSize = Mathf.Lerp(orthoSize, defaultOrthoSize, x);
-        // })
-        // .SetEase(Ease.OutQuart);
+        Vector3 lookOffset = lookCam.LookAtOffset;
+        DOVirtual.Float(0, 1, 1.5f, (x) => {
+            lookCam.LookAtOffset = Vector3.Lerp(lookOffset, Vector3.zero, x);
+        })
+        .SetEase(Ease.OutQuart);
     }
 
     public void SetCameraNoiseAmplitude(float val) {
@@ -166,7 +159,7 @@ public class CameraController : MonoBehaviour
     }
 
     public void SetMgZoomWeight(float val) {
-        _mgZoomWeight = Mathf.Clamp01(val);
+        _mgZoomWeight = val;
     }
 
     /// <summary>
@@ -174,18 +167,14 @@ public class CameraController : MonoBehaviour
     /// this forcing wants to be ended
     /// </summary>
     private IEnumerator ForceZoomRoutine() {
-        float baseOrthoSize = vCam.Lens.OrthographicSize;
+        float baseOrthoSize = cameraPoses[RoomType.Adjustment].orthoSize;
+        float finalOrthoSize = cameraPoses[RoomType.Adjustment].orthoSize - tableFocusOrthoOffset;
+        Vector3 fullOffset = adjustmentTarget.position + (Vector3.up * 0.5f) - cameraPoses[RoomType.Adjustment].position;
         while (_mgZoomEnforced) {
-            SetMgZoomWeight(_mgZoomWeight - 0.025f);
-            Vector3 fullOffset = adjustmentTarget.position - vCam.Target.TrackingTarget.position;
-            float orthoDiff = baseOrthoSize - zoomOrthoSize;
-            lookCam.LookAtOffset = fullOffset * _mgZoomWeight;
-            vCam.Lens.OrthographicSize = baseOrthoSize - (orthoDiff * _mgZoomWeight);
+            lookCam.LookAtOffset = Vector3.Lerp(Vector3.zero, fullOffset, _mgZoomWeight);
+            vCam.Lens.OrthographicSize = Mathf.Lerp(baseOrthoSize, finalOrthoSize, _mgZoomWeight);
             yield return new WaitForSeconds(0.025f);
         }
-
-        vCam.Lens.OrthographicSize = baseOrthoSize;
-
         yield return null;
     }
 }

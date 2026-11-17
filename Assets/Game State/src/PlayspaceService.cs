@@ -116,7 +116,9 @@ public class PlayspaceService : ServiceState
     /// Unity update method.
     /// </summary>
     public void Interact() {
+        
         if (!Active || UIManager.Instance.IsPointerOverUI()) { return; }
+        Debug.Log("Interacting in Playspace manager");
 
         if (_focusedSpawner != null) {
             _focusedSpawner.ToggleOutline(false);

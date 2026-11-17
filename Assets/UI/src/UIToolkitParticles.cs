@@ -183,7 +183,9 @@ public class UIToolkitParticles : MonoBehaviour
 
     private void OnMoneyTargetHit()
     {
-        Debug.Log("Particle hit money!");
+        SoundManager.Instance.chimePitchRange.x = 0.8f;
+        SoundManager.Instance.chimePitchRange.y = 0.95f;
+        SoundManager.Instance.PlayChime();
         ProgressionManager.Instance.AdjustMoney(moneyIncrementAmount);
         // Trigger meter increment & visual punch scale in UI Toolkit
         moneyElement.style.scale = new Scale(new Vector2(.85f, .85f));
@@ -195,7 +197,9 @@ public class UIToolkitParticles : MonoBehaviour
 
     private void OnReptuationTargetHit()
     {
-        Debug.Log("Particle hit reputation!");
+        SoundManager.Instance.chimePitchRange.x = 1f;
+        SoundManager.Instance.chimePitchRange.y = 1.1f;
+        SoundManager.Instance.PlayChime();
         ProgressionManager.Instance.AdjustReputation(reputationIncrementAmount);
         // Trigger meter increment & visual punch scale in UI Toolkit
         reputationElement.style.scale = new Scale(new Vector2(1.05f, 1.05f));

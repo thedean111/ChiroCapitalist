@@ -59,12 +59,24 @@ public class ButtonMashGame : BaseMinigame
 
     public override void CompleteGame()
     {
-        base.CompleteGame();
-
-        _weight = 0;
-        _gameComplete = true;
-        // animator.SetBool("enabled", false);
         CameraController.Instance.SetCameraNoiseAmplitude(0);
+
+        if (score != 0) {
+            _weight = 0;
+            _weightTween = DOTween.To(() => _weight, x => _weight = x, 1f, fadeDuration).OnUpdate(() => {
+                CameraController.Instance.SetMgZoomWeight(cameraZoomCurve.Evaluate(_weight));
+            }).OnComplete(() => {
+                // _doctorAnim.SetTrigger("performAction");
+                // _patientAnim.SetTrigger("performAction");
+                base.CompleteGame();
+            });
+        } else {
+            base.CompleteGame();
+            _weight = 0;
+        }
+
+        _gameComplete = true;
+        
     }
 
     protected override void Update() {
@@ -82,6 +94,7 @@ public class ButtonMashGame : BaseMinigame
                 float delta = Time.time - _timeInCompleteRegion;
                 _weight = delta / requiredTimeInRegion;
                 CameraController.Instance.SetCameraNoiseAmplitude(cameraShakeCurve.Evaluate(_weight));
+                // CameraController.Instance.SetMgZoomWeight(cameraZoomCurve.Evaluate(_weight));
                 if (delta > requiredTimeInRegion) {
                     score = timeScoreScaling.Evaluate(Mathf.Clamp(Time.time - _startTime, 0, worstCaseTime) / worstCaseTime);
                     CompleteGame();
@@ -92,6 +105,7 @@ public class ButtonMashGame : BaseMinigame
             _weightTween?.Kill();
             _weightTween = DOTween.To(() => _weight, x => _weight = x, 0f, fadeDuration).OnUpdate(() => {
                 CameraController.Instance.SetCameraNoiseAmplitude(cameraShakeCurve.Evaluate(_weight));
+                // CameraController.Instance.SetMgZoomWeight(_weight);
             });
             _enteredCompleteRegion = false;
         }
@@ -103,14 +117,10 @@ public class ButtonMashGame : BaseMinigame
             OnFirstClick();
         }
         
-        // TODO: Eventually make this scale with stats?
-        // CameraController.Instance.PunchZoomToTable(punchStrength, punchTime);
         float start = mashProgress.progressMeter;
         float targ = Mathf.Clamp01(start + clickAmount);
-        // mashProgress.progressMeter += clickAmount;
         DOVirtual.Float(start, targ, 0.5f, (x) => {
             mashProgress.progressMeter = x;
-            CameraController.Instance.SetMgZoomWeight(cameraZoomCurve.Evaluate(mashProgress.progressMeter));
         });
 
     }
@@ -118,11 +128,6 @@ public class ButtonMashGame : BaseMinigame
     private IEnumerator MeterDeductionCoroutine() {
         while (!_gameComplete) {
             mashProgress.progressMeter -= deductionAmount.Evaluate(stats.n_strength) / updateSteps;
-
-            // TODO: We need to break the normalized time into blocks and only update the float when
-            // the value enters the next block!
-            // TODO: This should affect the weight of the camera zoom!!
-            CameraController.Instance.SetMgZoomWeight(cameraZoomCurve.Evaluate(mashProgress.progressMeter));
             _doctorAnim.SetFloat("strengthValue", mashProgress.progressMeter);
             _patientAnim.SetFloat("strengthValue", mashProgress.progressMeter);
             yield return new WaitForSeconds(deductionSpeed.Evaluate(stats.n_strength) / updateSteps);

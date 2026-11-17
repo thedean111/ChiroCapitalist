@@ -1,13 +1,13 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/HUD/hud.uss?fileID=7433441132597879392&amp;guid=fd5a90d896f1f0d44b4f9a4179014235&amp;type=3#hud"/>
+    <Style src="project://database/Assets/UI/hud.uss?fileID=7433441132597879392&amp;guid=fd5a90d896f1f0d44b4f9a4179014235&amp;type=3#hud"/>
     <ui:VisualElement name="hud-root" picking-mode="Ignore" enabled="true" class="root-element">
         <ui:Button name="practice-license-button" class="practice-license-button">
             <ui:Label text="PRACTICE LICENSE BUTTON&#10;" class="hud-text" style="font-size: 26px;"/>
         </ui:Button>
-        <ui:VisualElement name="hud-buttons-container" class="hud-buttons-container">
+        <ui:VisualElement name="hud-buttons-container" enabled="false" class="hud-buttons-container">
             <ui:VisualElement name="build-button-container" style="flex-grow: 1; align-items: center; opacity: 0.28;">
                 <ui:Button name="placement-button" class="hud-button" style="overflow: visible;">
-                    <ui:VisualElement name="build-button-icon" class="hud-button-icon" style="background-image: url(&quot;project://database/Assets/UI/HUD/buildingButton.svg?fileID=7388822144124034973&amp;guid=8520ff82fdf8da24ab8a4cfdf57cf1cc&amp;type=3#buildingButton&quot;); background-size: 100% 63%;"/>
+                    <ui:VisualElement name="build-button-icon" class="hud-button-icon" style="background-image: url(&quot;project://database/Assets/UI/Icons/buildingButton.svg?fileID=7388822144124034973&amp;guid=8520ff82fdf8da24ab8a4cfdf57cf1cc&amp;type=3#buildingButton&quot;); background-size: 100% 63%;"/>
                     <ui:Label text="B" name="build-keybind-label" class="hud-text hud-menu-header hud-keybind-label"/>
                 </ui:Button>
             </ui:VisualElement>
@@ -17,7 +17,7 @@
                 <ui:Label text="123,456,789" name="money-display" class="hud-text" style="color: rgb(29, 18, 11); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1; position: absolute; left: -35px; align-self: center; flex-direction: row;">
-                <ui:VisualElement name="VisualElement" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/UI/HUD/coin.png?fileID=2800000&amp;guid=d0fecc31b93b8e74da3eaaa59d08da9c&amp;type=3#coin&quot;); height: 85px; width: 75px; -unity-background-image-tint-color: rgb(255, 236, 133); -unity-material: url(&quot;&quot;); background-size: 100% 100%; position: relative;"/>
+                <ui:VisualElement name="VisualElement" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/UI/Icons/coin.png?fileID=2800000&amp;guid=d0fecc31b93b8e74da3eaaa59d08da9c&amp;type=3#coin&quot;); height: 85px; width: 75px; -unity-background-image-tint-color: rgb(255, 236, 133); -unity-material: url(&quot;&quot;); background-size: 100% 100%; position: relative;"/>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="minigame-info-container" picking-mode="Ignore" enabled="true" class="minigame-info-container" style="align-items: flex-start; width: 100px; height: 100px; -unity-background-scale-mode: scale-to-fit; background-position-x: left 0; background-position-y: top 0;"/>

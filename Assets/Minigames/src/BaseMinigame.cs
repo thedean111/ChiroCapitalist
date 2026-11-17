@@ -16,6 +16,8 @@ public class BaseMinigame : MonoBehaviour
     public Animator animator;
 
     [Header("Base Settings")]
+    [Range(0f, 4f)]
+    public float crackDelay = 1.5f;
     public AnimationCurve patienceDepletionIntensity;
     public AnimationCurve patienceDepletionFrequency;
     public float maxPositionOffset = 3;
@@ -151,12 +153,41 @@ public class BaseMinigame : MonoBehaviour
     /// </summary>
     public virtual void CompleteGame() {
         Debug.Log("Ending " + this.GetType() + " with a score of: " + score);
-        _active = false;
-        _rotationTween.Pause();
-        minigameUI.rootVisualElement.SetEnabled(false);
-        minigameUI.rootVisualElement.pickingMode = PickingMode.Ignore;
-        onMinigameEnd?.Invoke();
+
+        if (score == 0) {
+            SoundManager.Instance.PlayError();
+            _active = false;
+            _rotationTween.Pause();
+            minigameUI.rootVisualElement.SetEnabled(false);
+            minigameUI.rootVisualElement.pickingMode = PickingMode.Ignore;
+            onMinigameEnd?.Invoke();
+            return; 
+        }
+
         StopCoroutine(_patienceRoutine);
+        SoundManager.Instance.PlaySuccess();
+        Light spotlight = _doctorAnim.transform.GetComponentInChildren<Light>();
+        ParticleSystem particles = _doctorAnim.transform.GetComponentInChildren<ParticleSystem>();
+        particles.Play();
+        DOVirtual.Float(0f, 1f, 1f, (x) => {
+            spotlight.range = 10 * x;
+        });
+        DOVirtual.DelayedCall(0.15f, () => {
+            _doctorAnim.SetTrigger("performAction");
+            _patientAnim.SetTrigger("performAction");
+        });
+        DOVirtual.DelayedCall(crackDelay, () => {
+            DOVirtual.Float(1f, 0f, 1f, (x) => {
+                spotlight.range = 10 * x;
+            });
+            particles.Stop();
+            particles.Clear();
+            _active = false;
+            _rotationTween.Pause();
+            minigameUI.rootVisualElement.SetEnabled(false);
+            minigameUI.rootVisualElement.pickingMode = PickingMode.Ignore;
+            onMinigameEnd?.Invoke();
+        });
     }
 
     public virtual void OnClick() {}

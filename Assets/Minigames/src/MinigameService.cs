@@ -61,14 +61,15 @@ public class MinigameService : ServiceState
                 break;
             }
         }
+        SoundManager.Instance.FadeMusicIn(SoundManager.Instance.minigameMusic[_activeGameIndex]);
         _patientPosition = position;
         minigames[_activeGameIndex].OpenGame(patient);
 
         // Transition to the back room
         onRoomTransition?.Invoke(RoomType.Adjustment);
 
-        // TODO: Move camera to back room
-        // CameraController.Instance.StartMinigameCameraBehavior();
+        // Unlock the zoom/focusing behavior
+        CameraController.Instance.StartMinigameCameraBehavior();
     }
 
     /// <summary>
@@ -107,6 +108,7 @@ public class MinigameService : ServiceState
         CameraController.Instance.EndMinigameCameraBehavior();
         ServiceManager.Instance.ToggleService<MinigameService>(false);
         UIManager.Instance.ToggleHud(true);
+        SoundManager.Instance.FadeMusicOut(SoundManager.Instance.minigameMusic[_activeGameIndex]);
         // Transition to the front room
         onRoomTransition?.Invoke(RoomType.Front);
         // TransitionRooms(0);
