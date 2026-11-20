@@ -51,6 +51,7 @@ public class BaseMinigame : MonoBehaviour
     private int _emojiStepSize;
     private Tween _rotationTween;
     private float _currentAngle;
+    private float _countdownFactor; // 0 - started; 1 - complete
 
     protected virtual void OnEnable()
     {
@@ -153,6 +154,7 @@ public class BaseMinigame : MonoBehaviour
     /// </summary>
     public virtual void CompleteGame() {
         Debug.Log("Ending " + this.GetType() + " with a score of: " + score);
+        DOVirtual.Float(_countdownFactor, 0f, 1f, (x) => SoundManager.Instance.UpdateMusicWeightScale(x));
 
         if (score == 0) {
             SoundManager.Instance.PlayError();
@@ -161,6 +163,7 @@ public class BaseMinigame : MonoBehaviour
             minigameUI.rootVisualElement.SetEnabled(false);
             minigameUI.rootVisualElement.pickingMode = PickingMode.Ignore;
             onMinigameEnd?.Invoke();
+            // Set music pack to proper pitch
             return; 
         }
 
@@ -200,11 +203,13 @@ public class BaseMinigame : MonoBehaviour
     private IEnumerator PatienceCountdown() {
         float t = Time.time;
         bool hasPatience = true;
+        _countdownFactor = 0;
         while (hasPatience) {
             float delta = Time.time - t;
-            float value = (patience - delta) / patience;
-            _patientPatience.value = value * 100;
-            _patientPatienceProgress.style.backgroundColor = patienceColors.Evaluate(value);
+            _countdownFactor = (patience - delta) / patience;
+            SoundManager.Instance.UpdateMusicWeightScale(1 - _countdownFactor);
+            _patientPatience.value = _countdownFactor * 100;
+            _patientPatienceProgress.style.backgroundColor = patienceColors.Evaluate(_countdownFactor);
             if ((patienceEmojis.Count - ((int)_patientPatience.value / _emojiStepSize) != _currentEmoji) &&
                 ((int)_patientPatience.value) % _emojiStepSize == 0) {
                 _currentEmoji++;

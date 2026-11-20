@@ -92,6 +92,7 @@ public class MinigameService : ServiceState
         base.Toggle(status);
 
         if (Active) {
+            SoundManager.Instance.PlayPatientSelect();
             InputManager.Instance.ToggleActionMap("Minigame");
             UIManager.Instance.ToggleMinigameInfo(false, null);
             UIManager.Instance.ToggleHud(false);

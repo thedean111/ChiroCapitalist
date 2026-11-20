@@ -103,7 +103,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _Noise_Scale: 52.3
-    - _Normal_Strength: 0.117
+    - _Normal_Strength: 0.0891
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -125,7 +125,7 @@ Material:
     - _Color_2: {r: 0.81960785, g: 0.74509805, b: 0.60784316, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Noise_Smoothing: {r: 0, g: 1.81, b: 0, a: 0}
-    - _Noise_Stretch: {r: 16.96, g: 1.49, b: 0, a: 0}
+    - _Noise_Stretch: {r: -0.04, g: 0.32, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

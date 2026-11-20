@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance {get; private set;}
     [Header("Parameters")]
     public float fadeTime = 1.5f;
+    public AnimationCurve musicTimerScale;
 
     [Header("Audio Sources")]
     public AudioSource music;
@@ -30,6 +31,8 @@ public class SoundManager : MonoBehaviour
     [Space(5)]public AudioClip chime;
     public Vector2 chimePitchRange;
     [Space(5)]public AudioClip success;
+    public AudioClip patientSelect;
+    public AudioClip patientSpawn;
     //---------------------------------------------------------------------
     // Private
     //---------------------------------------------------------------------
@@ -47,6 +50,14 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void UpdateMusicWeightScale(float w) {
+        float pitch = musicTimerScale.Evaluate(w);
+        baseMusic.source.pitch = pitch;
+        foreach (MusicData md in minigameMusic) {
+            md.source.pitch = pitch;
+        }
+    }
+
     private void Awake()
     {
         if (Instance == null) { Instance = this; }
@@ -60,9 +71,19 @@ public class SoundManager : MonoBehaviour
         crackFX.PlayOneShot(cracks[Random.Range(0, cracks.Count)]);
     }
 
+    public void PlayPatientSelect() {
+        sfx.pitch = 1.0f;
+        sfx.PlayOneShot(patientSelect);
+    }
+
     public void PlayError() {
         sfx.pitch = 1.0f;
         sfx.PlayOneShot(error);
+    }
+
+    public void PlaySpawnSound() {
+        sfx.pitch = 1.0f;
+        sfx.PlayOneShot(patientSpawn);
     }
 
     public void PlaySuccess() {

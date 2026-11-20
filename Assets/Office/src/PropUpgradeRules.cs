@@ -75,6 +75,11 @@ public class PropRuleAssociation {
     public List<PropUpgradeRules> ruleSet;
     private int setIdx;
 
+    public void Initialize(int idx) {
+        setIdx = idx;
+        ruleSet[idx].InitializeRules();
+    }
+    
     public void Initialize(System.Random rng) {
         setIdx = rng.Next(0, ruleSet.Count);
         ruleSet[setIdx].InitializeRules();

@@ -66,8 +66,6 @@ public class ButtonMashGame : BaseMinigame
             _weightTween = DOTween.To(() => _weight, x => _weight = x, 1f, fadeDuration).OnUpdate(() => {
                 CameraController.Instance.SetMgZoomWeight(cameraZoomCurve.Evaluate(_weight));
             }).OnComplete(() => {
-                // _doctorAnim.SetTrigger("performAction");
-                // _patientAnim.SetTrigger("performAction");
                 base.CompleteGame();
             });
         } else {
@@ -94,7 +92,6 @@ public class ButtonMashGame : BaseMinigame
                 float delta = Time.time - _timeInCompleteRegion;
                 _weight = delta / requiredTimeInRegion;
                 CameraController.Instance.SetCameraNoiseAmplitude(cameraShakeCurve.Evaluate(_weight));
-                // CameraController.Instance.SetMgZoomWeight(cameraZoomCurve.Evaluate(_weight));
                 if (delta > requiredTimeInRegion) {
                     score = timeScoreScaling.Evaluate(Mathf.Clamp(Time.time - _startTime, 0, worstCaseTime) / worstCaseTime);
                     CompleteGame();
@@ -105,7 +102,6 @@ public class ButtonMashGame : BaseMinigame
             _weightTween?.Kill();
             _weightTween = DOTween.To(() => _weight, x => _weight = x, 0f, fadeDuration).OnUpdate(() => {
                 CameraController.Instance.SetCameraNoiseAmplitude(cameraShakeCurve.Evaluate(_weight));
-                // CameraController.Instance.SetMgZoomWeight(_weight);
             });
             _enteredCompleteRegion = false;
         }

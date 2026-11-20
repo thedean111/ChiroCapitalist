@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb24b041f32c9945a704f567045ee72, type: 3}
+  m_Name: bookshelf_small_to_big_3
+  m_EditorClassIdentifier: Assembly-CSharp::PropUpgradeRules
+  ruleList:
+  - level: 2
+    action: 2
+    prefab: {fileID: 2635472733081826850, guid: ca818eb69c1d511499a4069e87bbd7be, type: 3}
+  - level: 3
+    action: 2
+    prefab: {fileID: 3709261467325291172, guid: 18117fff721bfa643a749c6a83e5cffb, type: 3}
+  - level: 4
+    action: 2
+    prefab: {fileID: 3004811255318978680, guid: f90f1f648415dd44089dc26d2bbf0dc8, type: 3}
+  - level: 5
+    action: 2
+    prefab: {fileID: 7051152574416394887, guid: 123072c98269d29429acd7f793d39e4b, type: 3}
+  - level: 6
+    action: 2
+    prefab: {fileID: 1679067118446498936, guid: 34d42dae6ed4b3c40b3809cd0e2e0c5a, type: 3}
+  - level: 7
+    action: 2
+    prefab: {fileID: 5575316638039780714, guid: 6f2c3338bebcf6c438947fc3662645c2, type: 3}

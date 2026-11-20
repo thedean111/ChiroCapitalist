@@ -720,7 +720,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.9411765, g: 0.79079556, b: 0.7058824, a: 1}
+  m_BackGroundColor: {r: 0.6117647, g: 0.6392157, b: 0.69803923, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -11831,8 +11831,7 @@ PrefabInstance:
       value: 179.99998
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 6958537083798682957, guid: aa9e13c8084b31741b179a1e42d79e44, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5163093249921096700, guid: aa9e13c8084b31741b179a1e42d79e44, type: 3}
       insertIndex: -1
@@ -12045,6 +12044,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   fadeTime: 2.5
+  musicTimerScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1.5
+      inSlope: 2.918725
+      outSlope: 2.918725
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03423667
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   music: {fileID: 1296973057}
   crackFX: {fileID: 980611031}
   pitchRange: {x: 0.8, y: 1.05}
@@ -12062,6 +12094,8 @@ MonoBehaviour:
   chime: {fileID: 8300000, guid: 7b4c502db7e0218438ee14b2c05040e1, type: 3}
   chimePitchRange: {x: 0.95, y: 1.05}
   success: {fileID: 8300000, guid: 1a565d8213d8c9e4f89dae46cdbcd5d9, type: 3}
+  patientSelect: {fileID: 8300000, guid: d14244f829dfbc04eab4d69f6e89c0f0, type: 3}
+  patientSpawn: {fileID: 8300000, guid: c65e6253e189a454390871831b9c5f3e, type: 3}
 --- !u!1 &1175878535
 GameObject:
   m_ObjectHideFlags: 0

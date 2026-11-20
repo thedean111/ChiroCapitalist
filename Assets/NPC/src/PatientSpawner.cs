@@ -59,6 +59,7 @@ public class PatientSpawner : MonoBehaviour
 
         coll.enabled = true;
         activePatient = true;
+        SoundManager.Instance.PlaySpawnSound();
         patient.transform.localPosition = Vector3.zero;
         patient.SetData(NPCFactory.Instance.GeneratePatientData());
         patient.gameObject.SetActive(true);
